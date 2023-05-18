@@ -6,19 +6,18 @@ export function typeWriter(
   infinite: boolean = false
 ): void {
   whichElement === 'all' ? (whichElement = '.typewriter') : null;
+
   let elements = document.querySelectorAll<HTMLElement>(whichElement);
   elements.forEach((element: HTMLElement) => {
     let i = 0;
     let k = 0;
-    let speed: number;
     let txt: string = element.innerText;
     element.innerText = '';
     element.style.display = 'block';
     setTimeout(write, durationTime);
 
     function write(): void {
-      let a = Math.floor(Math.random() * 40) + 60;
-      speed = a;
+      let speed = Math.floor(Math.random() * 40) + 60;
       if (i < txt.length) {
         element.innerHTML += txt.charAt(i);
         i++;
@@ -29,8 +28,7 @@ export function typeWriter(
     }
 
     function del(): void {
-      let b = Math.floor(Math.random() * 60) + 80;
-      speed = b;
+      const speed = Math.floor(Math.random() * 60) + 80;
       if (k < txt.length) {
         let a: string[] = element.innerText.split('');
         a.pop();
