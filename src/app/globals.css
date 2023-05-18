@@ -3,7 +3,6 @@
 @tailwind utilities;
 
 .typewriter {
-  display: none;
   --caret: currentcolor;
 }
 @keyframes blink {
@@ -17,11 +16,13 @@
 }
 .typewriter::after {
   content: '';
-  animation: blink 0.5s linear infinite;
+  animation: blink 0.7s linear infinite;
+  margin-left: 5px;
 }
 .typewriter.caret::after {
   border-right: 0.1rem solid var(--caret);
+  border-width: 1px;
 }
 .typewriter.caret-thick::after {
-  border-right: 1ch solid var(--caret);
+  border-right: 12px solid var(--caret);
 }
