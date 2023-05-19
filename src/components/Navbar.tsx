@@ -1,5 +1,5 @@
 'use client';
-import React, {FC, useState} from 'react';
+import React, {FC, useRef, useState} from 'react';
 import Button from "@/components/UI/Button";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faEye, faMagnifyingGlass, faUser, faBars, faCube, faComments, faGear,faFireFlameCurved, faBarsStaggered}
@@ -13,6 +13,7 @@ interface Props  {
 const Navbar: FC<Props> = () => {
     const [show, setShow] = useState(false)
     const [showSearch, setShowSearch] = useState(false)
+    const searchInput = useRef(null)
     return (
        <div className={''}>
            <div  className={'w-fit h-screen gap-12 flex flex-col justify-center items-start text-rose-50 bg-slate-950 pr-2 pl-5'}>
@@ -50,6 +51,8 @@ const Navbar: FC<Props> = () => {
                                e.preventDefault()
                                setShow(true)
                                setShowSearch(!showSearch)
+                               // @ts-ignore
+                               searchInput.current.focus()
                            }}>
                        {
                            showSearch ? '✕' : <FontAwesomeIcon icon={faMagnifyingGlass} />
@@ -61,9 +64,11 @@ const Navbar: FC<Props> = () => {
                            ? 'w-0 flex justify-center items-center rounded ease-out duration-300 text-rose-50 h-full'
                            : 'flex justify-center items-center bg-rose-500 rounded w-[220px] ease-out duration-300 text-rose-50 ml-2 h-full '}>
                                    <div className={' text-sm text-center w-10/12 '}>
-                                   <input className={'bg-transparent w-full focus:outline-none placeholder:text-rose-50'}
+                                   <input className={'bg-transparent w-full focus:outline-none placeholder:text-rose-50 placeholder:opacity-50'}
                                           type="text"
-                                          placeholder={'Search'}/>  </div>
+                                          ref={searchInput}
+                                          autoFocus={showSearch}
+                                          placeholder={'Type something..'}/>  </div>
 
                        </form>
                             <div className={show && !showSearch
