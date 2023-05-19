@@ -12,11 +12,13 @@ const LoginPage: React.FC<Props> = () => {
   const router = useRouter();
 
   return (
-    <div className='w-screen h-screen container mx-auto items-center justify-center grid grid-cols-12 '>
-      <div className='col-span-4'>
-        <Heading heading='h1'>Register</Heading>
+    <div className='col-span-6'>
+      <div className='w-screen h-screen container items-center justify-center grid grid-cols-12 '>
+        <div className='col-span-6 p-6'>
+          <Heading heading='h1'>Register</Heading>
 
-        <Login />
+          <Login />
+        </div>
       </div>
     </div>
   );
