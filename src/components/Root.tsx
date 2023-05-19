@@ -14,27 +14,33 @@ const Root: FC<Props> = () => {
   }, []);
 
   return (
-    <div className='container grid grid-cols-12 grid-rows-12 gap-5 mx-auto w-screen h-screen items-center'>
-      <div className='col-span-6 '>
-        <GorkemTypeWriter
-          durationTime={2000}
-          afterDelete={false}
-          afterDeleteDuration={1000}
-          infinite={false}
-        >
-          <Link href={'/'}>
-            <Heading
-              heading='h6'
-              className='typewriter caret-thick'
-              size={'biggest'}
-            >
-              SOCIO
-            </Heading>
-          </Link>
-        </GorkemTypeWriter>
-      </div>
-      <div className='bg-blue-200 col-span-6 '></div>
+    <div className='container flex justify-center gap-3'>
+      {/*<Heading*/}
+      {/*    heading='h2'*/}
+      {/*>*/}
+      {/*  SOCIO*/}
+      {/*</Heading>*/}
+      {/*<div className=''>*/}
+      {/*  <GorkemTypeWriter*/}
+      {/*    durationTime={2000}*/}
+      {/*    afterDelete={false}*/}
+      {/*    afterDeleteDuration={1000}*/}
+      {/*    infinite={false}*/}
+      {/*  >*/}
+      {/*    <div>*/}
+      {/*      <Heading*/}
+      {/*        heading='h6'*/}
+      {/*        className='typewriter caret-thick'*/}
+      {/*        size={'biggest'}*/}
+      {/*      >*/}
+      {/*        SOCIO*/}
+      {/*      </Heading>*/}
+      {/*    </div>*/}
+      {/*  </GorkemTypeWriter>*/}
+      {/*</div>*/}
+
     </div>
+
   );
 };
 
