@@ -4,9 +4,8 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <section>
+    <section className={'section flex w-full h-full'}>
       {/* Include shared UI here e.g. a header or sidebar */}
-      <div>nav</div>
       {children}
     </section>
   );

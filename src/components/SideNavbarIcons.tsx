@@ -10,12 +10,12 @@ interface Props  {
 }
 
 
-const NavbarIcons: FC<Props> = ({icon, title,show}) => {
+const SideNavbarIcons: FC<Props> = ({icon, title,show}) => {
     return (
         <div className={show ?
-            'flex items-center gap-2 cursor-pointer  hover:bg-rose-500 rounded ease-out duration-200'
+            'flex items-center gap-2 cursor-pointer  hover:bg-pink rounded ease-out duration-200'
             :'flex items-center gap-2 cursor-pointer  rounded ease-out duration-200'}>
-            <Button className={' hover:bg-rose-500 ease-out duration-200 '} variant={"nav"} size={'nav'}><FontAwesomeIcon icon={icon} /></Button>
+            <Button className={' hover:bg-pink ease-out duration-200 '} variant={"nav"} size={'nav'}><FontAwesomeIcon icon={icon} /></Button>
             <div className={ show
                 ? 'flex w-[100px]  ease-out duration-200 overflow-hidden'
                 : 'flex w-0  overflow-hidden' }>{title}</div>
@@ -23,4 +23,4 @@ const NavbarIcons: FC<Props> = ({icon, title,show}) => {
     );
 }
 
-export default NavbarIcons;
+export default SideNavbarIcons;
