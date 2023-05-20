@@ -3,10 +3,5 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <section className={'section flex w-full h-full'}>
-      {/* Include shared UI here e.g. a header or sidebar */}
-      {children}
-    </section>
-  );
+  return children;
 }

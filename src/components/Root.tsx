@@ -1,8 +1,5 @@
 import React, { FC, useEffect } from 'react';
-import GorkemTypeWriter from '@/util/GorkemTypeWriter';
-import Button from './UI/Button';
-import Heading from './UI/Heading';
-import Link from 'next/link';
+
 import { redis } from '@/lib/db';
 interface Props {}
 const x = async () => {
@@ -38,9 +35,7 @@ const Root: FC<Props> = () => {
       {/*    </div>*/}
       {/*  </GorkemTypeWriter>*/}
       {/*</div>*/}
-
     </div>
-
   );
 };
 

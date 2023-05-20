@@ -18,7 +18,7 @@ const inputVariants = cva(
       },
       inputSize: {
         // Rename size to inputSize
-        default: 'p-3',
+        default: 'py-3',
         primary: 'w-full ',
       },
     },
