@@ -13,7 +13,7 @@ const Navbar: FC<Props> = () => {
         style={{
             height: '8%'
         }}>
-           <div className={'flex justify-end px-3 items-center bg-white w-full mx-3 h-4/6 rounded shadow-lg'}>
+           <div className={'flex justify-between px-3 items-center bg-white w-full mx-3 h-4/6 rounded shadow-lg'}>
                <div>
                   <Link href={'/home'}>HOME</Link>
                </div>

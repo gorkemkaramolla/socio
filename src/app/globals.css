@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+*:focus {
+  outline: none;
+}
+.sidebarIconButtons:disabled {
+  opacity: 1 !important;
+}
 .typewriter {
   --caret: currentcolor;
 }

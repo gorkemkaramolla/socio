@@ -16,13 +16,13 @@ const buttonVariants = cva(
         ghost: 'w-fit flex items-center bg-transparent ',
           white: 'w-fit flex items-center rounded bg-slate-50 text-slate-900 hover:bg-slate-200',
           rose: 'w-fit flex items-center rounded bg-rose-500 text-violet-50',
-          nav: 'flex items-center justify-center rounded text-rose-50 '
+          nav: 'flex items-center justify-center rounded'
       },
       size: {
         default: 'h-10 py-2 px-4',
         sm: 'h-6 p-auto',
         lg: 'h-11 px-8',
-          nav: 'w-10 h-10'
+          nav: 'w-8 h-8'
       },
     },
 
@@ -52,7 +52,7 @@ const Button: FC<ButtonProps> = ({
           disabled={isLoading}
           {...props}
       >
-        {isLoading ? <Loader className='h-4 w-4 absolute animate-spin'/> : null}
+        {isLoading ? <Loader className='h-4 w-4 animate-spin'/> : null}
         {children}
       </button>
   );
