@@ -1,12 +1,10 @@
 import React from 'react';
-import Button from '@/components/UI/Button';
-import TypeWriter from '@/components/Root';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import Image from 'next/image';
 import Heading from '@/components/UI/Heading';
-import { signOut } from 'next-auth/react';
 import LogoutButton from '@/components/LogoutButton/LogoutButton';
+
 interface Props {}
 
 const DashBoard = async () => {
@@ -26,6 +24,7 @@ const DashBoard = async () => {
         <Heading size={'lg'} heading='h3'>
           {session?.user.name}
         </Heading>
+        <div>adsasd</div>
         <Heading size='md' heading='h4'>
           {session?.user.id}
         </Heading>
