@@ -3,15 +3,10 @@ import React, {FC, useRef, useState} from 'react';
 import Button from '@/components/UI/Button';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {
-    faEye,
-    faMagnifyingGlass,
-    faUser,
-    faBars,
-    faCube,
-    faComments,
-    faGear,
-    faFireFlameCurved,
-    faBarsStaggered,
+    faEye, faUser, faBars,
+    faMagnifyingGlass, faComments,
+    faGear, faFireFlameCurved,
+    faShekelSign, faBarsStaggered, faCheck,
 } from '@fortawesome/free-solid-svg-icons';
 
 import SideNavbarIcons from '@/components/SideNavbarIcons';
@@ -24,15 +19,15 @@ const SideNavbar: FC<Props> = () => {
     const [showSearch, setShowSearch] = useState(false);
     const searchInput = useRef(null);
     return (
-        <div>
+
             <div
                 className={
-                    'fixed w-fit h-screen gap-12 flex flex-col justify-center items-start text-white bg-midnight pr-2 pl-5 shadow-2xl'
+                    ' w-fit min-full flex flex-col justify-around text-white text-sm bg-red-500 p-2  rounded-[30px] shadow-2xl z-40'
                 }
             >
                 <div
                     className={
-                        'flex items-center justify-between cursor-pointer ease-out duration-200 '
+                        'flex items-center justify-between cursor-pointer ease-out duration-200  '
                     }
                 >
                     {
@@ -43,22 +38,21 @@ const SideNavbar: FC<Props> = () => {
                                     : 'w-[100px] flex justify-center items-center  ease-out duration-200  overflow-hidden'
                             }
                             onClick={(e) => {
-                                e.preventDefault();
                                 setShow(!show);
-                                setShowSearch(false);
+                                setShowSearch(false)
                             }}
                         >
-                            <span className={'text-xl'}>socio</span>
+                            <span className={'text-lg'}>socio</span>
                         </div>
                     }
                     <Button
                         variant={'nav'}
                         size={'nav'}
-                        className={'ease-out duration-300 '}
+                        className={'ease-out duration-300 text-sm '}
                         onClick={(e) => {
                             e.preventDefault();
+                            setShowSearch(false)
                             setShow(!show);
-                            setShowSearch(false);
                         }}
                     >
                         {show ? (
@@ -69,25 +63,27 @@ const SideNavbar: FC<Props> = () => {
                     </Button>
                 </div>
                 <div
-                    className={
-                        'search flex items-center gap-2 cursor-pointer ease-out duration-200'
+                    className={!showSearch ?
+                        'search flex items-center cursor-pointer hover:bg-white rounded ease-out duration-200 hover:text-red-500'
+                        :'search flex items-center cursor-pointer rounded ease-out duration-200 text-red-500'
                     }
+                    onClick={(e) => {
+                        e.preventDefault();
+                        setShow(true);
+                        setShowSearch(!showSearch);
+                        // @ts-ignore
+                        searchInput.current.focus();
+                    }}
                 >
                     <Button
                         variant={'nav'}
                         size={'nav'}
                         className={
                             !showSearch
-                                ? 'text-white  ease-out duration-300 bg-pink hover:text-white '
-                                : 'text-white rotate-180 rounded-3xl ease-out duration-300 bg-pink hover:text-white'
+                                ? ' ease-out duration-300 '
+                                : ' rotate-180 rounded-3xl ease-out duration-300 hover:text-red-500 bg-white '
                         }
-                        onClick={(e) => {
-                            e.preventDefault();
-                            setShow(true);
-                            setShowSearch(!showSearch);
-                            // @ts-ignore
-                            searchInput.current.focus();
-                        }}
+
                     >
                         {showSearch ? '✕' : <FontAwesomeIcon icon={faMagnifyingGlass}/>}
                     </Button>
@@ -97,18 +93,18 @@ const SideNavbar: FC<Props> = () => {
                         className={
                             !showSearch
                                 ? 'w-0 flex justify-center items-center rounded ease-out duration-300 text-white h-full'
-                                : 'flex justify-center items-center bg-pink rounded w-[220px] ease-out duration-300 text-white ml-2 h-full '
+                                : 'flex justify-center items-center bg-white rounded w-[220px] ease-out duration-300 text-red-500 ml-2 h-full '
                         }
                     >
                         <div className={' text-sm text-center w-10/12 '}>
                             <input
                                 className={
-                                    'bg-transparent w-full focus:outline-none placeholder:text-white placeholder:opacity-50'
+                                    'bg-transparent w-full focus:outline-none'
                                 }
                                 type='text'
                                 ref={searchInput}
                                 autoFocus={showSearch}
-                                placeholder={'Type something..'}
+                                onClick={(e) => e.stopPropagation()}
                             />{' '}
                         </div>
                     </form>
@@ -122,15 +118,15 @@ const SideNavbar: FC<Props> = () => {
                         Search
                     </div>
                 </div>
-
-                <SideNavbarIcons icon={faUser} title={'User'} show={show}/>
+                <SideNavbarIcons icon={faShekelSign} title={'Newsfeed'} show={show}/>
+                <SideNavbarIcons icon={faCheck} title={'ToDo'} show={show}/>
+                <SideNavbarIcons icon={faUser} title={'Profile'} show={show}/>
                 <SideNavbarIcons icon={faEye} title={'Friends'} show={show}/>
-                <SideNavbarIcons icon={faComments} title={'Message'} show={show}/>
+                <SideNavbarIcons icon={faComments} title={'Messages'} show={show}/>
                 <SideNavbarIcons icon={faFireFlameCurved} title={'Trends'} show={show}/>
-                <SideNavbarIcons icon={faCube} title={'Dashboard'} show={show}/>
                 <SideNavbarIcons icon={faGear} title={'Settings'} show={show}/>
             </div>
-        </div>
+
     );
 };
 

@@ -26,3 +26,22 @@
 .typewriter.caret-thick::after {
   border-right: 12px solid var(--caret);
 }
+
+/* Chrome ve Safari için scrollbar özelleştirmeleri */
+*::-webkit-scrollbar {
+  width: 3px; /* Scrollbar genişliği */
+  height: 3px; /* Scrollbar genişliği */
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #ed4343; /* Scrollbar başparmak rengi */
+  border-radius: 20px; /* Scrollbar başparmak kenar yarıçapı */
+}
+
+*::-webkit-scrollbar-track {
+  background-color: transparent; /* Scrollbar izleme bölgesi rengi */
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: #131313; /* Scrollbar başparmak hover rengi */
+}
