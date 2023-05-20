@@ -31,7 +31,7 @@ const Home: FC<Props> = () => {
                     NewsFeed
                 </Heading>
             </div>
-            <div className={'h-full w-full gap-4 flex justify-center '}>
+            <div className={'h-full w-full gap-4 flex justify-center  '}>
                 <div className={' w-4/6'}>
                     <ContentContainer header={'loremlormem'} content={'fgfdgfdghfdhdfh'}/>
                     <ContentContainer header={'loremlormem'} content={'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus blanditiis corporis dolores enim et facilis fugit impedit ipsum iusto neque optio, perferendis ratione recusandae reprehenderit sapiente sed soluta tenetur veritatis!\n'}/>
@@ -40,6 +40,7 @@ const Home: FC<Props> = () => {
                     <ContentContainer header={'Lorem ipsum dolor sit amet'} content={'perferendis ratione recusandae reprehenderit sapiente sed soluta tenetur veritatis!\n'}/>
                     <ContentContainer header={'loremlormem'} content={'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus blanditiis corporis dolores enim et facilis fugit impedit ipsum iusto neque optio, perferendis ratione recusandae reprehenderit sapiente sed soluta tenetur veritatis!\n'}/>
                     <ContentContainer header={'Lorem ipsum dolor sit amet'} content={'perferendis ratione recusandae reprehenderit sapiente sed soluta tenetur veritatis!\n'}/>
+                    <ContentContainer header={'Lorem ipsum dolor sit amet'} content={'perfersoluta tenetur veritatisaaaaaa'}/>
                 </div>
                 <div className={'w-2/6'}>
                     <div className={'flex bg-white min-h-[350px] my-4 shadow-2xl rounded-xl'}>
