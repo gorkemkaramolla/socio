@@ -22,7 +22,7 @@ interface Props {}
 const SideNavbar: FC<Props> = () => {
   const [show, setShow] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
-  const searchInput = useRef(null);
+  const searchInput = useRef<HTMLInputElement>(null);
   return (
     <div
       className={
@@ -76,8 +76,7 @@ const SideNavbar: FC<Props> = () => {
           e.preventDefault();
           setShow(true);
           setShowSearch(!showSearch);
-          // @ts-ignore
-          searchInput.current.focus();
+          searchInput?.current?.focus()!;
         }}
       >
         <Button
