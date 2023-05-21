@@ -38,45 +38,69 @@ const Home: FC<Props> = () => {
         <div className={'h-fit w-full gap-4 flex justify-center'}>
           <div className={' w-4/6'}>
             <ContentContainer
-              header={'loremlormem'}
+              header={{
+                name: 'Kübra Yılmaz',
+                username: '@kubraylmzz'
+              }}
               content={'fgfdgfdghfdhdfh'}
             />
             <ContentContainer
-              header={'loremlormem'}
+                header={{
+                  name: 'Kübra Yılmaz',
+                  username: '@kubraylmzz'
+                }}
               content={
                 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus blanditiis corporis dolores enim et facilis fugit impedit ipsum iusto neque optio, perferendis ratione recusandae reprehenderit sapiente sed soluta tenetur veritatis!\n'
               }
             />
             <ContentContainer
-              header={'loremlormem'}
+                header={{
+                  name: 'Kübra Yılmaz',
+                  username: '@kubraylmzz'
+                }}
               content={'fgfdgfdghfdhdfh'}
             />
             <ContentContainer
-              header={'loremlormem'}
+                header={{
+                  name: 'Kübra Yılmaz',
+                  username: '@kubraylmzz'
+                }}
               content={
                 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus blanditiis corporis dolores enim et facilis fugit impedit ipsum iusto neque optio, perferendis ratione recusandae reprehenderit sapiente sed soluta tenetur veritatis!\n'
               }
             />
             <ContentContainer
-              header={'Lorem ipsum dolor sit amet'}
+                header={{
+                  name: 'Kübra Yılmaz',
+                  username: '@kubraylmzz'
+                }}
               content={
                 'perferendis ratione recusandae reprehenderit sapiente sed soluta tenetur veritatis!\n'
               }
             />
             <ContentContainer
-              header={'loremlormem'}
+                header={{
+                  name: 'Kübra Yılmaz',
+                  username: '@kubraylmzz'
+                }}
               content={
                 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus blanditiis corporis dolores enim et facilis fugit impedit ipsum iusto neque optio, perferendis ratione recusandae reprehenderit sapiente sed soluta tenetur veritatis!\n'
               }
             />
             <ContentContainer
-              header={'Lorem ipsum dolor sit amet'}
+                header={{
+                  name: 'Kübra Yılmaz',
+                  username: '@kubraylmzz'
+                }}
               content={
                 'perferendis ratione recusandae reprehenderit sapiente sed soluta tenetur veritatis!\n'
               }
             />
             <ContentContainer
-              header={'Lorem ipsum dolor sit amet'}
+                header={{
+                  name: 'Kübra Yılmaz',
+                  username: '@kubraylmzz'
+                }}
               content={'perfersoluta tenetur veritatisaaaaaa'}
             />
           </div>

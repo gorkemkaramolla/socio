@@ -14,15 +14,16 @@ const buttonVariants = cva(
       variant: {
         default: 'w-fit flex items-center rounded bg-slate-900 text-white hover:bg-slate-800',
         ghost: 'w-fit flex items-center bg-transparent ',
-          white: 'w-fit flex items-center rounded bg-slate-50 text-slate-900 hover:bg-slate-200',
-          rose: 'w-fit flex items-center rounded bg-rose-500 text-violet-50',
-          nav: 'flex items-center justify-center rounded'
+        white: 'w-fit flex items-center rounded bg-slate-50 text-slate-900 hover:bg-slate-200',
+        rose: 'w-fit flex items-center rounded bg-rose-500 text-violet-50',
+        nav: 'flex items-center justify-center rounded'
       },
       size: {
         default: 'h-10 py-2 px-4',
         sm: 'h-6 p-auto',
         lg: 'h-11 px-8',
-          nav: 'w-8 h-8'
+        nav: 'w-8 h-8',
+        smSquare: 'w-6 h-6'
       },
     },
 
