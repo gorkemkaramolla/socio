@@ -1,5 +1,5 @@
 import React from 'react';
-import SideNavbarIcons from '../SideNavbarIcons';
+import SideNavbarIcons from '../SideBar/SideNavbarIcons';
 import {
   faBars,
   faBarsStaggered,
