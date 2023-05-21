@@ -145,7 +145,7 @@ const Home: FC<Props> = () => {
             'w-full flex bg-red-500 text-white min-h-[350px] my-4 shadow-2xl rounded-xl'
           }
         >
-          2222
+          search butonuna blur yaptım emin olamadım  bakarsın dshglaga
         </div>
         <div className={'w-full'}>
           <Heading heading='h6' size={'md'} className={'mt-4 mb-0'}>

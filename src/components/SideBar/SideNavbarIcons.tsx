@@ -21,7 +21,7 @@ const SideNavbarIcons: FC<Props> = ({ icon, title, show }) => {
     <Link href={direction}>
       <div
         className={
-          'flex items-center cursor-pointer hover:bg-white rounded ease-out duration-200 hover:text-red-500'
+          'tooltip flex items-center cursor-pointer hover:bg-white rounded ease-out duration-200 hover:text-red-500'
         }
       >
         <Button
@@ -41,6 +41,10 @@ const SideNavbarIcons: FC<Props> = ({ icon, title, show }) => {
         >
           {title}
         </div>
+          { !show &&
+              <span className="tooltiptext">{title}</span>
+
+          }
       </div>
     </Link>
   );

@@ -1,7 +1,9 @@
+"use client";
 import Providers from '@/components/Providers';
 // import './globals.css';
 import { Inter } from 'next/font/google';
 import React from 'react';
+import useBackgroundBlur from "@/lib/zustand/useBacgroundBlur";
 
 
 export const metadata = {
@@ -10,8 +12,10 @@ export const metadata = {
 };
 
 export default function Layout({children}: { children: React.ReactNode; }) {
+    // @ts-ignore
+    const blur = useBackgroundBlur(state => state.blur);
     return (
-        <div className={'flex justify-center'}>
+        <div className={blur ? 'flex justify-center blur-sm' : 'flex justify-center' }>
         {children}
             </div>
     );

@@ -16,10 +16,14 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 import SideNavbarIcons from './SideNavbarIcons';
+import useBackgroundBlur from "@/lib/zustand/useBacgroundBlur";
 
 interface Props {}
 
 const SideNavbar: FC<Props> = () => {
+
+  // @ts-ignore
+  const setBlur = useBackgroundBlur(state => state.setBlur);
   const [show, setShow] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const searchInput = useRef<HTMLInputElement>(null);
@@ -44,6 +48,7 @@ const SideNavbar: FC<Props> = () => {
             onClick={(e) => {
               setShow(!show);
               setShowSearch(false);
+              setBlur(false)
             }}
           >
             <span className={'text-lg'}>socio</span>
@@ -57,6 +62,7 @@ const SideNavbar: FC<Props> = () => {
             e.preventDefault();
             setShowSearch(false);
             setShow(!show);
+            setBlur(false)
           }}
         >
           {show ? (
@@ -76,6 +82,7 @@ const SideNavbar: FC<Props> = () => {
           e.preventDefault();
           setShow(true);
           setShowSearch(!showSearch);
+          setBlur(!showSearch)
           searchInput?.current?.focus()!;
         }}
       >
@@ -96,7 +103,7 @@ const SideNavbar: FC<Props> = () => {
           className={
             !showSearch
               ? 'w-0 flex justify-center items-center rounded ease-out duration-300 text-white h-full'
-              : 'flex justify-center items-center bg-white rounded w-[220px] ease-out duration-300 text-red-500 ml-2 h-full '
+              : 'flex justify-center items-center bg-white rounded w-[170px] ease-out duration-300 text-red-500 ml-2 h-full '
           }
         >
           <div className={' text-sm text-center w-10/12 '}>

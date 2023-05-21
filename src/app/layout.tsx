@@ -22,6 +22,7 @@ export default function RootLayout({
             inter.className +
             ' flex justify-center w-screen h-screen overflow-hidden'
           }
+
         >
           <Providers>{children}</Providers>
         </body>
