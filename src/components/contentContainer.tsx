@@ -19,7 +19,11 @@ const ContentContainer: FC<Props> = ({header, content}) => {
     const handleLikeClick = () => {
         setLiked(!liked)
     }
-    const handleOptionsClick = (e) => {
+
+    const handleOptionsClick = () => {
+
+    }
+    const handleCommentClick = (e) => {
        if (!focused) {
            const unBluredContents = document.querySelectorAll('.unBlured')
            unBluredContents.forEach((x) => {
@@ -88,7 +92,8 @@ const ContentContainer: FC<Props> = ({header, content}) => {
                         3.653 likes
                     </div>
 
-                    <div className={'content pt-2 text-xs text-slate-500 font-bold flex items-center cursor-pointer'}>
+                    <div className={'content pt-2 text-xs text-slate-500 font-bold flex items-center cursor-pointer'}
+                         onClick={handleCommentClick}>
                         <Button
                             variant={"ghost"}
                             size={"smSquare"}
