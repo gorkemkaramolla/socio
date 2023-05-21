@@ -14,6 +14,7 @@ interface Props {
 const ContentContainer: FC<Props> = ({header, content}) => {
     const [liked,setLiked] = useState(false)
 
+
     const handleClick = () => {
         setLiked(!liked)
     }
@@ -33,7 +34,7 @@ const ContentContainer: FC<Props> = ({header, content}) => {
                     <Button
                         variant={"ghost"}
                         size={"smSquare"}
-                        className={liked ? 'text-red-500' :'text-stone-300'}
+                        className={liked ? ' text-red-500 ease-out duration-300' :'heart text-stone-300 ease-out duration-300'}
                         onClick={handleClick}
                     ><FontAwesomeIcon icon={faHeart} /></Button>
                     <Button
