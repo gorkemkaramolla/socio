@@ -5,11 +5,11 @@ import Button from '@/components/UI/Button';
 import { toast } from 'react-hot-toast';
 import { Field, Form, Formik } from 'formik';
 import FormInput from '../UI/Input';
-import Heading from '../UI/Heading';
 import Label from '../UI/Label';
 import GoogleIcon from '@mui/icons-material/Google';
 import { useDispatch } from 'react-redux';
 import { setUser } from '@/lib/redux/userSlice';
+import axios from 'axios';
 interface Props {}
 
 const Login: React.FC<Props> = () => {
@@ -19,11 +19,15 @@ const Login: React.FC<Props> = () => {
         redirect: true,
         callbackUrl: `/dashboard`,
       });
+
+      // Dispatch the setUser action with the extracted user data
+
+      console.log('User logged in successfully');
     } catch (e) {
       toast.error('Something Went Wrong');
     }
   };
-  const handleSubmit = async () => {};
+
   return (
     <div className='grid grid-cols-12 gap-3'>
       <Formik

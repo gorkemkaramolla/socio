@@ -4,8 +4,8 @@ import './globals.css';
 import { Inter } from 'next/font/google';
 import React from 'react';
 import { Provider } from 'react-redux';
-import store from '../../store';
 import { SessionProvider } from 'next-auth/react';
+import store from '@/store';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -15,14 +15,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang='en'>
-      <body className={inter.className + ' flex justify-center w-screen h-screen overflow-hidden'} >
-        {/* <Provider store={store}> */}
-        <SessionProvider>
+    <Provider store={store}>
+      <html lang='en'>
+        <body
+          className={
+            inter.className +
+            ' flex justify-center w-screen h-screen overflow-hidden'
+          }
+        >
           <Providers>{children}</Providers>
-        </SessionProvider>
-        {/* </Provider> */}
-      </body>
-    </html>
+        </body>
+      </html>
+    </Provider>
   );
 }

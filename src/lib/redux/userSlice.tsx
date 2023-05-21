@@ -7,7 +7,7 @@ const initialState: User = {
   id: '',
 };
 
-const eserSlice = createSlice({
+const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
@@ -20,6 +20,6 @@ const eserSlice = createSlice({
   },
 });
 
-export const { setUser } = eserSlice.actions;
+export const { setUser } = userSlice.actions;
 
-export default eserSlice.reducer;
+export default userSlice.reducer;
