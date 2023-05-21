@@ -3,6 +3,7 @@ import React, {FC, useState} from 'react';
 import Button from "@/components/UI/Button";
 import {faCommentDots, faEllipsis, faFaceKissWinkHeart, faHeart, faIcons} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import ContentEmojis from "@/components/contentEmojis";
 interface Props {
     header: {
         name: string,
@@ -72,21 +73,8 @@ const ContentContainer: FC<Props> = ({header, content}) => {
                         ><FontAwesomeIcon icon={faCommentDots} /></Button>
                         50 comments
                     </div>
-                    {/*<div className={'content pt-2 text-xs text-red-500 font-bold flex gap-2 items-center cursor-pointer'}>*/}
-                    {/*    <Button*/}
-                    {/*        variant={"ghost"}*/}
-                    {/*        size={"smSquare"}*/}
-                    {/*        className={'text-slate-500'}*/}
-                    {/*    ><FontAwesomeIcon icon={faEllipsis} /></Button>*/}
-                    {/*    5fgdf*/}
-                    {/*</div>*/}
                 </div>
-                <div className={'w-[40px] h-[40px] absolute -bottom-2 -right-2 rounded-full border-2 border-gray bg-white'}>
-                    <Button
-                        variant={"ghost"}
-                        className={'w-9 h-9 rounded-full flex justify-center items-center text-xl text-stone-300'}
-                    ><FontAwesomeIcon icon={faFaceKissWinkHeart} /></Button>
-                </div>
+               <ContentEmojis/>
             </div>
         </div>
     );

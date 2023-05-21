@@ -157,7 +157,7 @@ const Home: FC<Props> = () => {
             'w-full flex bg-red-500 text-white min-h-[250px] my-4 shadow-2xl rounded-xl'
           }
         >
-          2222
+          logoyu da ölesine koydum ama güzel oturdu
         </div>
       </div>
     </div>

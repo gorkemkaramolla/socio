@@ -14,8 +14,9 @@ const Navbar: FC<Props> = () => {
             height: '8%'
         }}>
            <div className={'flex justify-between px-3 items-center bg-white w-full mx-3 h-4/6 rounded shadow-lg'}>
-               <div>
-                  <Link href={'/home'}>HOME</Link>
+               <div className={'w-fit h-fit'}>
+                   <img className={'w-[160px]'} src="https://i.ibb.co/JBJQZHb/websocial.png" alt=""/>
+                  <Link href={'/home'}></Link>
                </div>
                <form className={'flex w-[300px] bg-gray text-midnight h-3/5 justify-between rounded'} action="">
                    <input type="text" className={'p-3 bg-transparent w-full'}/>
