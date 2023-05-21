@@ -115,3 +115,9 @@
   height: 100%;
   backdrop-filter: blur(8px); /* Bulanıklık değeri */
 }
+.unBlured {
+  filter: blur(0);
+}
+.blured {
+  filter: blur(4px);
+}

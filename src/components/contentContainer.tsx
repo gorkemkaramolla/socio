@@ -1,9 +1,10 @@
 'use client';
-import React, {FC, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import Button from "@/components/UI/Button";
 import {faCommentDots, faEllipsis, faFaceKissWinkHeart, faHeart, faIcons} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import ContentEmojis from "@/components/contentEmojis";
+import HomeCommentContainer from "@/components/homeCommentContainer";
 interface Props {
     header: {
         name: string,
@@ -14,14 +15,34 @@ interface Props {
 
 const ContentContainer: FC<Props> = ({header, content}) => {
     const [liked,setLiked] = useState(false)
-
-
-    const handleClick = () => {
+    const [focused,setFocused] = useState(false)
+    const handleLikeClick = () => {
         setLiked(!liked)
     }
+    const handleOptionsClick = (e) => {
+       if (!focused) {
+           const unBluredContents = document.querySelectorAll('.unBlured')
+           unBluredContents.forEach((x) => {
+               x.classList.replace('unBlured', 'blured')
+           })
+           e.target.parentNode.parentNode.parentNode.classList.replace('blured','unBlured')
+       }
+       else
+       {
+           const unBluredContents = document.querySelectorAll('.blured')
+           unBluredContents.forEach((x) => {
+               x.classList.replace('blured','unBlured')
+           })
+       }
+        setFocused(!focused)
+    }
+    //
+    useEffect(() => {
+
+    },[focused])
 
     return (
-        <div className={'flex flex-col bg-white h-fit min-h-[50px] my-4 shadow-2xl rounded-xl relative'}>
+        <div className={`unBlured flex flex-col bg-white h-fit min-h-[50px] my-4 shadow-2xl rounded-xl relative ease-out duration-300 max-h-fit`}>
             <div className={' flex items-center justify-between header h-fit px-4 w-full p-2 border-b-[1px] border-b-red-500 font-bold'}>
                 <div className={'w-[40px] h-[40px] absolute -top-2 -left-2 rounded-full border-2 border-gray'}>
                     <img className={'rounded-full'} src="https://i.ibb.co/MV0c2sD/avatar6.jpg" alt=""/>
@@ -30,31 +51,33 @@ const ContentContainer: FC<Props> = ({header, content}) => {
                     <span>{header.name}</span>
                     <span className={'text-sm text-red-400 mx-2.5'}>{header.username}</span>
                 </div>
-                {/*<div className={'w-6 h-6 bg-red-500'}></div>*/}
                 <div className={'flex'}>
                     <Button
                         variant={"ghost"}
                         size={"smSquare"}
                         className={liked ? ' text-red-500 ease-out duration-300' :'heart text-stone-300 ease-out duration-300'}
-                        onClick={handleClick}
+                        onClick={handleLikeClick}
                     ><FontAwesomeIcon icon={faHeart} /></Button>
                     <Button
                         variant={"ghost"}
                         size={"smSquare"}
                         className={'text-slate-500'}
                     ><FontAwesomeIcon icon={faCommentDots} /></Button>
-                    <Button
-                        variant={"ghost"}
-                        size={"smSquare"}
-                        className={'text-slate-900'}
-                    ><FontAwesomeIcon icon={faEllipsis} /></Button>
+                    <div onClick={handleOptionsClick}>
+                        <Button
+                            variant={"ghost"}
+                            size={"smSquare"}
+                            className={'sidebarIconButtons text-slate-900'}
+                            disabled={true}
+                        ><FontAwesomeIcon icon={faEllipsis} /></Button>
+                    </div>
                 </div>
             </div>
             <div className={'px-4 py-2 relative'}>
                 <div className={'content w-fit'}>{content}</div>
                 <div className={'flex gap-5 items-center'}>
                     <div className={'content pt-2 text-xs text-red-500 font-bold flex items-center cursor-pointer'}>
-                            <div className={`${liked ? 'scale-100' : 'scale-0'} w-5 h-5 bg-red-100 absolute z-0 left-2 bottom-3 rounded-full ease-out duration-300`}>
+                            <div className={`${liked ? 'scale-100 left-2' : 'scale-0 left-4'} w-5 h-5 bg-red-100 absolute z-0  bottom-3 rounded-full ease-out duration-300`}>
                                 <img className={'rounded-full'} src="https://i.ibb.co/VxNv13V/avatar12.jpg" alt=""/>
                             </div>
                         <Button
@@ -76,6 +99,10 @@ const ContentContainer: FC<Props> = ({header, content}) => {
                 </div>
                <ContentEmojis/>
             </div>
+            {
+
+                <HomeCommentContainer focused={focused}/>
+            }
         </div>
     );
 }
