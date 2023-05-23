@@ -9,10 +9,7 @@ interface Props {}
 const Navbar: FC<Props> = () => {
   return (
     <div
-      className={'navbar w-screen fixed z-50  '}
-      style={{
-        height: '8%',
-      }}
+      className={'navbar h-[80px]'}
     >
       <div
         className={
@@ -27,24 +24,23 @@ const Navbar: FC<Props> = () => {
           />
           <Link href={'/home'}></Link>
         </div>
-        <form
-          className={
-            'flex w-[300px] bg-gray text-midnight h-3/5 justify-between rounded'
-          }
-          action=''
-        >
-          <input type='text' className={'p-3 bg-transparent w-full'} />
-          <Button
-            variant={'ghost'}
-            className={'w-fit h-full text-midnight'}
-            onClick={(e) => {
-              e.preventDefault();
-            }}
-          >
-            {' '}
-            <FontAwesomeIcon icon={faMagnifyingGlass} />{' '}
-          </Button>
-        </form>
+        {/*<form*/}
+        {/*  className={*/}
+        {/*    'flex bg-gray'*/}
+        {/*  }*/}
+        {/*  action=''*/}
+        {/*>*/}
+        {/*  <input type='text' className={'p-3 bg-transparent w-full'} />*/}
+        {/*  <Button*/}
+        {/*    variant={'ghost'}*/}
+        {/*    className={'w-fit h-full text-midnight'}*/}
+        {/*    onClick={(e) => {*/}
+        {/*      e.preventDefault();*/}
+        {/*    }}*/}
+        {/*  >*/}
+        {/*    <FontAwesomeIcon icon={faMagnifyingGlass} />*/}
+        {/*  </Button>*/}
+        {/*</form>*/}
       </div>
     </div>
   );

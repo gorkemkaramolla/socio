@@ -50,7 +50,7 @@ const ContentContainer: FC<Props> = ({ header, content }) => {
 
   return (
     <div
-      className={`unBlured flex flex-col bg-white h-fit min-h-[50px] my-4 shadow-2xl rounded-xl relative ease-out duration-300 max-h-fit`}
+      className={`unBlured flex flex-col bg-white dark:bg-gorkem h-fit min-h-[50px] my-4 shadow-2xl rounded-xl relative ease-out duration-300 max-h-fit`}
     >
       <div
         className={
@@ -107,7 +107,9 @@ const ContentContainer: FC<Props> = ({ header, content }) => {
         </div>
       </div>
       <div className={'px-4 py-2 relative'}>
-        <div className={'content w-fit'}>{content}</div>
+        <div className={'content w-fit text-[0.95rem] font-light'}>
+          {content}
+        </div>
         <div className={'flex gap-5 items-center'}>
           <div
             className={
@@ -153,7 +155,7 @@ const ContentContainer: FC<Props> = ({ header, content }) => {
         </div>
         <ContentEmojis />
       </div>
-      {<HomeCommentContainer focused={focused} />}
+      <HomeCommentContainer focused={focused} />
     </div>
   );
 };

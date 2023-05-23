@@ -13,10 +13,6 @@ import useBackgroundBlur from "@/lib/zustand/useBacgroundBlur";
 
 export default function Layout({children}: { children: React.ReactNode; }) {
     // @ts-ignore
-    const blur = useBackgroundBlur(state => state.blur);
-    return (
-        <div className={`${blur && 'blur-sm'} flex justify-center ease-out duration-300`}>
-        {children}
-            </div>
-    );
+    // const blur = useBackgroundBlur(state => state.blur);
+    return (children);
 }

@@ -14,7 +14,7 @@ const inputVariants = cva(
   {
     variants: {
       variant: {
-        default: 'text-gray-700 leading-2',
+        default: 'text-grey-700 leading-2',
       },
       inputSize: {
         // Rename size to inputSize

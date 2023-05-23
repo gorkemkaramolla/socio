@@ -29,25 +29,13 @@ const Home: FC<Props> = () => {
     setLoading(false); // Set loading to false once the data is fetched
   };
   return (
-    <div className={'flex justify-center gap-10'}>
-      <div className={'h-full w-3/5 flex flex-col'}>
-        {/* <div
-          className={
-            'flex items-center gap-3 bg-white w-full  min-h-[110px] my-4 shadow-2xl px-10 overflow-y-hidden overflow-x-auto rounded-xl'
-          }
-        >
-          <Stories />
-          <Stories />
-          <Stories />
-          <Stories />
-          <Stories />
-        </div> */}
-        <div className={'w-full'}>
-          <Heading heading='h6' size={'md'} className={'mt-4 mb-0'}>
-            NewsFeed
-          </Heading>
-        </div>
-        <div className={'h-fit w-full gap-4 flex justify-center'}>
+    <div className={'flex flex-col overflow-y-scroll items-center '}>
+      <div className={'sticky top-0 w-full h-fit flex justify-center items-center bg-white dark:bg-black/75 backdrop-blur-sm z-40'}>
+        <Heading heading='h6' size={'md'} className={'m-4'}>
+          NewsFeed
+        </Heading>
+      </div>
+        <div className={'h-fit w-full flex justify-center'}>
           <div className={' w-4/6'}>
             {[
               'fgfdgfdghfdhdfh',
@@ -67,56 +55,55 @@ const Home: FC<Props> = () => {
               />
             ))}
           </div>
-          <div className={'w-2/6'}>
-            <div className={'flex bg-white  '}>2222</div>
-            <div
-              className={
-                'flex bg-white min-h-[150px] my-4 shadow-2xl rounded-xl'
-              }
-            >
-              3333
-            </div>
-            <div
-              className={
-                'flex bg-white min-h-[350px] my-4 shadow-2xl rounded-xl'
-              }
-            >
-              4444
-            </div>
-          </div>
+          {/*<div className={'w-2/6'}>*/}
+          {/*  <div*/}
+          {/*    className={*/}
+          {/*      'flex bg-white min-h-[150px] my-4 shadow-2xl rounded-xl'*/}
+          {/*    }*/}
+          {/*  >*/}
+          {/*    3333*/}
+          {/*  </div>*/}
+          {/*  <div*/}
+          {/*    className={*/}
+          {/*      'flex bg-white min-h-[350px] my-4 shadow-2xl rounded-xl'*/}
+          {/*    }*/}
+          {/*  >*/}
+          {/*    4444*/}
+          {/*  </div>*/}
+          {/*</div>*/}
         </div>
         <div className={'w-full flex justify-center'}>
           <Button variant={'ghost'} size={'lg'} isLoading={true}>
             Loading
           </Button>
         </div>
-      </div>
-      <div className={'h-full w-1/5 flex flex-col items-center'}>
-        <div className={'w-full'}>
-          <Heading heading='h6' size={'md'} className={'mt-4 mb-0'}>
-            My Profile
-          </Heading>
-        </div>
-        <div
-          className={
-            'w-full flex bg-red-500 text-white min-h-[350px] my-4 shadow-2xl rounded-xl'
-          }
-        >
-          search butonuna blur yaptım emin olamadım bakarsın dshglaga
-        </div>
-        <div className={'w-full'}>
-          <Heading heading='h6' size={'md'} className={'mt-4 mb-0'}>
-            Latest Connections
-          </Heading>
-        </div>
-        <div
-          className={
-            'w-full flex bg-red-500 text-white min-h-[250px] my-4 shadow-2xl rounded-xl'
-          }
-        >
-          logoyu da ölesine koydum ama güzel oturdu
-        </div>
-      </div>
+
+      {/*<div className={'h-full w-1/5 flex flex-col items-center'}>*/}
+      {/*  <div className={'w-full'}>*/}
+      {/*    <Heading heading='h6' size={'md'} className={'mt-4 mb-0'}>*/}
+      {/*      My Profile*/}
+      {/*    </Heading>*/}
+      {/*  </div>*/}
+      {/*  /!*<div*!/*/}
+      {/*  /!*  className={*!/*/}
+      {/*  /!*    'w-full flex bg-red-500 text-white min-h-[350px] my-4 shadow-2xl rounded-xl'*!/*/}
+      {/*  /!*  }*!/*/}
+      {/*  /!*>*!/*/}
+      {/*  /!*  search butonuna blur yaptım emin olamadım bakarsın dshglaga*!/*/}
+      {/*  /!*</div>*!/*/}
+      {/*  /!*<div className={'w-full'}>*!/*/}
+      {/*  /!*  <Heading heading='h6' size={'md'} className={'mt-4 mb-0'}>*!/*/}
+      {/*  /!*    Latest Connections*!/*/}
+      {/*  /!*  </Heading>*!/*/}
+      {/*  /!*</div>*!/*/}
+      {/*  /!*<div*!/*/}
+      {/*  /!*  className={*!/*/}
+      {/*  /!*    'w-full flex bg-red-500 text-white min-h-[250px] my-4 shadow-2xl rounded-xl'*!/*/}
+      {/*  /!*  }*!/*/}
+      {/*  /!*>*!/*/}
+      {/*  /!*  logoyu da ölesine koydum ama güzel oturdu*!/*/}
+      {/*  /!*</div>*!/*/}
+      {/*</div>*/}
     </div>
   );
 };

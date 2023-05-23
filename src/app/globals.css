@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+/*:root {*/
+/*  --tw-bg-custom: theme('colors.pink'); !* Tailwind CSS'ten bir renk seçin *!*/
+/*}*/
+
+/*[data-mode="ggg"] .ggg\:bg {*/
+/*  background-color: var(--tw-bg-custom);*/
+/*}*/
+
 *:focus {
   outline: none;
 }
@@ -33,19 +41,24 @@
   border-right: 12px solid var(--caret);
 }
 
-/* Chrome ve Safari için scrollbar özelleştirmeleri */
+
 
 body {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-  overflow: hidden; /* Hide the main scroll bar */
+  /*overflow: hidden; !* Hide the main scroll bar *!*/
   width: 100vw;
-  overflow: scroll; /* Add scroll to the body */
+  /*overflow: scroll; !* Add scroll to the body *!*/
   scrollbar-width: none; /* Hide the scrollbar in Firefox */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+
 }
 
-body::-webkit-scrollbar {
+*::-webkit-scrollbar {
   display: none; /* Hide the scrollbar in WebKit browsers (Chrome, Safari, etc.) */
 }
 
@@ -80,6 +93,33 @@ html {
     right: 5rem;
 
     top: 200px;
+  }
+}
+.emoji-selected {
+  position: absolute;
+  /*right: 4rem;*/
+  left: 0;
+  /*top: 0rem;*/
+  animation: emojiAnimation 1s ease-out;
+}
+
+@keyframes emojiAnimation {
+  0% {
+    transform: scale(1);
+    /*opacity: 1;*/
+    /*right: 8rem;*/
+    /*top: 0.7rem;*/
+  }
+  50% {
+    transform: scale(2);
+    /*opacity: 0.5;*/
+    /*right: 2rem;*/
+  }
+  100% {
+    transform: scale(1);
+    /*opacity: 0;*/
+    /*left: 0;*/
+    /*top: 0.7rem;*/
   }
 }
 
@@ -118,7 +158,7 @@ html {
   filter: blur(0);
 }
 .blured {
-  filter: blur(2px);
+  /*filter: blur(2px);*/
 }
 
 form {
