@@ -16,7 +16,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 import SideNavbarIcons from './SideNavbarIcons';
-import useBackgroundBlur from '@/lib/zustand/useBacgroundBlur';
+import useBackgroundBlur from '@/lib/zustand/useEmoji';
 
 interface Props {}
 

@@ -3,7 +3,7 @@ import Providers from '@/components/Providers';
 // import './globals.css';
 import { Inter } from 'next/font/google';
 import React from 'react';
-import useBackgroundBlur from "@/lib/zustand/useBacgroundBlur";
+import useBackgroundBlur from "@/lib/zustand/useEmoji";
 
 
 // export const metadata = {
