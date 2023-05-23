@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import Button from '@/components/UI/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-    faCircle as faCircleXmark,
+    faCircleXmark,
     faGrinStars as faFaceGrinStars,
     faLaughSquint as faFaceGrinTears,
     faKissWinkHeart as faFaceKissWinkHeart,
