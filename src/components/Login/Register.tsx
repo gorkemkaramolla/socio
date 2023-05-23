@@ -69,7 +69,7 @@ const LoginPage: React.FC<Props> = () => {
   return (
     <div className='justify-center  flex flex-col  h-screen items-center'>
       <div className='flex flex-col gap-3'>
-        <Heading heading='h1'>Login</Heading>
+        <Heading heading='h1'>Register</Heading>
 
         <form
           className=' flex flex-col gap-3 w-[300px] md:w-[400px]'
@@ -104,9 +104,9 @@ const LoginPage: React.FC<Props> = () => {
             ) : null}
           </div>
           <p>
-            Don't have an account? <Link href='/register'>Sign up</Link>
+            Already have an account? <Link href='/register'>Sign in</Link>
           </p>
-          <Button type='submit'>Login</Button>
+          <Button type='submit'>Register</Button>
         </form>
         <div className='bg-red-300'></div>
       </div>

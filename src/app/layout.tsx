@@ -17,13 +17,7 @@ export default function RootLayout({
   return (
     <Provider store={store}>
       <html lang='en'>
-        <body
-          className={
-            inter.className +
-            ' flex justify-center w-screen h-screen overflow-hidden'
-          }
-
-        >
+        <body className={inter.className}>
           <Providers>{children}</Providers>
         </body>
       </html>

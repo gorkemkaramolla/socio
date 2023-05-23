@@ -16,28 +16,13 @@ const Providers: React.FC<Props> = ({ children }) => {
   const currentUser = useSelector((state: RootState) => state.user);
 
   return (
-    <div
-      className={
-        'wind flex flex-col w-screen max-h-screen max-w-[1700px] bg-gray shadow-2xl overflow-hidden'
-      }
-    >
+    <div className={'  max-w-[1700px]  '}>
       {/*<Toaster position='top-center' reverseOrder={false}></Toaster>*/}
-      {currentUser && <Navbar />}
+      {currentUser.id !== '' && <Navbar />}
       {/*<div className={'w-full h-[25px]'}>fgf</div>*/}
-      <div
-        className={'bwind flex'}
-        style={{
-          height: '92%',
-        }}
-      >
-        <div className={'lwind h-full w-[85px] flex p-5'}>
-          {currentUser && <SideNavbar />}
-        </div>
-        <div
-          className={'rwind flex w-full h-full justify-center overflow-y-auto'}
-        >
-          {children}
-        </div>
+      <div className={' '}>
+        <div className=''>{currentUser.id !== '' && <SideNavbar />}</div>
+        <div className={' '}>{children}</div>
       </div>
     </div>
   );

@@ -34,24 +34,24 @@
 }
 
 /* Chrome ve Safari için scrollbar özelleştirmeleri */
-*::-webkit-scrollbar {
-  width: 3px; /* Scrollbar genişliği */
-  height: 3px; /* Scrollbar genişliği */
+
+body {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  overflow: hidden; /* Hide the main scroll bar */
+  width: 100vw;
+  overflow: scroll; /* Add scroll to the body */
+  scrollbar-width: none; /* Hide the scrollbar in Firefox */
 }
 
-*::-webkit-scrollbar-thumb {
-  background-color: #ed4343; /* Scrollbar başparmak rengi */
-  border-radius: 20px; /* Scrollbar başparmak kenar yarıçapı */
+body::-webkit-scrollbar {
+  display: none; /* Hide the scrollbar in WebKit browsers (Chrome, Safari, etc.) */
 }
 
-*::-webkit-scrollbar-track {
-  background-color: transparent; /* Scrollbar izleme bölgesi rengi */
+html {
+  z-index: 100;
 }
-
-*::-webkit-scrollbar-thumb:hover {
-  background-color: #131313; /* Scrollbar başparmak hover rengi */
-}
-
 .heart {
   position: absolute;
   width: 8px;
@@ -59,7 +59,7 @@
   border-radius: 50%;
   right: 4rem;
   top: 0.7rem;
-  animation: heartAnimation 1s  ease-out;
+  animation: heartAnimation 1s ease-out;
 }
 
 @keyframes heartAnimation {
@@ -67,7 +67,6 @@
     transform: scale(1);
     opacity: 1;
     right: 4rem;
-
   }
   50% {
     transform: scale(2);
@@ -120,4 +119,106 @@
 }
 .blured {
   filter: blur(2px);
+}
+
+form {
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0 50px;
+  height: 100%;
+  text-align: center;
+}
+
+@keyframes show {
+  0%,
+  49.99% {
+    opacity: 0;
+    z-index: 1;
+  }
+
+  50%,
+  100% {
+    opacity: 1;
+    z-index: 5;
+  }
+}
+
+.overlay-holder {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  transition: transform 0.6s ease-in-out;
+  z-index: 100;
+}
+
+.holder.right-panel-active .overlay-holder {
+  transform: translateX(-100%);
+}
+
+.overlay {
+  background: #ff416c;
+  color: #ffffff;
+  position: relative;
+  left: -100%;
+  height: 100%;
+  width: 200%;
+  transform: translateX(0);
+  transition: transform 0.6s ease-in-out;
+}
+
+.holder.right-panel-active .overlay {
+  transform: translateX(50%);
+}
+
+.overlay-panel {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0 40px;
+  text-align: center;
+  top: 0;
+  height: 100%;
+  width: 50%;
+  transform: translateX(0);
+  transition: transform 0.6s ease-in-out;
+}
+
+.overlay-left {
+  transform: translateX(-20%);
+}
+.login {
+  transition: transform 0.6s ease-in-out;
+  transform: translateX(0%);
+}
+.register {
+  transition: transform 0.6s ease-in-out;
+  transform: translateX(0%);
+}
+.holder.right-panel-active .login {
+  transform: translateX(-100%);
+
+  opacity: 1;
+  z-index: 5;
+}
+.holder.right-panel-active .register {
+  transform: translateX(0%);
+}
+
+.holder.right-panel-active .overlay-left {
+  transform: translateX(0);
+}
+.holder.right-panel-active .overlay-right {
+  transform: translateX(20%);
+}
+.overlay-right {
+  right: 0;
+  transform: translateX(0);
 }
