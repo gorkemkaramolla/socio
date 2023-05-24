@@ -86,7 +86,7 @@ const RegisterPage: React.FC<Props> = () => {
   return (
     <div className='justify-center p-12   flex flex-col  h-screen items-center'>
       <div className='gap-3 flex flex-col md:p-12   p-5 shadow-md shadow-pink-400   rounded-xl'>
-        <div className='flex flex-col gap-3'>
+        <div className='flex flex-col gap-8'>
           <Heading size={'md'} align={'center'} variant={'pink'} heading='h1'>
             Register
           </Heading>
@@ -98,7 +98,7 @@ const RegisterPage: React.FC<Props> = () => {
             <p className=' pt-[0.5px]'> Login with Google</p>
           </Button>
           <form
-            className='flex relative flex-col gap-8 w-[300px] md:w-[400px]'
+            className='flex relative flex-col gap-8 w-[350px] md:w-[400px]'
             onSubmit={formik.handleSubmit}
           >
             <div className='flex group  transition-all flex-col'>
