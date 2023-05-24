@@ -1,0 +1,82 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int      @id @default(autoincrement())
+  email      String   @unique
+  password   String?
+  name       String?
+  image      String?
+  created_at DateTime @default(now())
+
+  posts       Post[]
+  Comment     Comment[]
+  Reaction    Reaction[]
+  PostLike    PostLike[]
+  CommentLike CommentLike[]
+}
+
+model Post {
+  id         Int        @id @default(autoincrement())
+  created_at DateTime   @default(now())
+  title      String
+  content    String?
+  published  Boolean    @default(false)
+  user       User       @relation(fields: [user_id], references: [id])
+  user_id    Int
+  Comment    Comment[]
+  Reaction   Reaction[]
+  PostLike   PostLike[]
+}
+
+model Reaction {
+  id          Int       @id @default(autoincrement())
+  reactions   String
+  created_at  DateTime  @default(now())
+  modified_at DateTime?
+  post_id     Int
+  user_id     Int
+  user        User      @relation(fields: [user_id], references: [id])
+  post        Post      @relation(fields: [post_id], references: [id])
+}
+
+model PostLike {
+  id         Int      @id @default(autoincrement())
+  reactions  String
+  created_at DateTime @default(now())
+  liked      Boolean  @default(false)
+  post_id    Int
+  user_id    Int
+  user       User     @relation(fields: [user_id], references: [id])
+  post       Post     @relation(fields: [post_id], references: [id])
+}
+
+model CommentLike {
+  id         Int      @id @default(autoincrement())
+  reactions  String
+  created_at DateTime @default(now())
+  liked      Boolean  @default(false)
+  comment_id Int
+  user_id    Int
+  user       User     @relation(fields: [user_id], references: [id])
+  comment    Comment  @relation(fields: [comment_id], references: [id])
+}
+
+model Comment {
+  id          Int           @id @default(autoincrement())
+  content     String?
+  post_id     Int
+  user_id     Int
+  post        Post          @relation(fields: [post_id], references: [id])
+  user        User          @relation(fields: [user_id], references: [id])
+  CommentLike CommentLike[]
+}

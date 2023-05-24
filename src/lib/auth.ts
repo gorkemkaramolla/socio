@@ -2,6 +2,11 @@ import { NextAuthOptions } from 'next-auth';
 import { UpstashRedisAdapter } from '@next-auth/upstash-redis-adapter';
 import { redis } from './db';
 import GoogleProvider from 'next-auth/providers/google';
+import { PrismaClient } from '@prisma/client';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import { compare } from 'bcryptjs';
+const prisma = new PrismaClient();
+
 const getGoogleCredentials = () => {
   const clientId = process.env.GOOGLE_CLIENT_ID;
   const clientSecret = process.env.GOOGLE_SECRET_ID;
@@ -22,6 +27,39 @@ export const authOptions: NextAuthOptions = {
       clientId: getGoogleCredentials().clientId,
       clientSecret: getGoogleCredentials().clientSecret,
     }),
+    CredentialsProvider({
+      name: 'Credentials',
+
+      async authorize(credentials, req) {
+        prisma.$connect();
+
+        const result = await prisma.user.findFirst({
+          where: { email: credentials?.email! },
+        });
+        if (!result) {
+          throw new Error('No user Found with Email Please Sign Up...!');
+        }
+        console.log(credentials?.password);
+        const checkPassword = await compare(
+          credentials?.password!,
+          result?.password!
+        );
+        console.log(checkPassword);
+        // incorrect password
+        if (!checkPassword || result?.email !== credentials?.email!) {
+          throw new Error("Username or Password doesn't match");
+        }
+        prisma.$disconnect();
+        if (checkPassword) {
+          return {
+            id: String(result.id),
+            email: result.email,
+            name: result.name,
+          };
+        } else return null;
+      },
+      credentials: { email: { type: 'text' }, password: { type: 'text' } },
+    }),
   ],
   callbacks: {
     async jwt({ token, user }) {
@@ -30,6 +68,20 @@ export const authOptions: NextAuthOptions = {
         token.id = user!.id;
         return token;
       }
+      prisma.$connect();
+      let newUser = await prisma.user.findUnique({
+        where: { email: token?.email! },
+      });
+      if (!newUser) {
+        newUser = await prisma.user.create({
+          data: {
+            email: token?.email!,
+            name: token.name,
+            image: token?.picture!,
+          },
+        });
+      }
+      prisma.$disconnect();
       return {
         id: dbUser.id,
         name: dbUser.name,

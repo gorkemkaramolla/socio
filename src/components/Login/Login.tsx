@@ -17,7 +17,7 @@ import { RootState } from '@/store';
 
 interface Props {}
 
-const RegisterPage: React.FC<Props> = () => {
+const LoginPage: React.FC<Props> = () => {
   const mode = useSelector((state: RootState) => state.mode);
 
   const [PwOpen, setPwOpen] = useState<boolean>(false);
@@ -54,7 +54,15 @@ const RegisterPage: React.FC<Props> = () => {
       toast.error('Something Went Wrong');
     }
   };
-
+  const loginWithCredentials = async (email: string, password: string) => {
+    const status = await signIn('credentials', {
+      redirect: true,
+      email: email,
+      password: password,
+      callbackUrl: '/dashboard',
+    });
+    console.log(status);
+  };
   const formik = useFormik({
     initialValues: { email: '', password: '' },
     validate(values) {
@@ -81,7 +89,7 @@ const RegisterPage: React.FC<Props> = () => {
       return errors;
     },
     onSubmit: (values) => {
-      alert(JSON.stringify(values));
+      loginWithCredentials(values.email, values.password);
     },
   });
 
@@ -186,4 +194,4 @@ const RegisterPage: React.FC<Props> = () => {
   );
 };
 
-export default RegisterPage;
+export default LoginPage;

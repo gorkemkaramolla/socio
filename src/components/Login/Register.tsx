@@ -13,6 +13,7 @@ import Error from '../UI/Error';
 import Paragraph from '../UI/Paragraph';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
+import axios from 'axios';
 
 interface Props {}
 
@@ -78,10 +79,20 @@ const RegisterPage: React.FC<Props> = () => {
       return errors;
     },
     onSubmit: (values) => {
-      alert(JSON.stringify(values));
+      register(values.email, values.password);
     },
   });
   const mode = useSelector((state: RootState) => state.mode);
+  const register = async (email: string, password: string) => {
+    try {
+      const status = await axios.post('/auth', {
+        email: email,
+        password: password,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
     <div className='justify-center p-12   w-[100%] h-[100%] flex flex-col  items-center'>
