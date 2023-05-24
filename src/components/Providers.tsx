@@ -1,13 +1,8 @@
 'use client';
 import React, { ReactNode, useEffect, useState } from 'react';
-import { Toaster } from 'react-hot-toast';
 import SideNavbar from './SideBar/SideNavbar';
-import Navbar from '@/components/Navbar/Navbar';
-import { useSession } from 'next-auth/react';
-import SideBarSkeleton from './Skeleton/SideBarSkeleton';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
-import { Inter } from 'next/font/google';
 import Button from './UI/Button';
 import { useDispatch } from 'react-redux';
 import { setTheme } from '@/lib/redux/darkMode';
