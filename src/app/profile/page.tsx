@@ -8,6 +8,7 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import { useDispatch } from 'react-redux';
+import { getSession } from 'next-auth/react';
 
 interface Props {}
 
@@ -20,11 +21,16 @@ const DashBoard = () => {
   useEffect(() => {
     getUser();
   }, []);
-
   const getUser = async () => {
-    const session = await axios.get('/api/auth/session');
-    const userSession: User = session.data.user;
-    if (userSession) dispatch(setUser(userSession));
+    const session = await getSession();
+    const currentUser = await axios.get('/user', {
+      params: {
+        id: session?.user.id,
+      },
+    });
+    if (session && currentUser) {
+      dispatch(setUser(currentUser.data.user));
+    }
     setLoading(false); // Set loading to false once the data is fetched
   };
 
@@ -39,19 +45,21 @@ const DashBoard = () => {
   }
 
   return (
-    <div className='mx-auto grid-cols-12 container'>
-      <LogoutButton />
-      <div className='p-5 bg-indigo-200 inline-block rounded-xl m-5'>
-        <Image src={currentUser?.image!} width={60} height={60} alt='' />
+    <div className='mx-auto flex items-center flex-col  mt-5 w-full '>
+      <div className='border-[1px] gap-3   border-red-400 p-12 flex flex-col items-center justify-center'>
+        <Image
+          className='rounded-full '
+          src={currentUser?.image! || ''}
+          width={90}
+          height={90}
+          alt='asda'
+        />
 
-        <Heading size={'lg'} heading='h3'>
+        <Heading size={'md'} heading='h3'>
           {currentUser?.name}
         </Heading>
-        <Heading size='md' heading='h4'>
-          {currentUser?.id}
-        </Heading>
-
         <Heading heading='h5'>{currentUser?.email}</Heading>
+        <LogoutButton />
       </div>
     </div>
   );

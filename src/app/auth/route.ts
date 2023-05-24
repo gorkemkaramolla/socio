@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 import { hash } from 'bcryptjs';
-import { redis } from '@/lib/db';
 
 const prisma = new PrismaClient();
 
@@ -35,9 +34,6 @@ export async function POST(req: Request) {
       image: '',
     },
   });
-
-  // Store the user information in Redis
-  await redis.set(`user:${newUser.id}`, JSON.stringify(newUser));
 
   prisma.$disconnect();
 

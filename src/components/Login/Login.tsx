@@ -44,7 +44,7 @@ const LoginPage: React.FC<Props> = () => {
     try {
       await signIn('google', {
         redirect: true,
-        callbackUrl: `/dashboard`,
+        callbackUrl: `/profile`,
       });
 
       // Dispatch the setUser action with the extracted user data

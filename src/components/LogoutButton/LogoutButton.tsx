@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 import { signOut } from 'next-auth/react';
+import Button from '../UI/Button';
 
 const LogoutButton: React.FC = () => {
   const logoutSession = async () => {
@@ -10,7 +11,7 @@ const LogoutButton: React.FC = () => {
     });
   };
 
-  return <button onClick={logoutSession}>Logout</button>;
+  return <Button onClick={logoutSession}>Logout</Button>;
 };
 
 export default LogoutButton;

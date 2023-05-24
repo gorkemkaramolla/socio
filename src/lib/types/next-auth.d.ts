@@ -1,7 +1,7 @@
 import type { Session } from 'next-auth';
 import type { JWT } from 'next-auth/jwt';
 
-type userId = string;
+type userId = number;
 
 declare module 'next-auth/jwt' {
   interface JWT {

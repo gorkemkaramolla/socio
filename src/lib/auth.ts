@@ -19,7 +19,6 @@ const getGoogleCredentials = () => {
   return { clientId, clientSecret };
 };
 export const authOptions: NextAuthOptions = {
-  adapter: UpstashRedisAdapter(redis),
   session: { strategy: 'jwt' },
   pages: { signIn: '/login' },
   providers: [
@@ -63,11 +62,6 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async jwt({ token, user }) {
-      const dbUser = ((await redis.get(`user:${token.id}`)) as User) || null;
-      if (!dbUser) {
-        token.id = user!.id;
-        return token;
-      }
       prisma.$connect();
       let newUser = await prisma.user.findUnique({
         where: { email: token?.email! },
@@ -83,15 +77,15 @@ export const authOptions: NextAuthOptions = {
       }
       prisma.$disconnect();
       return {
-        id: dbUser.id,
-        name: dbUser.name,
-        email: dbUser.email,
-        picture: dbUser.image,
+        id: newUser.id,
+        name: newUser.name,
+        email: newUser.email,
+        picture: newUser.image,
       };
     },
     async session({ session, token }) {
       if (token) {
-        session.user.id = token.id;
+        session.user.id = token.id!;
         session.user.name = token.name!;
         session.user.email = token.email!;
         session.user.image = token.picture!;

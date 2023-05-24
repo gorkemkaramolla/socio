@@ -3,7 +3,7 @@ import React, { FC, HTMLAttributes } from 'react';
 import { cn } from '@/lib/utils';
 
 const headingVariants = cva(
-  `mb-4 text-4xl font-extrabold leading-none tracking-wide    `,
+  `text-4xl font-extrabold leading-none tracking-wide    `,
   {
     variants: {
       variant: {

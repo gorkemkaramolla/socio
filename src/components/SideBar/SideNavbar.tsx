@@ -27,21 +27,57 @@ const SideNavbar: FC<Props> = () => {
   const [showSearch, setShowSearch] = useState(false);
   const searchInput = useRef<HTMLInputElement>(null);
   return (
-
-      <div className={'fixed h-full mx-10 flex flex-col justify-between px-3 py-9 '}>
-              <div className={'flex flex-col gap-3'}>
-                  <SideNavbarIcons icon={faShekelSign} title={'Newsfeed'} show={show} />
-                  <SideNavbarIcons icon={faCheck} title={'ToDos'} show={show} />
-                  <SideNavbarIcons icon={faUser} title={'Profile'} show={show} />
-                  <SideNavbarIcons icon={faEye} title={'Friends'} show={show} />
-                  <SideNavbarIcons icon={faComments} title={'Messages'} show={show} />
-                  <SideNavbarIcons icon={faFireFlameCurved} title={'Trends'} show={show}/>
-                  <SideNavbarIcons icon={faGear} title={'Settings'} show={show} />
-              </div>
-          <div>
-            fgdfgdfgdfg
-          </div>
+    <div
+      className={
+        'fixed h-full mx-10 md:flex hidden  flex-col justify-between px-3 py-9 '
+      }
+    >
+      <div className={'flex flex-col gap-3'}>
+        <SideNavbarIcons
+          href='/home'
+          icon={faShekelSign}
+          title={'Newsfeed'}
+          show={show}
+        />
+        <SideNavbarIcons
+          href='/todos'
+          icon={faCheck}
+          title={'ToDos'}
+          show={show}
+        />
+        <SideNavbarIcons
+          href='/profile'
+          icon={faUser}
+          title={'Profile'}
+          show={show}
+        />
+        <SideNavbarIcons
+          href='/fiends'
+          icon={faEye}
+          title={'Friends'}
+          show={show}
+        />
+        <SideNavbarIcons
+          href='/messages'
+          icon={faComments}
+          title={'Messages'}
+          show={show}
+        />
+        <SideNavbarIcons
+          href='/trends'
+          icon={faFireFlameCurved}
+          title={'Trends'}
+          show={show}
+        />
+        <SideNavbarIcons
+          href='/settings'
+          icon={faGear}
+          title={'Settings'}
+          show={show}
+        />
       </div>
+      <div>fgdfgdfgdfg</div>
+    </div>
 
     // <div className={' z-30 h-full fixed items-center top-0 w-[85px]  flex p-5'}>
     //   <div
@@ -155,7 +191,6 @@ const SideNavbar: FC<Props> = () => {
     //     <SideNavbarIcons icon={faGear} title={'Settings'} show={show} />
     //   </div>
     // </div>
-
   );
 };
 

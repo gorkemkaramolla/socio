@@ -29,16 +29,20 @@ const Providers: React.FC<Props> = ({ children }) => {
   return (
     <html lang='en' className={mode.mode}>
       <body className={' text-black dark:text-white '}>
-        <div className={'w-screen h-screen bg-white dark:bg-black overflow-hidden'}>
+        <div
+          className={'w-screen h-screen bg-white dark:bg-black overflow-hidden'}
+        >
           {/*<Toaster position='top-center' reverseOrder={false}></Toaster>*/}
           {/*{currentUser.id !== '' && <Navbar />}*/}
           {/*<div className={'w-full h-[25px]'}>fgf</div>*/}
           <div className={'flex h-full'}>
-            <div className='flex justify-end w-3/12'>
+            <div className='flex justify-end w-0 md:w-3/12'>
               {currentUser?.email !== '' && <SideNavbar />}
             </div>
-            <div className={'flex justify-center w-6/12'}>{children}</div>
-            <div className='flex justify-start w-3/12'>dgfdgdf</div>
+            <div className={'flex justify-center md:w-6/12 w-full'}>
+              {children}
+            </div>
+            <div className='flex justify-start w-0 md:w-3/12'>dgfdgdf</div>
           </div>
           <Button
             variant={'ghost'}
