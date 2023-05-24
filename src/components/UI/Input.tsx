@@ -6,15 +6,16 @@ const inputVariants = cva(
   `className='
    block
    border-[1.5px]
-   border-indigo-600 
+   border-pink-400 
    outline-none 
-   focus:outline-none
-   focus:ring-4 
-   focus:ring-indigo-600 
+  
    px-3 py-2
    w-[100%]
    rounded-lg 
-   transition-all`,
+   transition-all
+   dark:bg-black
+   focus:animate-pulse
+   `,
   {
     variants: {
       variant: {
@@ -36,7 +37,8 @@ interface ComponentProps {
 export interface InputProps
   extends InputHTMLAttributes<HTMLInputElement>,
     VariantProps<typeof inputVariants>,
-    ComponentProps {}
+    ComponentProps {
+}
 
 const FormInput: FC<InputProps> = ({
   name,
@@ -48,10 +50,7 @@ const FormInput: FC<InputProps> = ({
 }) => {
   return (
     <input
-      className={cn(
-        inputVariants({ variant, inputSize, className }),
-        ring ? 'focus:ring-2 focus:ring-indigo-600' : ''
-      )} // Use inputSize instead of size
+      className={cn(inputVariants({ variant, inputSize, className }))} // Use inputSize instead of size
       {...props}
     />
   );

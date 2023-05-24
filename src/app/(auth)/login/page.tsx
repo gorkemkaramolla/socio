@@ -3,13 +3,13 @@ import Button from '@/components/UI/Button';
 import React from 'react';
 
 import { useRouter } from 'next/navigation';
-import Auth from '../../../components/Login/Auth';
+import LoginPage from '@/components/Login/Login';
 interface Props {}
 
 const Login: React.FC<Props> = () => {
   const router = useRouter();
 
-  return <Auth />;
+  return <LoginPage />;
 };
 
 export default Login;

@@ -41,8 +41,6 @@
   border-right: 12px solid var(--caret);
 }
 
-
-
 body {
   box-sizing: border-box;
   padding: 0;
@@ -54,8 +52,6 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-
-
 }
 
 *::-webkit-scrollbar {
@@ -103,15 +99,12 @@ html {
 @keyframes emojiAnimation {
   0% {
     transform: scale(1);
-
   }
   50% {
     transform: scale(1.5);
-
   }
   100% {
     transform: scale(1);
-
   }
 }
 
@@ -153,17 +146,6 @@ html {
   /*filter: blur(2px);*/
 }
 
-form {
-  background-color: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  padding: 0 50px;
-  height: 100%;
-  text-align: center;
-}
-
 @keyframes show {
   0%,
   49.99% {
@@ -176,81 +158,4 @@ form {
     opacity: 1;
     z-index: 5;
   }
-}
-
-.overlay-holder {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: 50%;
-  height: 100%;
-  overflow: hidden;
-  transition: transform 0.6s ease-in-out;
-  z-index: 100;
-}
-
-.holder.right-panel-active .overlay-holder {
-  transform: translateX(-100%);
-}
-
-.overlay {
-  background: #ff416c;
-  color: #ffffff;
-  position: relative;
-  left: -100%;
-  height: 100%;
-  width: 200%;
-  transform: translateX(0);
-  transition: transform 0.6s ease-in-out;
-}
-
-.holder.right-panel-active .overlay {
-  transform: translateX(50%);
-}
-
-.overlay-panel {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  padding: 0 40px;
-  text-align: center;
-  top: 0;
-  height: 100%;
-  width: 50%;
-  transform: translateX(0);
-  transition: transform 0.6s ease-in-out;
-}
-
-.overlay-left {
-  transform: translateX(-20%);
-}
-.login {
-  transition: transform 0.6s ease-in-out;
-  transform: translateX(0%);
-}
-.register {
-  transition: transform 0.6s ease-in-out;
-  transform: translateX(0%);
-}
-.holder.right-panel-active .login {
-  transform: translateX(-100%);
-
-  opacity: 1;
-  z-index: 5;
-}
-.holder.right-panel-active .register {
-  transform: translateX(0%);
-}
-
-.holder.right-panel-active .overlay-left {
-  transform: translateX(0);
-}
-.holder.right-panel-active .overlay-right {
-  transform: translateX(20%);
-}
-.overlay-right {
-  right: 0;
-  transform: translateX(0);
 }

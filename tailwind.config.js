@@ -27,10 +27,10 @@ module.exports = {
         silver: '#ecebff',
         bubblegum: '#ff77e9',
         bermuda: '#78dcca',
-        gorkem: 'lch(5.6 0.88 251.33 / 1)'
+        gorkem: 'lch(5.6 0.88 251.33 / 1)',
+        night: '#0C090A',
       },
     },
   },
   plugins: [],
-
 };

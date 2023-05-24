@@ -3,11 +3,9 @@ import Providers from '@/components/Providers';
 import './globals.css';
 import { Inter } from 'next/font/google';
 import React from 'react';
-import { Provider } from 'react-redux';
+import { Provider, useSelector } from 'react-redux';
 import { SessionProvider } from 'next-auth/react';
-import store from '@/store';
-
-const inter = Inter({ subsets: ['latin'] });
+import store, { RootState } from '@/store';
 
 export default function RootLayout({
   children,
@@ -16,11 +14,7 @@ export default function RootLayout({
 }) {
   return (
     <Provider store={store}>
-      <html lang='en' className={'dark'}>
-        <body className={inter.className + ' text-black dark:text-white'}>
-          <Providers>{children}</Providers>
-        </body>
-      </html>
+      <Providers>{children}</Providers>
     </Provider>
   );
 }

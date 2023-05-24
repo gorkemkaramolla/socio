@@ -3,23 +3,29 @@ import React, { FC, HTMLAttributes } from 'react';
 import { cn } from '@/lib/utils';
 
 const headingVariants = cva(
-  `mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900   `,
+  `mb-4 text-4xl font-extrabold leading-none tracking-wide    `,
   {
     variants: {
       variant: {
         default: 'text-gray-700 leading-2',
         red: 'text-red-700',
         blue: 'text-blue-700',
-        indigo: 'text-indigo-700',
+        indigo: 'text-indigo-600',
         yellow: 'text-yellow-700',
+        pink: ' text-transparent  bg-clip-text bg-gradient-to-r from-pink-400 to-pink-500',
       },
       size: {
         default: 'text-xl',
         md: 'text-2xl',
-        lg: 'text-4xl',
-        xl: 'text-6xl',
-        xxl: 'text-8xl',
-        biggest: 'text-9xl',
+        lg: 'text-3xl ',
+        xl: 'text-5xl',
+        xxl: 'text-6xl',
+        biggest: 'text-8xl',
+      },
+      align: {
+        center: 'text-center',
+        left: 'text-left',
+        right: 'text-right',
       },
     },
     defaultVariants: {

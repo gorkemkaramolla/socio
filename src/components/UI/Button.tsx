@@ -6,24 +6,28 @@ import { cn } from '@/lib/utils';
 
 //BUTTON VARIANTS STYLE
 const buttonVariants = cva(
-  `px-3 py-2 focus:ring-offset-2 disabled:opacity-50
-   disabled:pointer-events-none  rounded-sm text-sm font-medium 
-   active:scale-95`,
+  `px-3 py-2 focus:ring-offset-2  disabled:opacity-50
+   rounded-sm text-sm font-medium 
+   active:scale-95 `,
   {
     variants: {
       variant: {
-        default: 'w-fit flex items-center rounded bg-slate-900 text-white hover:bg-slate-800',
+        default:
+          'w-fit flex items-center rounded  bg-slate-900 text-white hover:bg-slate-800',
         ghost: 'w-fit flex items-center bg-transparent ',
-        white: 'w-fit flex items-center rounded bg-slate-50 text-slate-900 hover:bg-slate-200',
+        white:
+          'w-fit flex items-center rounded bg-slate-50 text-slate-900 hover:bg-slate-200',
         rose: 'w-fit flex items-center rounded bg-rose-500 text-violet-50',
-        nav: 'flex items-center justify-center rounded'
+        nav: 'flex items-center justify-center rounded',
+        google:
+          ' w-full cursor-pointer flex justify-center shadow-sm shadow-gray-600 rounded-md  items-center gap-2 ',
       },
       size: {
         default: 'h-10 py-2 px-4',
         sm: 'h-6 p-auto',
         lg: 'h-11 px-8',
         nav: 'w-8 h-8',
-        smSquare: 'w-6 h-6'
+        smSquare: 'w-6 h-6',
       },
     },
 
@@ -48,14 +52,13 @@ const Button: FC<ButtonProps> = ({
   ...props
 }) => {
   return (
-      <button
-          className={cn(buttonVariants({variant, size, className}))} // buttonVariants kullan
-          disabled={isLoading}
-          {...props}
-      >
-        {isLoading ? <Loader className='h-4 w-4 animate-spin'/> : null}
-        {children}
-      </button>
+    <button
+      className={cn(buttonVariants({ variant, size, className }))} // buttonVariants kullan
+      disabled={isLoading}
+      {...props}
+    >
+      {isLoading ? <Loader className='h-4 w-4 animate-spin' /> : children}
+    </button>
   );
 };
 
