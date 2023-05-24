@@ -28,8 +28,8 @@ const Providers: React.FC<Props> = ({ children }) => {
   }, [mode.mode]);
   return (
     <html lang='en' className={mode.mode}>
-      <body className={' text-black dark:text-white'}>
-        <div className={'w-screen h-screen bg-white dark:bg-black'}>
+      <body className={' text-black dark:text-white '}>
+        <div className={'w-screen h-screen bg-white dark:bg-black overflow-hidden'}>
           {/*<Toaster position='top-center' reverseOrder={false}></Toaster>*/}
           {/*{currentUser.id !== '' && <Navbar />}*/}
           {/*<div className={'w-full h-[25px]'}>fgf</div>*/}
