@@ -11,6 +11,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      boxShadow: {
+        xl: '0 13px 26px rgba(#000, .2), 0 3px 6px rgba(#000, .2)',
+      },
       // backgroundImage: {
       //   'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
       //   'gradient-conic':

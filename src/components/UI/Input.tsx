@@ -7,14 +7,16 @@ const inputVariants = cva(
    block
    border-[1.5px]
    border-pink-400 
+   focus:ring
    outline-none 
+   focus:outline-none
+   ring-pink-400
   
    px-3 py-2
    w-[100%]
    rounded-lg 
    transition-all
    dark:bg-black
-   focus:animate-pulse
    `,
   {
     variants: {
@@ -37,8 +39,7 @@ interface ComponentProps {
 export interface InputProps
   extends InputHTMLAttributes<HTMLInputElement>,
     VariantProps<typeof inputVariants>,
-    ComponentProps {
-}
+    ComponentProps {}
 
 const FormInput: FC<InputProps> = ({
   name,

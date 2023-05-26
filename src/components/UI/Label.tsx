@@ -14,6 +14,7 @@ const inputVariants = cva(
    pl-4
    absolute
    
+   
    font-extrabold
    tracking-widest
    transition-all  
@@ -21,7 +22,7 @@ const inputVariants = cva(
   {
     variants: {
       variant: {
-        default: 'leading-9 ',
+        default: 'leading-9',
       },
       inputSize: {
         // Rename size to inputSize
@@ -61,7 +62,7 @@ const Label: FC<InputProps> = ({
       group-focus-within:-translate-y-10 
       group-focus-within:-translate-x-4 
       group-focus-within:text-sm`
-          : '-translate-y-10 -translate-x-4 '
+          : '-translate-y-12 -translate-x-4 '
       )} // Use inputSize instead of size
       {...props}
     >

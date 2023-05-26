@@ -59,7 +59,7 @@ const LoginPage: React.FC<Props> = () => {
       redirect: true,
       email: email,
       password: password,
-      callbackUrl: '/dashboard',
+      callbackUrl: '/profile',
     });
     console.log(status);
   };

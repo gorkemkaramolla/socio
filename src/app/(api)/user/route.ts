@@ -12,6 +12,8 @@ export async function GET(req: Request) {
       email: true,
       name: true,
       image: true,
+      bio: true,
+      location: true,
     },
     where: {
       id: Number(searchParams.get('id')),
@@ -33,6 +35,7 @@ export async function GET(req: Request) {
 }
 export async function PUT(req: Request) {
   const data = await req.json();
+
   console.log(data);
   prisma.$connect();
   const user = await prisma.user.findFirstOrThrow({
@@ -41,6 +44,15 @@ export async function PUT(req: Request) {
     },
   });
   if (user) {
+    if (data.image && data.image.length > 4 * 1024 * 1024) {
+      return new NextResponse(
+        JSON.stringify({ message: 'Image size exceeds the limit of 4MB' }),
+        {
+          status: 400,
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
+    }
     const updatedUser = await prisma.user.update({
       where: {
         id: data.id, // Provide the valid user ID here
@@ -48,6 +60,9 @@ export async function PUT(req: Request) {
       data: {
         email: data.email, // Provide the valid email here
         name: data.name,
+        bio: data.bio,
+        image: data.image,
+        location: data.location,
       },
     });
 

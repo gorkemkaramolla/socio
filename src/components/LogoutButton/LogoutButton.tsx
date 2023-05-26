@@ -2,8 +2,8 @@
 import React from 'react';
 import { signOut } from 'next-auth/react';
 import Button from '../UI/Button';
-
-const LogoutButton: React.FC = () => {
+interface Props {}
+const LogoutButton: React.FC<Props> = () => {
   const logoutSession = async () => {
     await signOut({
       redirect: true,
@@ -11,7 +11,15 @@ const LogoutButton: React.FC = () => {
     });
   };
 
-  return <Button onClick={logoutSession}>Logout</Button>;
+  return (
+    <Button
+      className='text-center self-center justify-self-center w-full items-center flex justify-center'
+      onClick={logoutSession}
+      variant={'ghost'}
+    >
+      Logout
+    </Button>
+  );
 };
 
 export default LogoutButton;

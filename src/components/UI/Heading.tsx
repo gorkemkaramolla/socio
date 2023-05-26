@@ -3,11 +3,11 @@ import React, { FC, HTMLAttributes } from 'react';
 import { cn } from '@/lib/utils';
 
 const headingVariants = cva(
-  `text-4xl font-extrabold leading-none tracking-wide    `,
+  `text-4xl font-extrabold  leading-none tracking-wide`,
   {
     variants: {
       variant: {
-        default: 'text-gray-700 leading-2',
+        default: 'dark:text-gray-100 text-gray-700 leading-2',
         red: 'text-red-700',
         blue: 'text-blue-700',
         indigo: 'text-indigo-600',
@@ -15,22 +15,29 @@ const headingVariants = cva(
         pink: ' text-transparent  bg-clip-text bg-gradient-to-r from-pink-400 to-pink-500',
       },
       size: {
-        default: 'text-xl',
+        default: 'text-lg',
+        sm: 'text-xl',
         md: 'text-2xl',
         lg: 'text-3xl ',
         xl: 'text-5xl',
-        xxl: 'text-6xl',
-        biggest: 'text-8xl',
       },
       align: {
+        default: 'text-left',
         center: 'text-center',
         left: 'text-left',
         right: 'text-right',
+      },
+      weight: {
+        default: 'font-normal',
+        bold: 'font-bold',
+        extra: 'font-extrabold',
       },
     },
     defaultVariants: {
       variant: 'default',
       size: 'default',
+      weight: 'default',
+      align: 'default',
     },
   }
 );
@@ -46,6 +53,7 @@ const Heading: FC<HeadingProps> = ({
   children,
   variant,
   size,
+  weight,
   heading,
   ...props
 }) => {
@@ -53,7 +61,7 @@ const Heading: FC<HeadingProps> = ({
 
   return (
     <HeadingElement
-      className={cn(headingVariants({ variant, size, className }))}
+      className={cn(headingVariants({ variant, size, weight, className }))}
       {...props}
     >
       {children}

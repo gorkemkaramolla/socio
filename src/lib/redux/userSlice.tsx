@@ -5,6 +5,8 @@ const initialState: User = {
   email: '',
   image: '',
   id: '',
+  bio: '',
+  location: '',
 };
 
 const userSlice = createSlice({

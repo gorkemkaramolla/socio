@@ -53,6 +53,7 @@ const Button: FC<ButtonProps> = ({
 }) => {
   return (
     <button
+      type='button'
       className={cn(buttonVariants({ variant, size, className }))} // buttonVariants kullan
       disabled={isLoading}
       {...props}

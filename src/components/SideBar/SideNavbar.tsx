@@ -17,6 +17,7 @@ import {
 
 import SideNavbarIcons from './SideNavbarIcons';
 import useBackgroundBlur from '@/lib/zustand/useEmoji';
+import LogoutButton from '../LogoutButton/LogoutButton';
 
 interface Props {}
 
@@ -75,6 +76,10 @@ const SideNavbar: FC<Props> = () => {
           title={'Settings'}
           show={show}
         />
+
+        <div className=' justify-self-end'>
+          <LogoutButton />
+        </div>
       </div>
       <div>fgdfgdfgdfg</div>
     </div>
