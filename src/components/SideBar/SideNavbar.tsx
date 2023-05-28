@@ -1,5 +1,5 @@
 'use client';
-import React, { FC, useRef, useState } from 'react';
+import React, {FC, useEffect, useRef, useState} from 'react';
 import Button from '@/components/UI/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -19,19 +19,23 @@ import SideNavbarIcons from './SideNavbarIcons';
 import useBackgroundBlur from '@/lib/zustand/useEmoji';
 import LogoutButton from '../LogoutButton/LogoutButton';
 import Heading from "@/components/UI/Heading";
+import {useSelector} from "react-redux";
+import {RootState} from "@/store";
 
 interface Props {}
 
 const SideNavbar: FC<Props> = () => {
   // @ts-ignore
   const setBlur = useBackgroundBlur((state) => state.setBlur);
+  const currentUser = useSelector((state: RootState) => state.user);
   const [show, setShow] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const searchInput = useRef<HTMLInputElement>(null);
+
   return (
     <div
       className={
-        'fixed h-full mx-10 md:flex hidden flex-col justify-between py-9 w-[300px] '
+        'fixed h-full mx-5 md:flex hidden flex-col justify-between py-9 w-[300px] '
       }
     >
       <Heading heading='h6' size={'sm'} className={'m-1'}>
@@ -43,13 +47,13 @@ const SideNavbar: FC<Props> = () => {
             <div className={'w-full h-2/3 bg-fuchsia-800 rounded-2xl flex justify-center'}>
               <img className={'w-full rounded-2xl'} src="https://i.ibb.co/xsLbHWp/wallpaper.jpg" alt=""/>
               <div className={'w-[60px] h-[60px] bg-red-500 absolute top-[60px] rounded border-grey border-2 '}>
-                <img src="https://i.ibb.co/WxMs27X/avatar3.jpg" alt=""/>
+                <img src={currentUser?.image} alt=""/>
               </div>
             </div>
           </div>
           <div className={'flex flex-col gap-2 text-center'}>
             <Heading heading='h6' size={'sm'} className={'m-1 text-center'}>
-              Johny Tester
+              {currentUser?.name}
             </Heading>
             <p>Web Developer at gfdgfdgdf</p>
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem, tenetttur!</p>
