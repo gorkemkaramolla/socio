@@ -36,7 +36,7 @@ const Home: FC<Props> = () => {
         </Heading>
       </div>
         <div className={'h-fit w-full flex justify-center'}>
-          <div className={' md:w-full md:p-3 w-4/6'}>
+          <div className={' md:w-11/12 md:p-3 w-4/6'}>
             {[
               'fgfdgfdghfdhdfh',
               'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus blanditiis corporis dolores enim et facilis fugit impedit ipsum iusto neque optio, perferendis ratione recusandae reprehenderit sapiente sed soluta tenetur veritatis!\n',
