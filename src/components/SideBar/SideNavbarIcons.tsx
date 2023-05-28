@@ -16,18 +16,17 @@ const SideNavbarIcons: FC<Props> = ({ icon, title, show, href }) => {
     <Link href={href}>
       <div
         className={
-          ' flex gap-5 items-center cursor-pointer ease-out duration-200 hover:dark:bg-gray-700 hover:bg-grey rounded-2xl px-3 py-2 text-xl '
+          ' flex gap-5 items-center cursor-pointer ease-out duration-200 hover:dark:bg-gray-700 hover:bg-grey rounded-2xl px-3 py-2 text-lg '
         }
       >
         <Button
-          className={'sidebarIconButtons ease-out duration-200 text-2xl'}
+          className={'sidebarIconButtons ease-out duration-200 text-lg'}
           disabled={true}
           variant={'nav'}
           size={'nav'}
         >
           <FontAwesomeIcon icon={icon} />
         </Button>
-
         <div
         // className={
         //   show

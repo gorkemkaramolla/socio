@@ -13,7 +13,9 @@ import {
     IconDefinition,
 } from '@fortawesome/free-solid-svg-icons';
 
-interface Props {}
+interface Props {
+    setBgColor: string;
+}
 
 interface Emoji {
     name: string;
@@ -23,52 +25,53 @@ interface Emoji {
     selected: boolean;
 }
 
-const ContentEmojis: FC<Props> = ({}) => {
+const ContentEmojis: FC<Props> = ({setBgColor}) => {
     const [show, setShow] = useState(false);
     const [currentEmojiArr, setCurrentEmojiArr] = useState<Emoji[]>([]);
+    const [selectedEmoji, setSelectedEmoji] = useState(null);
 
     useEffect(() => {
         setCurrentEmojiArr([
             {
                 name: 'face-smile',
                 emoji: faFaceSmile,
-                defaultColor: 'text-grey',
-                color: 'text-violet-500',
+                defaultColor: 'text-gray-400 dark:text-grey',
+                color: 'bg-violet-300 dark:text-black font-semibold',
                 selected: false,
             },
             {
                 name: 'face-grin-tears',
                 emoji: faFaceGrinTears,
-                defaultColor: 'text-grey',
-                color: 'text-teal-500',
+                defaultColor: 'text-gray-400 dark:text-grey',
+                color: 'bg-teal-300 dark:text-black font-semibold',
                 selected: false,
             },
             {
                 name: 'face-grin-stars',
                 emoji: faFaceGrinStars,
-                defaultColor: 'text-grey',
-                color: 'text-yellow-500',
+                defaultColor: 'text-gray-400 dark:text-grey',
+                color: 'bg-yellow-300 dark:text-black font-semibold',
                 selected: false,
             },
             {
                 name: 'face-kiss-wink-heart',
                 emoji: faFaceKissWinkHeart,
-                defaultColor: 'text-grey',
-                color: 'text-pink-500',
+                defaultColor: 'text-gray-400 dark:text-grey',
+                color: 'bg-pink-300 dark:text-black font-semibold',
                 selected: false,
             },
             {
                 name: 'fire',
                 emoji: faFire,
-                defaultColor: 'text-grey',
-                color: 'text-orange-500',
+                defaultColor: 'text-gray-400 dark:text-grey',
+                color: 'bg-orange-400 dark:text-black font-semibold',
                 selected: false,
             },
             {
                 name: 'thumbs-up',
                 emoji: faThumbsUp,
-                defaultColor: 'text-grey',
-                color: 'text-blue-500',
+                defaultColor: 'text-gray-400 dark:text-grey',
+                color: 'bg-blue-300 dark:text-black font-semibold',
                 selected: false,
             },
         ]);
@@ -79,13 +82,15 @@ const ContentEmojis: FC<Props> = ({}) => {
             const target = e.currentTarget;
             const { id, classList } = target;
             const selectedEmoji = currentEmojiArr.find((x) => x.name === id);
+            setSelectedEmoji(selectedEmoji)
+
 
             if (selectedEmoji) {
                 setCurrentEmojiArr((prevEmojiArr) => {
                     const updatedEmojiArr = prevEmojiArr.map((emoji) => {
                         if (emoji.name === id) {
                             emoji.selected = !emoji.selected;
-                            emoji.defaultColor = emoji.selected ? emoji.color : 'text-grey';
+                            emoji.defaultColor = emoji.selected ? emoji.color : 'text-gray-400 dark:text-grey';
 
                             if (emoji.selected) {
                                 classList.add('emoji-selected');
@@ -94,31 +99,32 @@ const ContentEmojis: FC<Props> = ({}) => {
                             }
                         } else {
                             emoji.selected = false;
-                            emoji.defaultColor = 'text-grey';
+                            emoji.defaultColor = 'text-gray-400 dark:text-grey';
                             const emojiElement = document.getElementById(emoji.name);
                             if (emojiElement) {
                                 emojiElement.classList.remove('emoji-selected');
                             }
                         }
 
+
                         return emoji;
                     });
-
-                    setShow(false);
+                    setBgColor(selectedEmoji?.color)
+                    setTimeout(() => {
+                        setShow(false);
+                    },500)
                     return updatedEmojiArr;
                 });
             }
         }
     };
 
-
-
     return (
         <div>
             <div
                 className={`${
                     show ? 'w-[220px]' : 'w-[40px]'
-                } flex h-[40px] absolute -bottom-2 -right-2 rounded-full border-2 border-gray dark:border-gray-500 bg-black ease-out duration-500 overflow-hidden z-40`}
+                } flex h-[40px] absolute -bottom-2 -right-2 rounded-full border-2 border-gray dark:border-gray-500 dark:bg-black bg-white ease-out duration-500 overflow-hidden z-40`}
                 onClick={() => setShow(true)}
             >
                 {currentEmojiArr.map((x, i) => {
@@ -148,6 +154,30 @@ const ContentEmojis: FC<Props> = ({}) => {
             >
                 <FontAwesomeIcon icon={faCircleXmark} />
             </Button>
+            <div className={`${selectedEmoji ? 'scale-75' : 'scale-0'} ease-out duration-300 absolute -top-1 right-5 rotate-45` }>
+                <Button
+                    variant={'ghost'}
+                    className={` -rotate-12 w-9 h-9 rounded-full flex justify-center items-center text-xl ${selectedEmoji?.color} opacity-75 ease-out duration-500 absolute bottom-4 right-2`}
+                    onClick={() => setShow(false)}
+                >
+                    <FontAwesomeIcon icon={selectedEmoji?.emoji} />
+                </Button>
+
+                <Button
+                    variant={'ghost'}
+                    className={`scale-75 rotate-12 w-9 h-9 rounded-full flex justify-center items-center text-xl ${selectedEmoji?.color} opacity-50 ease-out duration-500 absolute bottom-4 -right-6`}
+                    onClick={() => setShow(false)}
+                >
+                    <FontAwesomeIcon icon={selectedEmoji?.emoji} />
+                </Button>
+                <Button
+                    variant={'ghost'}
+                    className={`scale-110 w-9 h-9 rounded-full flex justify-center items-center text-xl ${selectedEmoji?.color} ease-out duration-500 absolute bottom-6 -right-2`}
+                    onClick={() => setShow(false)}
+                >
+                    <FontAwesomeIcon icon={selectedEmoji?.emoji} />
+                </Button>
+            </div>
         </div>
     );
 };

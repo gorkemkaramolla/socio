@@ -22,6 +22,7 @@ interface Props {
 const ContentContainer: FC<Props> = ({ header, content }) => {
   const [liked, setLiked] = useState(false);
   const [focused, setFocused] = useState(false);
+  const [bgColor, setBgColor] = useState('bg-white dark:bg-gorkem');
   const handleLikeClick = () => {
     setLiked(!liked);
   };
@@ -50,7 +51,7 @@ const ContentContainer: FC<Props> = ({ header, content }) => {
 
   return (
     <div
-      className={`unBlured flex flex-col bg-white dark:bg-gorkem h-fit min-h-[50px] my-4 shadow-2xl rounded-xl relative ease-out duration-300 max-h-fit`}
+      className={`unBlured flex flex-col ${bgColor} h-fit min-h-[50px] my-4 shadow-2xl rounded-xl relative ease-out duration-300 max-h-fit`}
     >
       <div
         className={
@@ -90,7 +91,7 @@ const ContentContainer: FC<Props> = ({ header, content }) => {
           <Button
             variant={'ghost'}
             size={'smSquare'}
-            className={'text-slate-500'}
+            className={'text-slate-300'}
           >
             <FontAwesomeIcon icon={faCommentDots} />
           </Button>
@@ -98,7 +99,7 @@ const ContentContainer: FC<Props> = ({ header, content }) => {
             <Button
               variant={'ghost'}
               size={'smSquare'}
-              className={'sidebarIconButtons text-slate-900'}
+              className={'sidebarIconButtons text-slate-900 dark:text-white'}
               disabled={true}
             >
               <FontAwesomeIcon icon={faEllipsis} />
@@ -107,7 +108,7 @@ const ContentContainer: FC<Props> = ({ header, content }) => {
         </div>
       </div>
       <div className={'px-4 py-2 relative'}>
-        <div className={'content w-fit text-[0.95rem] font-light'}>
+        <div className={'content w-fit text-[0.95rem]'}>
           {content}
         </div>
         <div className={'flex gap-5 items-center'}>
@@ -153,7 +154,7 @@ const ContentContainer: FC<Props> = ({ header, content }) => {
             50 comments
           </div>
         </div>
-        <ContentEmojis />
+        <ContentEmojis setBgColor={setBgColor} />
       </div>
       <HomeCommentContainer focused={focused} />
     </div>

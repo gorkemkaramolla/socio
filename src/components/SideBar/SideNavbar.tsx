@@ -18,6 +18,7 @@ import {
 import SideNavbarIcons from './SideNavbarIcons';
 import useBackgroundBlur from '@/lib/zustand/useEmoji';
 import LogoutButton from '../LogoutButton/LogoutButton';
+import Heading from "@/components/UI/Heading";
 
 interface Props {}
 
@@ -30,58 +31,96 @@ const SideNavbar: FC<Props> = () => {
   return (
     <div
       className={
-        'fixed h-full mx-10 md:flex hidden  flex-col justify-between px-3 py-9 '
+        'fixed h-full mx-10 md:flex hidden flex-col justify-between py-9 w-[300px] '
       }
     >
-      <div className={'flex flex-col gap-3'}>
-        <SideNavbarIcons
-          href='/home'
-          icon={faShekelSign}
-          title={'Newsfeed'}
-          show={show}
-        />
-        <SideNavbarIcons
-          href='/todos'
-          icon={faCheck}
-          title={'ToDos'}
-          show={show}
-        />
-        <SideNavbarIcons
-          href='/profile'
-          icon={faUser}
-          title={'Profile'}
-          show={show}
-        />
-        <SideNavbarIcons
-          href='/fiends'
-          icon={faEye}
-          title={'Friends'}
-          show={show}
-        />
-        <SideNavbarIcons
-          href='/messages'
-          icon={faComments}
-          title={'Messages'}
-          show={show}
-        />
-        <SideNavbarIcons
-          href='/trends'
-          icon={faFireFlameCurved}
-          title={'Trends'}
-          show={show}
-        />
-        <SideNavbarIcons
-          href='/settings'
-          icon={faGear}
-          title={'Settings'}
-          show={show}
-        />
+      <Heading heading='h6' size={'sm'} className={'m-1'}>
+        Profile
+      </Heading>
+      <div className={'flex flex-col gap-3 '}>
+        <div className={'bg-white shadow-2xl dark:bg-gorkem rounded-2xl p-3 h-fit'}>
+          <div className={'w-full h-[120px] relative'}>
+            <div className={'w-full h-2/3 bg-fuchsia-800 rounded-2xl flex justify-center'}>
+              <img className={'w-full rounded-2xl'} src="https://i.ibb.co/xsLbHWp/wallpaper.jpg" alt=""/>
+              <div className={'w-[60px] h-[60px] bg-red-500 absolute top-[60px] rounded border-grey border-2 '}>
+                <img src="https://i.ibb.co/WxMs27X/avatar3.jpg" alt=""/>
+              </div>
+            </div>
+          </div>
+          <div className={'flex flex-col gap-2 text-center'}>
+            <Heading heading='h6' size={'sm'} className={'m-1 text-center'}>
+              Johny Tester
+            </Heading>
+            <p>Web Developer at gfdgfdgdf</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem, tenetttur!</p>
+          </div>
+          <div className={'flex w-full h-[50px] justify-center text-center mt-4 mb-2'}>
+            <div className={'min-w-[60px] flex flex-col border-r-2 border-grey '}>
+              <span className={'mx-3'}>4.543</span>
+              <span className={'text-sm mx-3'}>Post</span>
+            </div>
+            <div className={'min-w-[60px] flex flex-col border-r-2 border-grey '}>
+              <span className={'mx-3'}>43</span>
+              <span className={'text-sm mx-3'}>Followers</span>
+            </div>
+            <div className={'min-w-[60px] flex flex-col '}>
+              <span className={'mx-3'}>92</span>
+              <span className={'text-sm mx-3'}>Following</span>
+            </div>
+          </div>
+        </div>
+        <Heading heading='h6' size={'sm'} className={'m-1'}>
+          Shortcuts
+        </Heading>
+        <div className={'bg-white shadow-2xl dark:bg-gorkem rounded-2xl'}>
+          <SideNavbarIcons
+              href='/home'
+              icon={faShekelSign}
+              title={'Newsfeed'}
+              show={show}
+          />
+          <SideNavbarIcons
+              href='/todos'
+              icon={faCheck}
+              title={'ToDos'}
+              show={show}
+          />
+          <SideNavbarIcons
+              href='/profile'
+              icon={faUser}
+              title={'Profile'}
+              show={show}
+          />
+          <SideNavbarIcons
+              href='/friends'
+              icon={faEye}
+              title={'Friends'}
+              show={show}
+          />
+          <SideNavbarIcons
+              href='/messages'
+              icon={faComments}
+              title={'Messages'}
+              show={show}
+          />
+          <SideNavbarIcons
+              href='/trends'
+              icon={faFireFlameCurved}
+              title={'Trends'}
+              show={show}
+          />
+          <SideNavbarIcons
+              href='/settings'
+              icon={faGear}
+              title={'Settings'}
+              show={show}
+          />
+        </div>
 
-        <div className=' justify-self-end'>
+        <div className={'flex justify-start bg-white shadow-2xl dark:bg-gorkem rounded-2xl'}>
           <LogoutButton />
         </div>
       </div>
-      <div>fgdfgdfgdfg</div>
     </div>
 
     // <div className={' z-30 h-full fixed items-center top-0 w-[85px]  flex p-5'}>
