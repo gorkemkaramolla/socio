@@ -15,24 +15,43 @@ import ContentContainer from '@/components/contentContainer';
 import Button from '@/components/UI/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
+  faBars,
   faCircleXmark,
   faPenToSquare,
 } from '@fortawesome/free-solid-svg-icons';
+import {Sidebar} from "lucide-react";
+import SideNavbar from "@/components/SideBar/SideNavbar";
+import Shortcuts from "@/components/Shortcuts";
+import {boolean} from "zod";
 
 const DashBoard = () => {
   const selector = useSelector((state: RootState) => state.user);
   const currentUser = useSelector((state: RootState) => state.user);
+  const [show,setShow] = useState(false)
 
   return (
-    <div className={'flex flex-col overflow-y-scroll items-center p-3'}>
+    <div className={'flex flex-col overflow-y-scroll items-center px-3.5'}>
       <div
         className={
-          'sticky top-0 w-full h-fit flex justify-evenly items-center bg-white/75 drop-shadow-xl dark:bg-black/75 backdrop-blur-sm z-40'
+          'sticky top-0 w-full h-fit flex md:justify-center justify-between items-center bg-white/75 drop-shadow-xl dark:bg-black/75 backdrop-blur-sm z-40'
         }
       >
         <Heading heading='h6' size={'sm'} className={'m-4'}>
-          My Profile
+          {currentUser.name}
         </Heading>
+        <Button
+            className={
+              'sidebarIconButtons ease-out duration-200 text-xl text-black dark:text-white px-10 md:hidden'
+            }
+            variant={'ghost'}
+            size={'smSquare'}
+            onClick={() => setShow(!show)}
+        >
+          <FontAwesomeIcon icon={faBars} />
+        </Button>
+        <div className={ `${show ? '-right-4 ' : '-right-48' } top-16 md:hidden absolute ease-out duration-300 `}>
+        <Shortcuts/>
+        </div>
       </div>
       <div className={'h-fit w-full flex flex-col items-center'}>
         <div
@@ -68,7 +87,7 @@ const DashBoard = () => {
           </div>
           <div
             className={
-              'w-[120px] h-[120px] sm:rounded-full  bg-white absolute -bottom-12 left-6 border-4 border-grey dark:border-blackSwan'
+              'w-[120px] h-[120px] rounded-full  bg-white absolute -bottom-12 left-6 border-4 border-grey dark:border-blackSwan'
             }
           >
             <div
@@ -106,7 +125,8 @@ const DashBoard = () => {
                 'bg-white dark:bg-blackSwan rounded-full px-3 py-1 w-10/12 text-center shadow-md cursor-pointer'
               }
             >
-              Edit Profile
+              <span className={'md:block xs:hidden'}>Edit Profile</span>
+              <span className={'md:hidden'}>Edit</span>
             </div>
             <div
               className={
@@ -121,7 +141,8 @@ const DashBoard = () => {
               'w-9/12 bg-white dark:bg-blackSwan shadow-md rounded-2xl p-5 flex flex-col justify-center '
             }
           >
-            <span className={'text-lg font-semibold'}>
+
+            <span className={'text-md font-semibold'}>
               Web Developer at gfdgfdgdf
             </span>
             <p>

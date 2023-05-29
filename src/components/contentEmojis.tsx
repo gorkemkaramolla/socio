@@ -149,7 +149,7 @@ const ContentEmojis: FC<Props> = ({setBgColor}) => {
                 variant={'ghost'}
                 className={` ${
                     show ? 'scale-125 rotate-180 ' : 'scale-0'
-                } w-9 h-9 rounded-full flex justify-center items-center text-xl text-red-500 ease-out duration-500 absolute bottom-5 -right-10`}
+                } w-9 h-9 rounded-full flex justify-center items-center text-xl text-red-500 ease-out duration-500 absolute bottom-8 -right-4`}
                 onClick={() => setShow(false)}
             >
                 <FontAwesomeIcon icon={faCircleXmark} />

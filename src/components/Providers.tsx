@@ -78,13 +78,13 @@ const Providers: React.FC<Props> = ({ children }) => {
           {/*{currentUser.id !== '' && <Navbar />}*/}
           {/*<div className={'w-full h-[25px]'}>fgf</div>*/}
           <div className={'flex h-full'}>
-            <div className='flex justify-end w-0 md:w-3/12'>
+            <div className='flex justify-end w-0 md:min-w-[330px] xl:w-3/12 '>
               {currentUser?.email !== '' && <SideNavbar />}
             </div>
-            <div className={'flex justify-center md:w-6/12 w-full'}>
+            <div className={'flex justify-center xl:w-6/12 w-full'}>
               {children}
             </div>
-            <div className='flex justify-start w-0 md:w-3/12'>dgfdgdf</div>
+            <div className='flex justify-start w-0 xl:w-3/12'>dgfdgdf</div>
           </div>
           <Button
             variant={'ghost'}

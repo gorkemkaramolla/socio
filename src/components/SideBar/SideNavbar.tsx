@@ -22,6 +22,7 @@ import Heading from '@/components/UI/Heading';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import { getImage } from '@/app/settings/page';
+import Shortcuts from "@/components/Shortcuts";
 
 interface Props {}
 
@@ -108,50 +109,7 @@ const SideNavbar: FC<Props> = () => {
         <Heading heading='h6' size={'sm'} className={'m-1'}>
           Shortcuts
         </Heading>
-        <div className={'bg-white shadow-2xl dark:bg-blackSwan rounded-2xl'}>
-          <SideNavbarIcons
-            href='/home'
-            icon={faShekelSign}
-            title={'Newsfeed'}
-            show={show}
-          />
-          <SideNavbarIcons
-            href='/todos'
-            icon={faCheck}
-            title={'ToDos'}
-            show={show}
-          />
-          <SideNavbarIcons
-            href='/profile'
-            icon={faUser}
-            title={'Profile'}
-            show={show}
-          />
-          <SideNavbarIcons
-            href='/friends'
-            icon={faEye}
-            title={'Friends'}
-            show={show}
-          />
-          <SideNavbarIcons
-            href='/messages'
-            icon={faComments}
-            title={'Messages'}
-            show={show}
-          />
-          <SideNavbarIcons
-            href='/trends'
-            icon={faFireFlameCurved}
-            title={'Trends'}
-            show={show}
-          />
-          <SideNavbarIcons
-            href='/settings'
-            icon={faGear}
-            title={'Settings'}
-            show={show}
-          />
-        </div>
+       <Shortcuts/>
 
         <div
           className={
