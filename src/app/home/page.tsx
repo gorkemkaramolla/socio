@@ -30,7 +30,7 @@ const Home: FC<Props> = () => {
   };
   return (
     <div className={'flex flex-col overflow-y-scroll items-center '}>
-      <div className={'sticky top-0 w-full h-fit flex justify-center items-center bg-white dark:bg-black/75 backdrop-blur-sm z-40'}>
+      <div className={'sticky top-0 w-full h-fit flex justify-center items-center bg-white/75 drop-shadow-xl dark:bg-black/75 backdrop-blur-sm z-40'}>
         <Heading heading='h6' size={'md'} className={'m-4'}>
           NewsFeed
         </Heading>
@@ -48,6 +48,7 @@ const Home: FC<Props> = () => {
               <ContentContainer
                 key={i}
                 header={{
+                  img: 'https://i.ibb.co/WxMs27X/avatar3.jpg',
                   name: 'Kübra Yılmaz',
                   username: '@kubraylmzz',
                 }}

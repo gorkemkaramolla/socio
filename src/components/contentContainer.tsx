@@ -11,8 +11,12 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ContentEmojis from '@/components/contentEmojis';
 import HomeCommentContainer from '@/components/homeCommentContainer';
+import {useSelector} from "react-redux";
+import {RootState} from "@/store";
+import {getImage} from "@/app/settings/page";
 interface Props {
   header: {
+    img: string;
     name: string;
     username: string;
   };
@@ -20,9 +24,10 @@ interface Props {
 }
 
 const ContentContainer: FC<Props> = ({ header, content }) => {
+  const currentUser = useSelector((state: RootState) => state.user);
   const [liked, setLiked] = useState(false);
   const [focused, setFocused] = useState(false);
-  const [bgColor, setBgColor] = useState('bg-white dark:bg-gorkem');
+  const [bgColor, setBgColor] = useState('bg-white dark:bg-blackSwan');
   const handleLikeClick = () => {
     setLiked(!liked);
   };
@@ -60,12 +65,12 @@ const ContentContainer: FC<Props> = ({ header, content }) => {
       >
         <div
           className={
-            'w-[40px] h-[40px] absolute -top-2 -left-2 rounded-full border-2 border-gray'
+            'w-[40px] h-[40px] absolute -top-2 -left-2 rounded-full border-2 border-gray bg-anonim'
           }
         >
           <img
             className={'rounded-full'}
-            src='https://i.ibb.co/MV0c2sD/avatar6.jpg'
+            src={header.img}
             alt=''
           />
         </div>
@@ -124,8 +129,12 @@ const ContentContainer: FC<Props> = ({ header, content }) => {
             >
               <img
                 className={'rounded-full'}
-                src='https://i.ibb.co/VxNv13V/avatar12.jpg'
-                alt=''
+                src={
+                    currentUser.imageUri ||
+                    getImage(currentUser.image!) ||
+                    '/userdefault.png'
+                }
+                alt='/userdefault.png'
               />
             </div>
             <Button
@@ -156,7 +165,7 @@ const ContentContainer: FC<Props> = ({ header, content }) => {
         </div>
         <ContentEmojis setBgColor={setBgColor} />
       </div>
-      <HomeCommentContainer focused={focused} />
+      {/*<HomeCommentContainer focused={focused} />*/}
     </div>
   );
 };

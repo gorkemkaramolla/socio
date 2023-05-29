@@ -32,6 +32,7 @@ module.exports = {
         bermuda: '#78dcca',
         gorkem: 'lch(5.6 0.88 251.33 / 1)',
         night: '#0C090A',
+        blackSwan: '#151718',
       },
     },
   },

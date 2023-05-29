@@ -44,7 +44,7 @@ const SideNavbar: FC<Props> = () => {
       </Heading>
       <div className={'flex flex-col gap-3 '}>
         <div
-          className={'bg-white shadow-2xl dark:bg-gorkem rounded-2xl p-3 h-fit'}
+          className={'bg-white shadow-2xl dark:bg-blackSwan rounded-2xl p-3 h-fit'}
         >
           <div className={'w-full h-[120px] relative'}>
             <div
@@ -59,18 +59,16 @@ const SideNavbar: FC<Props> = () => {
               />
               <div
                 className={
-                  'w-[60px] h-[60px] absolute top-[60px]  border-grey border-2 rounded-[50%] '
+                  'min-w-[60px] min-h-[60px] absolute top-[60px]  border-grey border-2 rounded-full bg-anonim '
                 }
               >
+                 {/* todo:******* Burda bir sıkıntı var benim resim gelmiyor bakarsın ********** */}
                 <img
-                  style={{ borderRadius: '50%' }}
-                  className='w-[60px] h-[60px] profile-img dark:bg-white object-cover rounded-full '
+                  className='w-[60px] h-[60px] rounded-full '
                   src={
                     currentUser.imageUri ||
-                    getImage(currentUser.image!) ||
-                    '/userdefault.png'
+                    getImage(currentUser.image!)
                   }
-                  alt='/userdefault.png'
                 />
               </div>
             </div>
@@ -111,7 +109,7 @@ const SideNavbar: FC<Props> = () => {
         <Heading heading='h6' size={'sm'} className={'m-1'}>
           Shortcuts
         </Heading>
-        <div className={'bg-white shadow-2xl dark:bg-gorkem rounded-2xl'}>
+        <div className={'bg-white shadow-2xl dark:bg-blackSwan rounded-2xl'}>
           <SideNavbarIcons
             href='/home'
             icon={faShekelSign}
@@ -158,7 +156,7 @@ const SideNavbar: FC<Props> = () => {
 
         <div
           className={
-            'flex justify-start bg-white shadow-2xl dark:bg-gorkem rounded-2xl'
+            'flex justify-start bg-white shadow-2xl dark:bg-blackSwan rounded-2xl'
           }
         >
           <LogoutButton />

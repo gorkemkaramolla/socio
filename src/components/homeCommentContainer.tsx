@@ -5,7 +5,7 @@ interface Props {
 
 const HomeCommentContainer: FC<Props> = ({focused}) => {
     return (
-        <div className={`${focused ? 'h-[255px] opacity-100 p-3' : 'opacity-0 h-0'} text-sm font-light flex flex-col bg-white dark:bg-gorkem shadow-2xl rounded-xl gap-3  duration-300 `}>
+        <div className={`${focused ? 'h-[255px] opacity-100 p-3' : 'opacity-0 h-0'} text-sm font-light flex flex-col bg-white dark:bg-blackSwan shadow-2xl rounded-xl gap-3  duration-300 `}>
             <div className={' flex flex-col gap-3'}>
                 <div className={'flex'}>
                     <div className={'min-w-[35px] min-h-[35px] w-[35px] h-[35px] bg-pink rounded-full mx-3'}></div>

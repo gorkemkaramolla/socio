@@ -159,3 +159,8 @@ html {
     z-index: 5;
   }
 }
+
+.bg-anonim {
+  background: url("/userdefault.png") no-repeat #b2b2b2;
+  background-size: cover;
+}
