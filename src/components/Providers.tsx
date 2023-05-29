@@ -64,7 +64,7 @@ const Providers: React.FC<Props> = ({ children }) => {
     dispatch(setTheme(theme));
   };
   useEffect(() => {
-    localStorage.setItem('mode', mode.mode);
+    localStorage.setItem('mode', mode.mode!);
     console.log(currentUser.email);
   }, [mode.mode]);
 

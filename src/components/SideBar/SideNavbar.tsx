@@ -44,7 +44,9 @@ const SideNavbar: FC<Props> = () => {
       </Heading>
       <div className={'flex flex-col gap-3 '}>
         <div
-          className={'bg-white shadow-2xl dark:bg-blackSwan rounded-2xl p-3 h-fit'}
+          className={
+            'bg-white shadow-2xl dark:bg-blackSwan rounded-2xl p-3 h-fit'
+          }
         >
           <div className={'w-full h-[120px] relative'}>
             <div
@@ -59,16 +61,13 @@ const SideNavbar: FC<Props> = () => {
               />
               <div
                 className={
-                  'min-w-[60px] min-h-[60px] absolute top-[60px]  border-grey border-2 rounded-full bg-anonim '
+                  'min-w-[60px] min-h-[60px] absolute top-[60px]  border-grey border-2 rounded-full bg-white'
                 }
               >
-                 {/* todo:******* Burda bir sıkıntı var benim resim gelmiyor bakarsın ********** */}
+                {/* todo:******* Burda bir sıkıntı var benim resim gelmiyor bakarsın ********** */}
                 <img
                   className='w-[60px] h-[60px] rounded-full '
-                  src={
-                    currentUser.imageUri ||
-                    getImage(currentUser.image!)
-                  }
+                  src={currentUser.imageUri || getImage(currentUser.image!)}
                 />
               </div>
             </div>

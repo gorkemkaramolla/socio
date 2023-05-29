@@ -18,71 +18,60 @@ const Home: FC<Props> = () => {
   const currentUser = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    getUser().then((x) => {
-      if (x) {
-       setUser(x)
-      }
-    });
-  }, []);
-
-  const getUser = async () => {
-    const session = await axios.get('/api/auth/session');
-    const user: User = session.data.user;
-    return user
-    // if (userSession) dispatch(setUser(userSession));
-    // setLoading(false); // Set loading to false once the data is fetched
-  };
   return (
     <div className={'flex flex-col overflow-y-scroll items-center '}>
-      <div className={'sticky top-0 w-full h-fit flex justify-center items-center bg-white/75 drop-shadow-xl dark:bg-black/75 backdrop-blur-sm z-40'}>
+      <div
+        className={
+          'sticky top-0 w-full h-fit flex justify-center items-center bg-white/75 drop-shadow-xl dark:bg-black/75 backdrop-blur-sm z-40'
+        }
+      >
         <Heading heading='h6' size={'md'} className={'m-4'}>
           NewsFeed
         </Heading>
       </div>
-        <div className={'h-fit w-full flex justify-center'}>
-          <div className={' md:w-11/12 md:p-3 w-4/6'}>
-            {[
-              'fgfdgfdghfdhdfh',
-              'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus blanditiis corporis dolores enim et facilis fugit impedit ipsum iusto neque optio, perferendis ratione recusandae reprehenderit sapiente sed soluta tenetur veritatis!\n',
-              'fgfdgfdghfdhdfh',
-              'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus blanditiis corporis dolores enim et facilis fugit impedit ipsum iusto neque optio, perferendis ratione recusandae reprehenderit sapiente sed soluta tenetur veritatis!\n',
-              'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus blanditiis corporis dolores enim et facilis fugit impedit ipsum iusto neque optio, perferendis ratione recusandae reprehenderit sapiente sed soluta tenetur veritatis!\n',
-              'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus blanditiis corporis dolores enim et facilis fugit impedit ipsum iusto neque optio, perferendis ratione recusandae reprehenderit sapiente sed soluta tenetur veritatis!\n',
-            ].map((content, i) => (
-              <ContentContainer
-                key={i}
-                header={{
-                  img: 'https://i.ibb.co/WxMs27X/avatar3.jpg',
-                  name: 'Kübra Yılmaz',
-                  username: '@kubraylmzz',
-                }}
-                content={content}
-              />
-            ))}
-          </div>
-          {/*<div className={'w-2/6'}>*/}
-          {/*  <div*/}
-          {/*    className={*/}
-          {/*      'flex bg-white min-h-[150px] my-4 shadow-2xl rounded-xl'*/}
-          {/*    }*/}
-          {/*  >*/}
-          {/*    3333*/}
-          {/*  </div>*/}
-          {/*  <div*/}
-          {/*    className={*/}
-          {/*      'flex bg-white min-h-[350px] my-4 shadow-2xl rounded-xl'*/}
-          {/*    }*/}
-          {/*  >*/}
-          {/*    4444*/}
-          {/*  </div>*/}
-          {/*</div>*/}
+      <div className={'h-fit w-full flex justify-center'}>
+        <div className={' md:w-11/12 md:p-3 w-4/6'}>
+          {[
+            'fgfdgfdghfdhdfh',
+            'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus blanditiis corporis dolores enim et facilis fugit impedit ipsum iusto neque optio, perferendis ratione recusandae reprehenderit sapiente sed soluta tenetur veritatis!\n',
+            'fgfdgfdghfdhdfh',
+            'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus blanditiis corporis dolores enim et facilis fugit impedit ipsum iusto neque optio, perferendis ratione recusandae reprehenderit sapiente sed soluta tenetur veritatis!\n',
+            'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus blanditiis corporis dolores enim et facilis fugit impedit ipsum iusto neque optio, perferendis ratione recusandae reprehenderit sapiente sed soluta tenetur veritatis!\n',
+            'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus blanditiis corporis dolores enim et facilis fugit impedit ipsum iusto neque optio, perferendis ratione recusandae reprehenderit sapiente sed soluta tenetur veritatis!\n',
+          ].map((content, i) => (
+            <ContentContainer
+              key={i}
+              header={{
+                img: 'https://i.ibb.co/WxMs27X/avatar3.jpg',
+                name: 'Kübra Yılmaz',
+                username: '@kubraylmzz',
+              }}
+              content={content}
+            />
+          ))}
         </div>
-        <div className={'w-full flex justify-center'}>
-          <Button variant={'ghost'} size={'lg'} isLoading={true}>
-            Loading
-          </Button>
-        </div>
+        {/*<div className={'w-2/6'}>*/}
+        {/*  <div*/}
+        {/*    className={*/}
+        {/*      'flex bg-white min-h-[150px] my-4 shadow-2xl rounded-xl'*/}
+        {/*    }*/}
+        {/*  >*/}
+        {/*    3333*/}
+        {/*  </div>*/}
+        {/*  <div*/}
+        {/*    className={*/}
+        {/*      'flex bg-white min-h-[350px] my-4 shadow-2xl rounded-xl'*/}
+        {/*    }*/}
+        {/*  >*/}
+        {/*    4444*/}
+        {/*  </div>*/}
+        {/*</div>*/}
+      </div>
+      <div className={'w-full flex justify-center'}>
+        <Button variant={'ghost'} size={'lg'} isLoading={true}>
+          Loading
+        </Button>
+      </div>
 
       {/*<div className={'h-full w-1/5 flex flex-col items-center'}>*/}
       {/*  <div className={'w-full'}>*/}
