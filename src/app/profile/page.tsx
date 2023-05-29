@@ -22,7 +22,7 @@ const DashBoard = () => {
 
 
   return (
-      <div className={'flex flex-col overflow-y-scroll items-center '}>
+      <div className={'flex flex-col overflow-y-scroll items-center p-3'}>
         <div className={'sticky top-0 w-full h-fit flex justify-evenly items-center bg-white/75 drop-shadow-xl dark:bg-black/75 backdrop-blur-sm z-40'}>
             <Heading heading='h6' size={'sm'} className={'m-4'}>
                 My Profile
@@ -44,7 +44,7 @@ const DashBoard = () => {
                    </div>
                    <img className={''} src="https://i.ibb.co/Ct8y2gk/wallpaper.jpg" alt=""/>
                </div>
-                <div className={'w-[120px] h-[120px] rounded-full bg-anonim absolute -bottom-12 left-6 border-4 border-grey dark:border-blackSwan'}>
+                <div className={'w-[120px] h-[120px] sm:rounded-full bg-anonim absolute -bottom-12 left-6 border-4 border-grey dark:border-blackSwan'}>
                     <div className={'w-full h-full absolute opacity-0 hover:opacity-100 rounded-full '}
                          style={{
                              background: 'linear-gradient(90deg, rgba(0,0,0,0.13769257703081228) 0%, rgba(0,0,0,0.13769257703081228) 100%)'
@@ -59,7 +59,7 @@ const DashBoard = () => {
                     <img className={'rounded-full'} src={selector.imageUri || getImage(selector.image!)} alt=""/>
                 </div>
             </div>
-            <div className={'w-full h-fit flex justify-end'}>
+            <div className={'w-full h-[140px] flex justify-end'}>
                 <div className={'w-3/12  flex flex-col justify-end items-center gap-2'}>
                     <div className={'bg-white dark:bg-blackSwan rounded-full px-3 py-1 w-10/12 text-center shadow-md cursor-pointer'}>Edit Profile</div>
                     <div className={'bg-white dark:bg-blackSwan rounded-full px-3 py-1 w-10/12 text-center shadow-md cursor-pointer'}>Settings</div>
@@ -81,7 +81,7 @@ const DashBoard = () => {
                     Likes
                 </Heading>
             </div>
-          <div className={' md:w-11/12 md:p-3 w-4/6'}>
+          <div className={' md:p-3'}>
             {[
               'fgfdgfdghfdhdfh',
               'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus blanditiis corporis dolores enim et facilis fugit impedit ipsum iusto neque optio, perferendis ratione recusandae reprehenderit sapiente sed soluta tenetur veritatis!\n',

@@ -19,14 +19,19 @@ const Home: FC<Props> = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    getUser();
+    getUser().then((x) => {
+      if (x) {
+       setUser(x)
+      }
+    });
   }, []);
 
   const getUser = async () => {
     const session = await axios.get('/api/auth/session');
-    const userSession: User = session.data.user;
-    if (userSession) dispatch(setUser(userSession));
-    setLoading(false); // Set loading to false once the data is fetched
+    const user: User = session.data.user;
+    return user
+    // if (userSession) dispatch(setUser(userSession));
+    // setLoading(false); // Set loading to false once the data is fetched
   };
   return (
     <div className={'flex flex-col overflow-y-scroll items-center '}>
