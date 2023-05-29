@@ -31,7 +31,7 @@ export async function POST(req: Request) {
       name: name,
       email: email,
       password: hashedPassword,
-      image: '',
+      imageUri: '',
     },
   });
 

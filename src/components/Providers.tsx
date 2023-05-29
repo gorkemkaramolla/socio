@@ -17,6 +17,13 @@ interface Props {
 
 const Providers: React.FC<Props> = ({ children }) => {
   const getUser = async () => {
+    // Get the user data from local storage or cache
+    const cachedUserData = localStorage.getItem('userData');
+    if (cachedUserData) {
+      const parsedData = JSON.parse(cachedUserData);
+      dispatch(setUser(parsedData));
+    }
+
     const session = await getSession();
     if (session) {
       const currentUser = await axios.get('/user', {
@@ -24,8 +31,17 @@ const Providers: React.FC<Props> = ({ children }) => {
           id: session?.user.id,
         },
       });
-      if (session && currentUser) {
-        dispatch(setUser(currentUser.data.user));
+      if (currentUser && currentUser.data.user) {
+        const newData = currentUser.data.user;
+
+        // Check if the data has changed
+        if (JSON.stringify(newData) !== cachedUserData) {
+          // Update the user data in local storage or cache
+          localStorage.setItem('userData', JSON.stringify(newData));
+
+          // Update the user in the state
+          dispatch(setUser(newData));
+        }
       }
     }
   };
@@ -39,6 +55,7 @@ const Providers: React.FC<Props> = ({ children }) => {
   useEffect(() => {
     getUser();
   }, []);
+
   const mode = useSelector((state: RootState) => state.mode);
   useEffect(() => {}, [mode.mode]);
 
@@ -48,6 +65,7 @@ const Providers: React.FC<Props> = ({ children }) => {
   };
   useEffect(() => {
     localStorage.setItem('mode', mode.mode);
+    console.log(currentUser.email);
   }, [mode.mode]);
 
   return (

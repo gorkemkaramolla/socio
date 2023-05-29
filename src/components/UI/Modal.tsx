@@ -38,7 +38,7 @@ const ModalUi: React.FC<Props> = ({
           type='file'
           id='image-upload'
           className='hidden p-0 m-0 '
-          accept='image/*'
+          accept='image/jpeg, image/png'
           onChange={handleFileUpload}
         />
         <Button className=' cursor-pointer' variant={'ghost'}>

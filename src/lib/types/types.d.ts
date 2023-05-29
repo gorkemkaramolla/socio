@@ -1,9 +1,10 @@
 interface User {
   name: string;
   email: string;
-  image: string;
+  image?: Buffer;
   id: string;
   bio: string;
+  imageUri: string;
   location: string;
 }
 interface LocationUser {

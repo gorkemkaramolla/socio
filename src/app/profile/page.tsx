@@ -10,30 +10,29 @@ import { RootState } from '@/store';
 import { useDispatch } from 'react-redux';
 import { getSession } from 'next-auth/react';
 import Paragraph from '@/components/UI/Paragraph';
-
-interface Props {}
+import { getImage } from '../settings/page';
 
 const DashBoard = () => {
-  const currentUser = useSelector((state: RootState) => state.user);
+  const selector = useSelector((state: RootState) => state.user);
 
   return (
     <div className='mx-auto flex items-center flex-col  mt-5 w-full '>
       <div className='border-[1px] gap-3   border-red-400 p-12 flex flex-col items-center justify-center'>
-        <Image
-          className='profile-img dark:bg-white rounded-full '
-          src={currentUser.image || '/userdefault.png'}
-          width={90}
-          height={90}
-          alt='asda'
+        <img
+          style={{ borderRadius: '50%' }}
+          className='w-[60px] h-[60px] profile-img dark:bg-white object-cover rounded-full '
+          src={
+            selector.imageUri || getImage(selector.image!) || '/userdefault.png'
+          }
+          alt='/userdefault.png'
         />
-
         <Heading size={'md'} heading='h3'>
-          {currentUser?.name}
+          {selector?.name}
         </Heading>
-        <Heading heading='h5'>{currentUser?.email}</Heading>
+        <Heading heading='h5'>{selector?.email}</Heading>
         <LogoutButton />
-        <Paragraph>{currentUser.bio}</Paragraph>
-        <Paragraph>{currentUser.location}</Paragraph>
+        <Paragraph>{selector.bio}</Paragraph>
+        <Paragraph>{selector.location}</Paragraph>
       </div>
     </div>
   );

@@ -34,17 +34,25 @@ export async function GET(req: Request) {
     );
 }
 export async function PUT(req: Request) {
-  const data = await req.json();
+  const formData = await req.formData();
+  console.log(formData);
+  const id = formData.get('id');
+  const email = formData.get('email');
+  const name = formData.get('name');
+  const bio = formData.get('bio');
+  const image = formData.get('image');
+  const location = formData.get('location');
 
-  console.log(data);
   prisma.$connect();
   const user = await prisma.user.findFirstOrThrow({
     where: {
-      id: data.id,
+      id: Number(id),
     },
   });
+
   if (user) {
-    if (data.image && data.image.length > 4 * 1024 * 1024) {
+    if (image && image instanceof Blob && image.size > 4 * 1024 * 1024) {
+      console.log('yes');
       return new NextResponse(
         JSON.stringify({ message: 'Image size exceeds the limit of 4MB' }),
         {
@@ -53,17 +61,48 @@ export async function PUT(req: Request) {
         }
       );
     }
+
+    const updatedData: {
+      email?: string;
+      name?: string;
+      bio?: string;
+      image?: Buffer | null;
+      location?: string;
+    } = {};
+
+    if (email !== '' && email !== 'undefined') {
+      updatedData.email = email?.toString();
+    }
+    if (name !== '' && name !== 'undefined') {
+      updatedData.name = name?.toString();
+    }
+    if (bio !== '' && bio !== 'undefined') {
+      updatedData.bio = bio?.toString();
+    }
+    if (location !== '' && location !== 'undefined') {
+      updatedData.location = location?.toString();
+    }
+
+    const buffer =
+      image && image !== 'undefined'
+        ? await new Response(image).arrayBuffer()
+        : null;
+    const imageData = buffer ? Buffer.from(buffer) : null;
+    if (imageData && imageData.length > 4 * 1024 * 1024) {
+      return new NextResponse('DATA BIG U CANT DO THAT', {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+    if (imageData) {
+      updatedData.image = imageData;
+    }
+
     const updatedUser = await prisma.user.update({
       where: {
-        id: data.id, // Provide the valid user ID here
+        id: Number(id),
       },
-      data: {
-        email: data.email, // Provide the valid email here
-        name: data.name,
-        bio: data.bio,
-        image: data.image,
-        location: data.location,
-      },
+      data: updatedData,
     });
 
     if (updatedUser)
@@ -73,12 +112,13 @@ export async function PUT(req: Request) {
       });
     else
       return new NextResponse(
-        JSON.stringify({ message: 'something went wrong' }),
+        JSON.stringify({ message: 'Something went wrong' }),
         {
           status: 401,
           headers: { 'Content-Type': 'application/json' },
         }
       );
   }
+
   prisma.$disconnect();
 }

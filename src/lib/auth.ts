@@ -5,6 +5,7 @@ import GoogleProvider from 'next-auth/providers/google';
 import { PrismaClient } from '@prisma/client';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { compare } from 'bcryptjs';
+import { JWT } from 'next-auth/jwt';
 const prisma = new PrismaClient();
 
 const getGoogleCredentials = () => {
@@ -70,8 +71,8 @@ export const authOptions: NextAuthOptions = {
         newUser = await prisma.user.create({
           data: {
             email: token?.email!,
-            name: token.name,
-            image: token?.picture!,
+            name: token?.name,
+            imageUri: token?.picture!,
           },
         });
       }
@@ -80,8 +81,8 @@ export const authOptions: NextAuthOptions = {
         id: newUser.id,
         name: newUser.name,
         email: newUser.email,
-        picture: newUser.image,
-      };
+        picture: newUser.imageUri,
+      } as JWT;
     },
     async session({ session, token }) {
       if (token) {

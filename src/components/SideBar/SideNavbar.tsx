@@ -1,5 +1,5 @@
 'use client';
-import React, {FC, useEffect, useRef, useState} from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import Button from '@/components/UI/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -18,9 +18,10 @@ import {
 import SideNavbarIcons from './SideNavbarIcons';
 import useBackgroundBlur from '@/lib/zustand/useEmoji';
 import LogoutButton from '../LogoutButton/LogoutButton';
-import Heading from "@/components/UI/Heading";
-import {useSelector} from "react-redux";
-import {RootState} from "@/store";
+import Heading from '@/components/UI/Heading';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
+import { getImage } from '@/app/settings/page';
 
 interface Props {}
 
@@ -42,12 +43,35 @@ const SideNavbar: FC<Props> = () => {
         Profile
       </Heading>
       <div className={'flex flex-col gap-3 '}>
-        <div className={'bg-white shadow-2xl dark:bg-gorkem rounded-2xl p-3 h-fit'}>
+        <div
+          className={'bg-white shadow-2xl dark:bg-gorkem rounded-2xl p-3 h-fit'}
+        >
           <div className={'w-full h-[120px] relative'}>
-            <div className={'w-full h-2/3 bg-fuchsia-800 rounded-2xl flex justify-center'}>
-              <img className={'w-full rounded-2xl'} src="https://i.ibb.co/xsLbHWp/wallpaper.jpg" alt=""/>
-              <div className={'w-[60px] h-[60px] bg-red-500 absolute top-[60px] rounded border-grey border-2 '}>
-                <img src={currentUser?.image} alt=""/>
+            <div
+              className={
+                'w-full h-2/3 bg-fuchsia-800 rounded-2xl flex justify-center'
+              }
+            >
+              <img
+                className={'w-full rounded-2xl'}
+                src='https://i.ibb.co/xsLbHWp/wallpaper.jpg'
+                alt=''
+              />
+              <div
+                className={
+                  'w-[60px] h-[60px] absolute top-[60px]  border-grey border-2 rounded-[50%] '
+                }
+              >
+                <img
+                  style={{ borderRadius: '50%' }}
+                  className='w-[60px] h-[60px] profile-img dark:bg-white object-cover rounded-full '
+                  src={
+                    currentUser.imageUri ||
+                    getImage(currentUser.image!) ||
+                    '/userdefault.png'
+                  }
+                  alt='/userdefault.png'
+                />
               </div>
             </div>
           </div>
@@ -56,14 +80,25 @@ const SideNavbar: FC<Props> = () => {
               {currentUser?.name}
             </Heading>
             <p>Web Developer at gfdgfdgdf</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem, tenetttur!</p>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem,
+              tenetttur!
+            </p>
           </div>
-          <div className={'flex w-full h-[50px] justify-center text-center mt-4 mb-2'}>
-            <div className={'min-w-[60px] flex flex-col border-r-2 border-grey '}>
+          <div
+            className={
+              'flex w-full h-[50px] justify-center text-center mt-4 mb-2'
+            }
+          >
+            <div
+              className={'min-w-[60px] flex flex-col border-r-2 border-grey '}
+            >
               <span className={'mx-3'}>4.543</span>
               <span className={'text-sm mx-3'}>Post</span>
             </div>
-            <div className={'min-w-[60px] flex flex-col border-r-2 border-grey '}>
+            <div
+              className={'min-w-[60px] flex flex-col border-r-2 border-grey '}
+            >
               <span className={'mx-3'}>43</span>
               <span className={'text-sm mx-3'}>Followers</span>
             </div>
@@ -78,50 +113,54 @@ const SideNavbar: FC<Props> = () => {
         </Heading>
         <div className={'bg-white shadow-2xl dark:bg-gorkem rounded-2xl'}>
           <SideNavbarIcons
-              href='/home'
-              icon={faShekelSign}
-              title={'Newsfeed'}
-              show={show}
+            href='/home'
+            icon={faShekelSign}
+            title={'Newsfeed'}
+            show={show}
           />
           <SideNavbarIcons
-              href='/todos'
-              icon={faCheck}
-              title={'ToDos'}
-              show={show}
+            href='/todos'
+            icon={faCheck}
+            title={'ToDos'}
+            show={show}
           />
           <SideNavbarIcons
-              href='/profile'
-              icon={faUser}
-              title={'Profile'}
-              show={show}
+            href='/profile'
+            icon={faUser}
+            title={'Profile'}
+            show={show}
           />
           <SideNavbarIcons
-              href='/friends'
-              icon={faEye}
-              title={'Friends'}
-              show={show}
+            href='/friends'
+            icon={faEye}
+            title={'Friends'}
+            show={show}
           />
           <SideNavbarIcons
-              href='/messages'
-              icon={faComments}
-              title={'Messages'}
-              show={show}
+            href='/messages'
+            icon={faComments}
+            title={'Messages'}
+            show={show}
           />
           <SideNavbarIcons
-              href='/trends'
-              icon={faFireFlameCurved}
-              title={'Trends'}
-              show={show}
+            href='/trends'
+            icon={faFireFlameCurved}
+            title={'Trends'}
+            show={show}
           />
           <SideNavbarIcons
-              href='/settings'
-              icon={faGear}
-              title={'Settings'}
-              show={show}
+            href='/settings'
+            icon={faGear}
+            title={'Settings'}
+            show={show}
           />
         </div>
 
-        <div className={'flex justify-start bg-white shadow-2xl dark:bg-gorkem rounded-2xl'}>
+        <div
+          className={
+            'flex justify-start bg-white shadow-2xl dark:bg-gorkem rounded-2xl'
+          }
+        >
           <LogoutButton />
         </div>
       </div>

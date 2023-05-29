@@ -1,4 +1,5 @@
 'use client';
+import { Buffer } from 'buffer';
 import FormInput from '@/components/UI/Input';
 import Label from '@/components/UI/Label';
 import { RootState } from '@/store';
@@ -12,21 +13,40 @@ import { useDispatch } from 'react-redux';
 import { setUser } from '@/lib/redux/userSlice';
 import toast, { Toaster } from 'react-hot-toast';
 import Textarea from '@/components/UI/Textarea';
-import Image from 'next/image';
 import ModalUi from '@/components/UI/Modal';
 import { getLocation, getLocationDetails } from '@/util/getLocation';
 import Paragraph from '@/components/UI/Paragraph';
+import LogoutButton from '@/components/LogoutButton/LogoutButton';
 
 interface Props {}
+export const getImage = (img: Buffer) => {
+  if (img) {
+    const buffer = Buffer.from(img);
+    const base64String = buffer.toString('base64');
+    let mimeType = 'image/png';
 
+    // Check the file format based on the buffer content
+    if (buffer[0] === 0xff && buffer[1] === 0xd8 && buffer[2] === 0xff) {
+      mimeType = 'image/jpeg';
+    }
+
+    const dataURL = `data:${mimeType};base64,${base64String}`;
+    return dataURL;
+  }
+  return '';
+};
 const Settings: React.FC<Props> = () => {
+  const [base64Image, setBase64Image] = useState<string>('');
+
   const [visible, setVisible] = useState<boolean>(false);
   const [location, setLocation] = useState<string>('');
+  const [imageSrc, setImageSrc] = useState<string | null>(null);
+
   const handler = () => setVisible(true);
   const [loading, setLoading] = useState<boolean>(false);
   const selector = useSelector((state: RootState) => state.user);
 
-  const [imageFile, setImageFile] = useState<string>('');
+  const [imageFile, setImageFile] = useState<Blob>();
   const dispatch = useDispatch();
   const successToast = () => toast.success('Successfully Changed');
   const errorToast = (e: any) => toast.success(e);
@@ -34,19 +54,54 @@ const Settings: React.FC<Props> = () => {
     setVisible(false);
     console.log('closed');
   };
+
   useEffect(() => {
-    console.log(imageFile);
-  }, [imageFile]);
+    if (selector?.image) {
+      let img = getImage(selector.image);
+      setImageSrc(img);
+    }
+  }, [selector.image]);
+
+  useEffect(() => {
+    console.log(base64Image);
+  }, [base64Image]);
+  const base64StringToBlob = (base64String: string, type: string): Blob => {
+    const sliceSize = 512;
+    const byteCharacters = atob(
+      base64String.slice(base64String.indexOf(',') + 1)
+    );
+    const byteArrays: Uint8Array[] = [];
+    let offset = 0;
+
+    while (offset < byteCharacters.length) {
+      const slice = byteCharacters.slice(offset, offset + sliceSize);
+      const byteNumbers = new Array(slice.length);
+      for (let i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      byteArrays.push(byteArray);
+      offset += sliceSize;
+    }
+
+    return new Blob(byteArrays, { type });
+  };
+
   const handleFileUpload = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const file = event.target.files?.[0];
-      // Perform file upload logic here
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const dataUrl = reader.result as string;
-        setImageFile(dataUrl);
-      };
-      reader.readAsDataURL(file!);
+      if (file) {
+        setImageFile(file);
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          const base64String = reader.result as string;
+          const imgBlob = base64StringToBlob(base64String, file.type);
+          setImageSrc(base64String);
+
+          setImageFile(imgBlob);
+        };
+        reader.readAsDataURL(file);
+      }
     },
     []
   );
@@ -70,9 +125,8 @@ const Settings: React.FC<Props> = () => {
     }
   };
   const deleteCurrentPic = () => {
-    formik.values.image = '';
-    setImageFile('');
-    dispatch(setUser({ ...selector, image: '' }));
+    setImageFile(undefined);
+    dispatch(setUser({ ...selector, image: undefined }));
   };
 
   const formik = useFormik({
@@ -103,7 +157,6 @@ const Settings: React.FC<Props> = () => {
       return errors;
     },
     onSubmit: (values) => {
-      console.log(values.image);
       updateUser(
         values.email,
         values.name,
@@ -118,19 +171,23 @@ const Settings: React.FC<Props> = () => {
     email: string,
     name: string,
     bio: string,
-    image: string,
+    image: Blob,
     location: string
   ) => {
-    console.log('worked');
     setLoading(true);
     try {
-      const updatedUser = await axios.put('/user', {
-        id: selector.id,
-        email: email,
-        name: name,
-        bio: bio,
-        image: image,
-        location: location,
+      const formData = new FormData();
+      formData.append('id', selector.id);
+      formData.append('email', email);
+      formData.append('name', name);
+      formData.append('bio', bio);
+      formData.append('location', location);
+      formData.append('image', image);
+
+      const updatedUser = await axios.put('/user', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data', // Add this header
+        },
       });
       if (updatedUser) {
         dispatch(setUser(updatedUser.data.user));
@@ -172,14 +229,12 @@ const Settings: React.FC<Props> = () => {
         </div>
         <div className='lg:w-[85%] w-[95%] relative'>
           <div className='flex gap-8 items-center'>
-            <Image
-              className='profile-img dark:bg-white rounded-full '
-              src={selector.image || imageFile || '/userdefault.png'}
-              width={60}
-              height={60}
+            <img
+              style={{ borderRadius: '50%' }}
+              className='w-[60px] h-[60px] profile-img dark:bg-white object-cover rounded-full '
+              src={selector.imageUri || imageSrc || '/userdefault.png'}
               alt='/userdefault.png'
             />
-
             <Button
               className='active:text-blue-900'
               onClick={handler}
@@ -246,6 +301,7 @@ const Settings: React.FC<Props> = () => {
         <Button type='submit' disabled={loading} variant={'ghost'}>
           Save changes
         </Button>
+        <LogoutButton></LogoutButton>
         <Toaster position='bottom-left' />
       </form>
     </div>

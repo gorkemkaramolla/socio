@@ -5,6 +5,7 @@ import Button from '../UI/Button';
 interface Props {}
 const LogoutButton: React.FC<Props> = () => {
   const logoutSession = async () => {
+    localStorage.removeItem('userData');
     await signOut({
       redirect: true,
       callbackUrl: `/login`,
