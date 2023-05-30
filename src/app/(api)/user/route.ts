@@ -1,11 +1,13 @@
-import { NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
+import { NextResponse } from 'next/server';
 const prisma = new PrismaClient();
-
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
 
   prisma.$connect();
+  const id = Number(searchParams.get('id'));
+  const username = searchParams.get('username');
+
   const user = await prisma.user.findFirstOrThrow({
     select: {
       id: true,
@@ -13,12 +15,17 @@ export async function GET(req: Request) {
       name: true,
       image: true,
       bio: true,
+      username: true,
       location: true,
     },
     where: {
-      id: Number(searchParams.get('id')),
+      OR: [
+        { id: id ? id : undefined }, // Search by ID if it exists
+        { username: username ? username : undefined }, // Search by username if it exists
+      ],
     },
   });
+  console.log(user);
   if (user)
     return new NextResponse(JSON.stringify({ user }), {
       status: 200,

@@ -11,9 +11,10 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ContentEmojis from '@/components/contentEmojis';
 import HomeCommentContainer from '@/components/homeCommentContainer';
-import {useSelector} from "react-redux";
-import {RootState} from "@/store";
-import {getImage} from "@/app/settings/page";
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
+import { getImage } from '@/app/settings/page';
+import Link from 'next/link';
 interface Props {
   header: {
     img: string;
@@ -56,7 +57,7 @@ const ContentContainer: FC<Props> = ({ header, content }) => {
 
   return (
     <div
-      className={`unBlured flex flex-col ${bgColor} h-fit min-h-[50px] my-4 shadow-2xl rounded-xl relative ease-out duration-300 max-h-fit`}
+      className={` unBlured flex flex-col ${bgColor} h-fit min-h-[50px] my-4 shadow-2xl rounded-xl relative ease-out duration-300 max-h-fit`}
     >
       <div
         className={
@@ -69,16 +70,19 @@ const ContentContainer: FC<Props> = ({ header, content }) => {
           }
         >
           <img
-            className={'rounded-full'}
+            className={'rounded-full w-[40px] object-cover h-[40px]'}
             src={header.img}
             alt=''
           />
         </div>
         <div className={'ml-6 flex items-center'}>
           <span>{header.name}</span>
-          <span className={'text-sm text-red-400 mx-2.5'}>
-            {header.username}
-          </span>
+          <Link
+            href={`/${header.username}`}
+            className={'text-sm text-red-400 mx-2.5'}
+          >
+            @{header.username}
+          </Link>
         </div>
         <div className={'flex'}>
           <Button
@@ -113,9 +117,7 @@ const ContentContainer: FC<Props> = ({ header, content }) => {
         </div>
       </div>
       <div className={'px-4 py-2 relative'}>
-        <div className={'content w-fit text-[0.95rem]'}>
-          {content}
-        </div>
+        <div className={'content w-fit text-[0.95rem]'}>{content}</div>
         <div className={'flex gap-5 items-center'}>
           <div
             className={
@@ -130,9 +132,9 @@ const ContentContainer: FC<Props> = ({ header, content }) => {
               <img
                 className={'rounded-full'}
                 src={
-                    currentUser.imageUri ||
-                    getImage(currentUser.image!) ||
-                    '/userdefault.png'
+                  currentUser.imageUri ||
+                  getImage(currentUser.image!) ||
+                  '/userdefault.png'
                 }
                 alt='/userdefault.png'
               />

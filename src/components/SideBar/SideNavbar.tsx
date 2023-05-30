@@ -22,7 +22,7 @@ import Heading from '@/components/UI/Heading';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import { getImage } from '@/app/settings/page';
-import Shortcuts from "@/components/Shortcuts";
+import Shortcuts from '@/components/Shortcuts';
 
 interface Props {}
 
@@ -109,7 +109,7 @@ const SideNavbar: FC<Props> = () => {
         <Heading heading='h6' size={'sm'} className={'m-1'}>
           Shortcuts
         </Heading>
-       <Shortcuts/>
+        <Shortcuts username={currentUser.username} />
 
         <div
           className={

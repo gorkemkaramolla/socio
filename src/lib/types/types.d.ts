@@ -5,6 +5,7 @@ interface User {
   id: string;
   bio: string;
   imageUri: string;
+  username: string;
   location: string;
 }
 interface LocationUser {
