@@ -15,6 +15,7 @@ import Label from './UI/Label';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Search from './Search/Search';
+import { getImage } from '@/app/settings/page';
 interface Props {
   children: ReactNode;
 }
@@ -25,7 +26,8 @@ const Providers: React.FC<Props> = ({ children }) => {
     const cachedUserData = localStorage.getItem('userData');
     if (cachedUserData) {
       const parsedData = JSON.parse(cachedUserData);
-      dispatch(setUser(parsedData));
+      const imgSrc = getImage(parsedData.image);
+      dispatch(setUser({ ...parsedData, image: imgSrc }));
     }
 
     const session = await getSession();
@@ -41,8 +43,8 @@ const Providers: React.FC<Props> = ({ children }) => {
         // Check if the data has changed
         if (JSON.stringify(newData) !== cachedUserData) {
           localStorage.setItem('userData', JSON.stringify(newData));
-
-          dispatch(setUser(newData));
+          const imgSrc = getImage(newData.image);
+          dispatch(setUser({ ...newData, image: imgSrc }));
         }
       } else {
         dispatch(setUser(null));

@@ -10,7 +10,6 @@ import { RootState } from '@/store';
 import { useDispatch } from 'react-redux';
 import { getSession } from 'next-auth/react';
 import Paragraph from '@/components/UI/Paragraph';
-import { getImage } from '../settings/page';
 import ContentContainer from '@/components/contentContainer';
 import Button from '@/components/UI/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -19,15 +18,15 @@ import {
   faCircleXmark,
   faPenToSquare,
 } from '@fortawesome/free-solid-svg-icons';
-import {Sidebar} from "lucide-react";
-import SideNavbar from "@/components/SideBar/SideNavbar";
-import Shortcuts from "@/components/Shortcuts";
-import {boolean} from "zod";
+import { Sidebar } from 'lucide-react';
+import SideNavbar from '@/components/SideBar/SideNavbar';
+import Shortcuts from '@/components/Shortcuts';
+import { boolean } from 'zod';
 
 const DashBoard = () => {
   const selector = useSelector((state: RootState) => state.user);
   const currentUser = useSelector((state: RootState) => state.user);
-  const [show,setShow] = useState(false)
+  const [show, setShow] = useState(false);
 
   return (
     <div className={'flex flex-col overflow-y-scroll items-center px-3.5'}>
@@ -40,17 +39,21 @@ const DashBoard = () => {
           {currentUser.name}
         </Heading>
         <Button
-            className={
-              'sidebarIconButtons ease-out duration-200 text-xl text-black dark:text-white px-10 md:hidden'
-            }
-            variant={'ghost'}
-            size={'smSquare'}
-            onClick={() => setShow(!show)}
+          className={
+            'sidebarIconButtons ease-out duration-200 text-xl text-black dark:text-white px-10 md:hidden'
+          }
+          variant={'ghost'}
+          size={'smSquare'}
+          onClick={() => setShow(!show)}
         >
           <FontAwesomeIcon icon={faBars} />
         </Button>
-        <div className={ `${show ? '-right-4 ' : '-right-48' } top-16 md:hidden absolute ease-out duration-300 `}>
-        <Shortcuts/>
+        <div
+          className={`${
+            show ? '-right-4 ' : '-right-48'
+          } top-16 md:hidden absolute ease-out duration-300 `}
+        >
+          <Shortcuts />
         </div>
       </div>
       <div className={'h-fit w-full flex flex-col items-center'}>
@@ -111,7 +114,7 @@ const DashBoard = () => {
             </div>
             <img
               className={'rounded-full object-cover  w-full h-full'}
-              src={selector.imageUri || getImage(selector.image!)}
+              src={selector.imageUri || selector.image!}
               alt=''
             />
           </div>
@@ -141,7 +144,6 @@ const DashBoard = () => {
               'w-9/12 bg-white dark:bg-blackSwan shadow-md rounded-2xl p-5 flex flex-col justify-center '
             }
           >
-
             <span className={'text-md font-semibold'}>
               Web Developer at gfdgfdgdf
             </span>
@@ -181,7 +183,7 @@ const DashBoard = () => {
             <ContentContainer
               key={i}
               header={{
-                img: getImage(selector.image!) || selector.imageUri,
+                img: selector.image! || selector.imageUri,
                 name: currentUser?.name,
                 username: '@nickname',
               }}

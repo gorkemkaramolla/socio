@@ -133,7 +133,7 @@ const ContentContainer: FC<Props> = ({ header, content }) => {
                 className={'rounded-full'}
                 src={
                   currentUser.imageUri ||
-                  getImage(currentUser.image!) ||
+                  currentUser.image! ||
                   '/userdefault.png'
                 }
                 alt='/userdefault.png'

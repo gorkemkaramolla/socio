@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
-import { getImage } from '../settings/page';
 import Heading from '@/components/UI/Heading';
 import ContentContainer from '@/components/contentContainer';
 import Button from '@/components/UI/Button';
@@ -127,7 +126,7 @@ const Dashboard = ({ params }: Props) => {
               </div>
               <img
                 className='rounded-full object-cover w-full h-full'
-                src={requestedUser.imageUri || getImage(requestedUser.image!)}
+                src={requestedUser.imageUri || requestedUser.image!}
                 alt=''
               />
             </div>
@@ -178,8 +177,7 @@ const Dashboard = ({ params }: Props) => {
               <ContentContainer
                 key={i}
                 header={{
-                  img:
-                    getImage(requestedUser?.image!) || requestedUser?.imageUri!,
+                  img: requestedUser?.image! || requestedUser?.imageUri!,
                   name: requestedUser?.name!,
                   username: requestedUser?.username!,
                 }}

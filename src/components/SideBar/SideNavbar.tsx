@@ -21,7 +21,7 @@ import LogoutButton from '../LogoutButton/LogoutButton';
 import Heading from '@/components/UI/Heading';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
-import { getImage } from '@/app/settings/page';
+
 import Shortcuts from '@/components/Shortcuts';
 
 interface Props {}
@@ -68,7 +68,11 @@ const SideNavbar: FC<Props> = () => {
                 {/* todo:******* Burda bir sıkıntı var benim resim gelmiyor bakarsın ********** */}
                 <img
                   className='w-[60px] h-[60px] rounded-full '
-                  src={currentUser.imageUri || getImage(currentUser.image!)}
+                  src={
+                    currentUser.imageUri ||
+                    currentUser.image! ||
+                    '/userdefault.png'
+                  }
                 />
               </div>
             </div>

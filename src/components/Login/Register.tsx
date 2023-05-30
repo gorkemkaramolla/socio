@@ -18,7 +18,7 @@ import axios from 'axios';
 interface Props {}
 
 const RegisterPage: React.FC<Props> = () => {
-  const [PwOpen, setPwOpen] = useState<boolean>(false);
+  const [PwClose, setPwClose] = useState<boolean>(true);
   const [focusState, setFocusState] = useState({
     focus1: false,
     focus2: false,
@@ -143,18 +143,18 @@ const RegisterPage: React.FC<Props> = () => {
                 ring
                 id='password'
                 name='password'
-                type={PwOpen ? 'password' : 'text'}
+                type={PwClose ? 'password' : 'text'}
                 onChange={formik.handleChange}
                 value={formik.values.password}
               />
               <span>
                 <span
                   onClick={() => {
-                    setPwOpen(!PwOpen);
+                    setPwClose(!PwClose);
                   }}
                   className='text-slate-200 left-[90%] bottom-[130%] relative cursor-pointer'
                 >
-                  {PwOpen ? (
+                  {PwClose ? (
                     <svg
                       xmlns='http://www.w3.org/2000/svg'
                       height='24'

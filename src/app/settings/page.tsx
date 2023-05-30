@@ -18,6 +18,7 @@ import { getLocation, getLocationDetails } from '@/util/getLocation';
 import Paragraph from '@/components/UI/Paragraph';
 import LogoutButton from '@/components/LogoutButton/LogoutButton';
 import Error from '@/components/UI/Error';
+import { blobToArrayBuffer } from 'blob-util';
 interface Props {}
 export const getImage = (img: Buffer) => {
   if (img) {
@@ -58,11 +59,14 @@ const Settings: React.FC<Props> = () => {
 
   useEffect(() => {
     if (selector?.image) {
-      let img = getImage(selector.image);
+      let img = selector.image;
       setImageSrc(img);
     }
   }, [selector.image]);
 
+  useEffect(() => {
+    dispatch(setUser({ ...selector, image: imageSrc! }));
+  }, [imageSrc]);
   useEffect(() => {
     console.log(base64Image);
   }, [base64Image]);
@@ -94,7 +98,7 @@ const Settings: React.FC<Props> = () => {
       if (file) {
         setImageFile(file);
         const reader = new FileReader();
-        reader.onloadend = () => {
+        reader.onloadend = async () => {
           const base64String = reader.result as string;
           const imgBlob = base64StringToBlob(base64String, file.type);
           setImageSrc(base64String);
@@ -155,12 +159,7 @@ const Settings: React.FC<Props> = () => {
       ) {
         errors.email = 'Invalid email address';
       }
-      if (!(values.bio.length >= 8 && values.bio.length <= 20)) {
-        errors.bio = 'Password must be 8 to 20 characters';
-      }
-      if (!values.name) {
-        errors.name = 'Name is required please fill';
-      }
+
       if (!values.username) {
         errors.username = 'Username is required please fill';
       }

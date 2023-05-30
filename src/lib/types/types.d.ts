@@ -1,7 +1,7 @@
 interface User {
   name: string;
   email: string;
-  image?: Buffer;
+  image?: string;
   id: string;
   bio: string;
   imageUri: string;
