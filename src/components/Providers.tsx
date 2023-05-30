@@ -1,5 +1,5 @@
 'use client';
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { ChangeEvent, ReactNode, useEffect, useState } from 'react';
 import SideNavbar from './SideBar/SideNavbar';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
@@ -10,7 +10,11 @@ import { getSession } from 'next-auth/react';
 import { setUser } from '@/lib/redux/userSlice';
 import axios from 'axios';
 import { Session } from 'inspector';
-
+import FormInput from './UI/Input';
+import Label from './UI/Label';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Search from './Search/Search';
 interface Props {
   children: ReactNode;
 }
@@ -36,12 +40,12 @@ const Providers: React.FC<Props> = ({ children }) => {
 
         // Check if the data has changed
         if (JSON.stringify(newData) !== cachedUserData) {
-          // Update the user data in local storage or cache
           localStorage.setItem('userData', JSON.stringify(newData));
 
-          // Update the user in the state
           dispatch(setUser(newData));
         }
+      } else {
+        dispatch(setUser(null));
       }
     }
   };
@@ -84,7 +88,9 @@ const Providers: React.FC<Props> = ({ children }) => {
             <div className={'flex justify-center xl:w-6/12 w-full'}>
               {children}
             </div>
-            <div className='flex justify-start w-0 xl:w-3/12'>dgfdgdf</div>
+            <div className='flex flex-col  justify-start w-0 xl:w-3/12 py-12'>
+              <Search />
+            </div>
           </div>
           <Button
             variant={'ghost'}

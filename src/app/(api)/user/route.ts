@@ -46,6 +46,7 @@ export async function PUT(req: Request) {
   const id = formData.get('id');
   const email = formData.get('email');
   const name = formData.get('name');
+  const username = formData.get('username');
   const bio = formData.get('bio');
   const image = formData.get('image');
   const location = formData.get('location');
@@ -70,24 +71,44 @@ export async function PUT(req: Request) {
     }
 
     const updatedData: {
+      username?: string;
       email?: string;
       name?: string;
       bio?: string;
       image?: Buffer | null;
       location?: string;
     } = {};
+    if (
+      username !== '' &&
+      username !== 'undefined' &&
+      /^[a-zA-Z0-9_]{3,20}$/.test(username?.toString()!)
+    ) {
+      updatedData.username = username?.toString().trim().replace(' ', '');
+    }
 
-    if (email !== '' && email !== 'undefined') {
-      updatedData.email = email?.toString();
+    if (
+      email !== '' &&
+      email !== 'undefined' &&
+      /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]{2,6}$/.test(
+        email?.toString()!
+      )
+    ) {
+      updatedData.email = email?.toString().trim().replace(' ', '');
     }
-    if (name !== '' && name !== 'undefined') {
-      updatedData.name = name?.toString();
+
+    if (
+      name !== '' &&
+      name !== 'undefined' &&
+      /^[\p{L}\s]{2,}$/u.test(name?.toString()!)
+    ) {
+      updatedData.name = name?.toString().trim().replace(' ', '');
     }
+
     if (bio !== '' && bio !== 'undefined') {
-      updatedData.bio = bio?.toString();
+      updatedData.bio = bio?.toString().trim();
     }
     if (location !== '' && location !== 'undefined') {
-      updatedData.location = location?.toString();
+      updatedData.location = location?.toString().trim().replace(' ', '');
     }
 
     const buffer =

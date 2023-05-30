@@ -6,6 +6,7 @@ const initialState: User = {
   imageUri: '',
   id: '',
   bio: '',
+  username: '',
   location: '',
 };
 
@@ -13,11 +14,13 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    setUser: (state, action: PayloadAction<User>) => {
-      return {
-        ...state,
-        ...action.payload,
-      };
+    setUser: (state, action: PayloadAction<User | null>) => {
+      if (action.payload) {
+        return {
+          ...state,
+          ...action.payload,
+        };
+      }
     },
   },
 });

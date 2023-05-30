@@ -127,7 +127,7 @@ const Dashboard = ({ params }: Props) => {
               </div>
               <img
                 className='rounded-full object-cover w-full h-full'
-                src={currentUser.imageUri || getImage(currentUser.image!)}
+                src={requestedUser.imageUri || getImage(requestedUser.image!)}
                 alt=''
               />
             </div>

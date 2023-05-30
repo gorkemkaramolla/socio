@@ -17,7 +17,7 @@ import ModalUi from '@/components/UI/Modal';
 import { getLocation, getLocationDetails } from '@/util/getLocation';
 import Paragraph from '@/components/UI/Paragraph';
 import LogoutButton from '@/components/LogoutButton/LogoutButton';
-
+import Error from '@/components/UI/Error';
 interface Props {}
 export const getImage = (img: Buffer) => {
   if (img) {
@@ -45,6 +45,7 @@ const Settings: React.FC<Props> = () => {
   const handler = () => setVisible(true);
   const [loading, setLoading] = useState<boolean>(false);
   const selector = useSelector((state: RootState) => state.user);
+  const mode = useSelector((state: RootState) => state.mode);
 
   const [imageFile, setImageFile] = useState<Blob>();
   const dispatch = useDispatch();
@@ -131,6 +132,7 @@ const Settings: React.FC<Props> = () => {
 
   const formik = useFormik({
     initialValues: {
+      username: selector.username,
       email: selector.email || '',
       name: selector.name || '',
       location: location!,
@@ -141,23 +143,32 @@ const Settings: React.FC<Props> = () => {
 
     validate(values) {
       const errors: {
+        username?: string;
+        bio?: string;
         name?: string;
-        lastname?: string;
         email?: string;
-        password?: string;
-        image?: string;
       } = {};
-      if (!values.name) {
-        errors.name = 'Email is required please fill';
+      if (!values.email) {
+        errors.email = 'Email is required please fill';
       } else if (
         !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
       ) {
         errors.email = 'Invalid email address';
       }
+      if (!(values.bio.length >= 8 && values.bio.length <= 20)) {
+        errors.bio = 'Password must be 8 to 20 characters';
+      }
+      if (!values.name) {
+        errors.name = 'Name is required please fill';
+      }
+      if (!values.username) {
+        errors.username = 'Username is required please fill';
+      }
       return errors;
     },
     onSubmit: (values) => {
       updateUser(
+        values.username,
         values.email,
         values.name,
         values.bio,
@@ -168,6 +179,7 @@ const Settings: React.FC<Props> = () => {
   });
 
   const updateUser = async (
+    username: string,
     email: string,
     name: string,
     bio: string,
@@ -183,6 +195,7 @@ const Settings: React.FC<Props> = () => {
       formData.append('bio', bio);
       formData.append('location', location);
       formData.append('image', image);
+      formData.append('username', username);
 
       const updatedUser = await axios.put('/user', formData, {
         headers: {
@@ -252,6 +265,20 @@ const Settings: React.FC<Props> = () => {
           </div>
         </div>
         <div className='lg:w-[85%] w-[95%]'>
+          <Label isFocus>Username</Label>
+          <FormInput
+            name='username'
+            id='username'
+            placeholder='your username'
+            type='text'
+            onChange={formik.handleChange}
+            value={formik.values.username}
+          ></FormInput>
+          {formik.touched.username && formik.errors.username ? (
+            <Error>{formik.errors.username}</Error>
+          ) : null}
+        </div>
+        <div className='lg:w-[85%] w-[95%]'>
           <Label isFocus>Name</Label>
           <FormInput
             name='name'
@@ -261,6 +288,9 @@ const Settings: React.FC<Props> = () => {
             onChange={formik.handleChange}
             value={formik.values.name}
           ></FormInput>
+          {formik.touched.name && formik.errors.name ? (
+            <Error>{formik.errors.name}</Error>
+          ) : null}
         </div>
         <div className='lg:w-[85%] w-[95%]'>
           <Label isFocus>Email</Label>
@@ -271,6 +301,9 @@ const Settings: React.FC<Props> = () => {
             onChange={formik.handleChange}
             value={formik.values.email}
           ></FormInput>
+          {formik.touched.email && formik.errors.email ? (
+            <Error>{formik.errors.email}</Error>
+          ) : null}
         </div>
         <div className='lg:w-[85%] w-[95%]'>
           <Label isFocus>Location</Label>
@@ -281,6 +314,7 @@ const Settings: React.FC<Props> = () => {
                 height='24'
                 viewBox='0 -960 960 960'
                 width='24'
+                fill={mode.mode === '' ? `black` : 'white'}
               >
                 <path d='M480.089-490Q509-490 529.5-510.589q20.5-20.588 20.5-49.5Q550-589 529.411-609.5q-20.588-20.5-49.5-20.5Q451-630 430.5-609.411q-20.5 20.588-20.5 49.5Q410-531 430.589-510.5q20.588 20.5 49.5 20.5ZM480-159q133-121 196.5-219.5T740-552q0-117.79-75.292-192.895Q589.417-820 480-820t-184.708 75.105Q220-669.79 220-552q0 75 65 173.5T480-159Zm0 79Q319-217 239.5-334.5T160-552q0-150 96.5-239T480-880q127 0 223.5 89T800-552q0 100-79.5 217.5T480-80Zm0-472Z' />
               </svg>
@@ -298,7 +332,12 @@ const Settings: React.FC<Props> = () => {
             value={formik.values.bio}
           ></Textarea>
         </div>
-        <Button type='submit' disabled={loading} variant={'ghost'}>
+        <Button
+          isLoading={loading}
+          type='submit'
+          disabled={loading}
+          variant={'ghost'}
+        >
           Save changes
         </Button>
         <LogoutButton></LogoutButton>

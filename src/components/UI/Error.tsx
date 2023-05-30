@@ -10,7 +10,7 @@ const errorVariants = cva(
   {
     variants: {
       variant: {
-        default: 'leading-9',
+        default: ' text-red-500',
         error:
           'my-4 p-2 text-center drop-shadow-2xl text-red-500 dark:bg-black border-2 border-red-500 rounded-md leading-6',
       },
