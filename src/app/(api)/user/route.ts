@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { NextResponse } from 'next/server';
-const prisma = new PrismaClient();
+import { prisma } from '@/lib/prisma';
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
 
@@ -25,7 +25,6 @@ export async function GET(req: Request) {
       ],
     },
   });
-  console.log(user);
   if (user)
     return new NextResponse(JSON.stringify({ user }), {
       status: 200,
@@ -42,7 +41,6 @@ export async function GET(req: Request) {
 }
 export async function PUT(req: Request) {
   const formData = await req.formData();
-  console.log(formData);
   const id = formData.get('id');
   const email = formData.get('email');
   const name = formData.get('name');
@@ -60,7 +58,6 @@ export async function PUT(req: Request) {
 
   if (user) {
     if (image && image instanceof Blob && image.size > 4 * 1024 * 1024) {
-      console.log('yes');
       return new NextResponse(
         JSON.stringify({ message: 'Image size exceeds the limit of 4MB' }),
         {
@@ -116,9 +113,9 @@ export async function PUT(req: Request) {
         ? await new Response(image).arrayBuffer()
         : null;
     const imageData = buffer ? Buffer.from(buffer) : null;
-    if (imageData && imageData.length > 4 * 1024 * 1024) {
-      return new NextResponse('DATA BIG U CANT DO THAT', {
-        status: 200,
+    if (imageData && imageData.length > 2 * 1024 * 1024) {
+      return new NextResponse('Image is too large it should be less then 4MB', {
+        status: 413,
         headers: { 'Content-Type': 'application/json' },
       });
     }

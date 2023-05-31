@@ -13,6 +13,7 @@ export async function GET(req: Request) {
           },
         },
       });
+      prisma.$disconnect();
       if (user) {
         return new NextResponse(JSON.stringify(user), {
           status: 200,

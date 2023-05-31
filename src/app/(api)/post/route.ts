@@ -8,7 +8,7 @@ export async function GET(req: Request) {
   try {
     prisma.$connect();
     const posts = await prisma.post.findMany({ where: { user_id: user_id } });
-    console.log(posts);
+    prisma.$disconnect();
     if (posts)
       return new NextResponse(JSON.stringify(posts), {
         status: 200,
