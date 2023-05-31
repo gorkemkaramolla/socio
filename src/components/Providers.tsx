@@ -1,5 +1,5 @@
 'use client';
-import React, { ChangeEvent, ReactNode, useEffect, useState } from 'react';
+import React, { ReactNode, useEffect } from 'react';
 import SideNavbar from './SideBar/SideNavbar';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
@@ -9,11 +9,7 @@ import { setTheme } from '@/lib/redux/darkMode';
 import { getSession } from 'next-auth/react';
 import { setUser } from '@/lib/redux/userSlice';
 import axios from 'axios';
-import { Session } from 'inspector';
-import FormInput from './UI/Input';
-import Label from './UI/Label';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 import Search from './Search/Search';
 import { getImage } from '@/util/getImage';
 interface Props {
@@ -71,7 +67,6 @@ const Providers: React.FC<Props> = ({ children }) => {
   };
   useEffect(() => {
     localStorage.setItem('mode', mode.mode!);
-    console.log(currentUser.email);
   }, [mode.mode]);
 
   return (

@@ -13,7 +13,7 @@ interface Props {
 
 const SideNavbarIcons: FC<Props> = ({ icon, title, show, href }) => {
   return (
-    <Link href={href}>
+    <Link href={`${href}`}>
       <div
         className={
           ' flex gap-5 items-center cursor-pointer ease-out duration-200 hover:dark:bg-gray-700 hover:bg-grey rounded-2xl px-3 py-2 text-lg '
