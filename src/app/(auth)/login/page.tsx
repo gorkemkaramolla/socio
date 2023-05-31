@@ -1,14 +1,17 @@
-'use client';
 import Button from '@/components/UI/Button';
 import React from 'react';
 
-import { useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import LoginPage from '@/components/Login/Login';
+import { getSession } from 'next-auth/react';
+import { getServerSession } from 'next-auth';
 interface Props {}
 
-const Login: React.FC<Props> = () => {
-  const router = useRouter();
-
+const Login = async () => {
+  const session = await getServerSession();
+  if (session) {
+    redirect('/home');
+  }
   return <LoginPage />;
 };
 
