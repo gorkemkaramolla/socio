@@ -9,7 +9,21 @@ const inputVariants = cva(
   {
     variants: {
       variant: {
-        default: '',
+        default: `
+          block
+        border-[1.5px]
+        border-slate-900 
+        focus:ring
+        outline-none 
+        focus:outline-none
+        ring-slate-900 
+        ring-1
+       
+        px-3 py-2
+        w-[100%]
+        rounded-md 
+        transition-all
+        dark:bg-black`,
         formInput: `
         block
         border-[1.5px]

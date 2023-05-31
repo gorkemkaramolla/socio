@@ -113,7 +113,7 @@ const SideNavbar: FC<Props> = () => {
         <Heading heading='h6' size={'sm'} className={'m-1'}>
           Shortcuts
         </Heading>
-        <Shortcuts username={currentUser.username} />
+        <Shortcuts />
 
         <div
           className={

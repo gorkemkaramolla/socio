@@ -78,7 +78,9 @@ const Providers: React.FC<Props> = ({ children }) => {
     <html lang='en' className={mode.mode}>
       <body className={' text-black dark:text-white '}>
         <div
-          className={'w-screen h-screen bg-grey dark:bg-black overflow-hidden'}
+          className={
+            'w-screen h-[100dvh] bg-grey dark:bg-black overflow-hidden'
+          }
         >
           {/*<Toaster position='top-center' reverseOrder={false}></Toaster>*/}
           {/*{currentUser.id !== '' && <Navbar />}*/}

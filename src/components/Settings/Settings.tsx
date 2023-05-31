@@ -199,7 +199,7 @@ const SettingsPage: React.FC<Props> = () => {
   };
 
   return (
-    <div className='w-full flex flex-col items-center h-screen mt-12 '>
+    <div className='w-full flex flex-col items-center h-[100dvh] mt-12 '>
       <Heading
         weight={'extra'}
         align={'center'}

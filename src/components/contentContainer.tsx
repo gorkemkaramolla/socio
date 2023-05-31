@@ -13,7 +13,7 @@ import ContentEmojis from '@/components/contentEmojis';
 import HomeCommentContainer from '@/components/homeCommentContainer';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
-import { getImage } from '@/app/settings/page';
+import { getImage } from '@/util/getImage';
 import Link from 'next/link';
 interface Props {
   header: {
@@ -28,7 +28,7 @@ const ContentContainer: FC<Props> = ({ header, content }) => {
   const currentUser = useSelector((state: RootState) => state.user);
   const [liked, setLiked] = useState(false);
   const [focused, setFocused] = useState(false);
-  const [bgColor, setBgColor] = useState('bg-white dark:bg-blackSwan');
+  const [bgColor, setBgColor] = useState<string>('bg-white dark:bg-blackSwan');
   const handleLikeClick = () => {
     setLiked(!liked);
   };
@@ -130,7 +130,7 @@ const ContentContainer: FC<Props> = ({ header, content }) => {
               } w-5 h-5 bg-red-100 absolute z-0  bottom-3 rounded-full ease-out duration-300`}
             >
               <img
-                className={'rounded-full'}
+                className={'bg-white rounded-full'}
                 src={
                   currentUser.imageUri ||
                   currentUser.image! ||

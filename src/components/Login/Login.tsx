@@ -94,7 +94,7 @@ const LoginPage: React.FC<Props> = () => {
   });
 
   return (
-    <div className='justify-center p-12   flex flex-col  h-screen items-center'>
+    <div className='justify-center p-12   flex flex-col  h-[100dvh] items-center'>
       <div className='gap-3 flex flex-col md:p-12   p-5 shadow-md shadow-pink-400   rounded-xl'>
         <div className='flex flex-col gap-8'>
           <Heading size={'md'} align={'center'} variant={'pink'} heading='h1'>

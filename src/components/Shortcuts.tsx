@@ -9,11 +9,12 @@ import {
   faShekelSign,
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
-interface Props {
-  username: string;
-}
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
+interface Props {}
 
-const Shortcuts: FC<Props> = ({ username }) => {
+const Shortcuts: FC<Props> = ({}) => {
+  const { username } = useSelector((state: RootState) => state.user);
   return (
     <div
       className={
