@@ -4,27 +4,31 @@ import Button from '@/components/UI/Button';
 import {
   faCommentDots,
   faEllipsis,
-  faFaceKissWinkHeart,
   faHeart,
-  faIcons,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ContentEmojis from '@/components/contentEmojis';
-import HomeCommentContainer from '@/components/homeCommentContainer';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
-import { getImage } from '@/util/getImage';
 import Link from 'next/link';
+import Paragraph from './UI/Paragraph';
 interface Props {
-  header: {
-    img: string;
-    name: string;
-    username: string;
-  };
-  content: string;
+  post: PostWithUsers;
+  user?: User;
 }
 
-const ContentContainer: FC<Props> = ({ header, content }) => {
+const ContentContainer: FC<Props> = ({ post, user }) => {
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const formattedDate = date.toLocaleString('en-US', {
+      day: 'numeric',
+      month: 'short',
+      hour: 'numeric',
+      minute: 'numeric',
+    });
+
+    return formattedDate;
+  };
   const currentUser = useSelector((state: RootState) => state.user);
   const [liked, setLiked] = useState(false);
   const [focused, setFocused] = useState(false);
@@ -66,23 +70,24 @@ const ContentContainer: FC<Props> = ({ header, content }) => {
       >
         <div
           className={
-            'w-[40px] h-[40px] absolute -top-2 -left-2 rounded-full border-2 border-gray bg-anonim'
+            'w-[40px] h-[40px] absolute -top-[0.5em] -left-[0.5em] rounded-full  bg-white"'
           }
         >
           <img
             className={'rounded-full w-[40px] object-cover h-[40px]'}
-            src={header.img}
+            src={user?.image! || post?.user?.image!}
             alt=''
           />
         </div>
-        <div className={'ml-6 flex items-center'}>
-          <span>{header.name}</span>
+        <div className={'ml-4 flex items-center'}>
+          {/* <span>{user.name}</span> */}
           <Link
-            href={`/${header.username}`}
+            href={`/${post.user?.username || user?.username}`}
             className={'text-sm text-red-400 mx-2.5'}
           >
-            @{header.username}
+            @{post.user?.username || user?.username}
           </Link>
+          <Paragraph>{formatDate(post?.created_at?.toString()!)}</Paragraph>
         </div>
         <div className={'flex'}>
           <Button
@@ -117,7 +122,7 @@ const ContentContainer: FC<Props> = ({ header, content }) => {
         </div>
       </div>
       <div className={'px-4 py-2 relative'}>
-        <div className={'content w-fit text-[0.95rem]'}>{content}</div>
+        <div className={'content w-fit text-[0.95rem]'}>{post?.content!}</div>
         <div className={'flex gap-5 items-center'}>
           <div
             className={

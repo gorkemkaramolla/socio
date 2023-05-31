@@ -1,22 +1,7 @@
 'use client';
-import React, { FC, useEffect, useRef, useState } from 'react';
-import Button from '@/components/UI/Button';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faEye,
-  faUser,
-  faBars,
-  faMagnifyingGlass,
-  faComments,
-  faGear,
-  faFireFlameCurved,
-  faShekelSign,
-  faBarsStaggered,
-  faCheck,
-} from '@fortawesome/free-solid-svg-icons';
+import React, { FC } from 'react';
+import {} from '@fortawesome/free-solid-svg-icons';
 
-import SideNavbarIcons from './SideNavbarIcons';
-import useBackgroundBlur from '@/lib/zustand/useEmoji';
 import LogoutButton from '../LogoutButton/LogoutButton';
 import Heading from '@/components/UI/Heading';
 import { useSelector } from 'react-redux';
@@ -27,12 +12,7 @@ import Shortcuts from '@/components/Shortcuts';
 interface Props {}
 
 const SideNavbar: FC<Props> = () => {
-  // @ts-ignore
-  const setBlur = useBackgroundBlur((state) => state.setBlur);
   const currentUser = useSelector((state: RootState) => state.user);
-  const [show, setShow] = useState(false);
-  const [showSearch, setShowSearch] = useState(false);
-  const searchInput = useRef<HTMLInputElement>(null);
 
   return (
     <div
@@ -81,11 +61,7 @@ const SideNavbar: FC<Props> = () => {
             <Heading heading='h6' size={'sm'} className={'m-1 text-center'}>
               {currentUser?.name}
             </Heading>
-            <p>Web Developer at gfdgfdgdf</p>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem,
-              tenetttur!
-            </p>
+            <p>{currentUser.bio}</p>
           </div>
           <div
             className={

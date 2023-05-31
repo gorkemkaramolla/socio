@@ -1,16 +1,11 @@
 'use client';
 import React, { FC } from 'react';
-import Button from '@/components/UI/Button';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 interface Props {}
 
 const Navbar: FC<Props> = () => {
   return (
-    <div
-      className={'navbar h-[80px]'}
-    >
+    <div className={'navbar h-[80px]'}>
       <div
         className={
           'flex justify-between px-3 items-center bg-white w-full h-4/6 rounded shadow-lg'

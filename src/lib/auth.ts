@@ -39,12 +39,10 @@ export const authOptions: NextAuthOptions = {
         if (!result) {
           throw new Error('No user Found with Email Please Sign Up...!');
         }
-        console.log(credentials?.password);
         const checkPassword = await compare(
           credentials?.password!,
           result?.password!
         );
-        console.log(checkPassword);
         // incorrect password
         if (!checkPassword || result?.email !== credentials?.email!) {
           throw new Error("Username or Password doesn't match");

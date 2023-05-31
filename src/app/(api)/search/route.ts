@@ -20,8 +20,6 @@ export async function GET(req: Request) {
           headers: { 'Content-Type': 'application/json' },
         });
       } else {
-        console.log('nofound');
-
         return new NextResponse('no found', {
           status: 404,
           headers: { 'Content-Type': 'application/json' },
@@ -29,6 +27,7 @@ export async function GET(req: Request) {
       }
     }
   } catch (e: any) {
+    console.error(e);
     return new NextResponse(e, {
       status: 500,
       headers: { 'Content-Type': 'application/json' },

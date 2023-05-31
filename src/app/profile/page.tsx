@@ -1,27 +1,13 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import Image from 'next/image';
 import Heading from '@/components/UI/Heading';
-import LogoutButton from '@/components/LogoutButton/LogoutButton';
-import { setUser } from '@/lib/redux/userSlice';
-import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
-import { useDispatch } from 'react-redux';
-import { getSession } from 'next-auth/react';
-import Paragraph from '@/components/UI/Paragraph';
 import ContentContainer from '@/components/contentContainer';
 import Button from '@/components/UI/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faBars,
-  faCircleXmark,
-  faPenToSquare,
-} from '@fortawesome/free-solid-svg-icons';
-import { Sidebar } from 'lucide-react';
-import SideNavbar from '@/components/SideBar/SideNavbar';
+import { faBars, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import Shortcuts from '@/components/Shortcuts';
-import { boolean } from 'zod';
 
 const DashBoard = () => {
   const selector = useSelector((state: RootState) => state.user);

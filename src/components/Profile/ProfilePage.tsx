@@ -6,12 +6,13 @@ import Heading from '@/components/UI/Heading';
 import ContentContainer from '@/components/contentContainer';
 import Button from '@/components/UI/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faL, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { Post } from '@prisma/client';
 import FormInput from '@/components/UI/Input';
 import { useFormik } from 'formik';
-import Error from '../UI/Error';
+import Error from '../Error/Error';
 import axios from 'axios';
+import toast, { Toaster } from 'react-hot-toast';
 interface Props {
   username: string;
   posts: Post[];
@@ -19,16 +20,33 @@ interface Props {
 }
 
 const ProfilePage = ({ username, requestedUser, posts }: Props) => {
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const [postProps, setPostProps] = useState<Post[]>();
+  useEffect(() => {
+    setPostProps(posts);
+  }, []);
   const handlePostSent = async (
     user_id: number,
     content: string,
     title?: string
   ) => {
-    await axios.post('/post', {
-      title: '',
-      content: content,
-      user_id: user_id,
-    });
+    try {
+      setLoading(true);
+      const post = await axios.post('/post', {
+        title: '',
+        content: content,
+        user_id: user_id,
+      });
+      if (post) {
+        toast.success('Successfully posted');
+        setPostProps([post.data as unknown as Post, ...postProps!]);
+      }
+      setLoading(false);
+    } catch (e: any) {
+      setLoading(false);
+      toast.error(e.response.data);
+    }
   };
   const formik = useFormik({
     initialValues: {
@@ -41,7 +59,7 @@ const ProfilePage = ({ username, requestedUser, posts }: Props) => {
         post?: string;
       } = {};
       // if (!values.post) {
-      //   errors.post = 'Email is required please fill';
+      //   errors.post = 'Post field can not be empty';
       // }
       return errors;
     },
@@ -50,6 +68,7 @@ const ProfilePage = ({ username, requestedUser, posts }: Props) => {
     },
   });
   const currentUser = useSelector((state: RootState) => state.user);
+  const mode = useSelector((state: RootState) => state.mode);
 
   const [show, setShow] = useState(false);
 
@@ -138,11 +157,22 @@ const ProfilePage = ({ username, requestedUser, posts }: Props) => {
                 </div>
               )}
             </div>
-            <div className='w-9/12 bg-white dark:bg-blackSwan shadow-md rounded-2xl p-5 flex flex-col justify-center'>
-              <span className='text-md font-semibold'>
+            <div className='w-9/12 bg-white dark:bg-blackSwan shadow-md rounded-2xl px-5 flex flex-col justify-center'>
+              <p className='text-md font-semibold'>
                 {requestedUser?.bio || 'bio:-'}
-              </span>
-              <p> {requestedUser?.bio || 'bio:-'}</p>
+              </p>
+              <p className='flex gap-1'>
+                <svg
+                  xmlns='http://www.w3.org/2000/svg'
+                  height='24'
+                  viewBox='0 -960 960 960'
+                  width='24'
+                  fill={mode.mode === '' ? `black` : 'white'}
+                >
+                  <path d='M480-159q133-121 196.5-219.5T740-552q0-117.79-75.292-192.895Q589.417-820 480-820t-184.708 75.105Q220-669.79 220-552q0 75 65 173.5T480-159Zm0 79Q319-217 239.5-334.5T160-552q0-150 96.5-239T480-880q127 0 223.5 89T800-552q0 100-79.5 217.5T480-80ZM370-440h60v-120h100v120h60v-185l-110-73-110 73v185Zm110-112Z' />
+                </svg>
+                {requestedUser.location}
+              </p>
             </div>
           </div>
 
@@ -172,24 +202,24 @@ const ProfilePage = ({ username, requestedUser, posts }: Props) => {
               placeholder='Say something'
               value={formik.values.post}
               onChange={formik.handleChange}
-              variant={'formInput'}
+              variant={'default'}
             ></FormInput>
-            {formik.touched.post && formik.errors.post ? (
-              <Error>{formik.errors.post}</Error>
-            ) : null}
-            <Button type='submit'>Send</Button>
+
+            <Button
+              isLoading={loading}
+              type='submit'
+              disabled={loading}
+              variant={'ghost'}
+            >
+              post
+            </Button>
           </form>
+          {formik.touched.post && formik.errors.post ? (
+            <Error>{formik.errors.post}</Error>
+          ) : null}
           <div className='w-full md:p-3 p-6'>
-            {posts?.map((post, i) => (
-              <ContentContainer
-                key={i}
-                header={{
-                  img: requestedUser?.image! || requestedUser?.imageUri!,
-                  name: requestedUser?.name!,
-                  username: requestedUser?.username!,
-                }}
-                content={post.content!}
-              />
+            {postProps?.map((post, i) => (
+              <ContentContainer key={i} post={post!} user={requestedUser} />
             ))}
           </div>
         </div>
@@ -203,6 +233,7 @@ const ProfilePage = ({ username, requestedUser, posts }: Props) => {
             Load More
           </Button>
         </div>
+        <Toaster position='bottom-left' />
       </div>
     );
   else {

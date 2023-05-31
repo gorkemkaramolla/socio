@@ -9,7 +9,7 @@ import GoogleIcon from '@mui/icons-material/Google';
 import Heading from '../UI/Heading';
 import Link from 'next/link';
 import { useFormik } from 'formik';
-import Error from '../UI/Error';
+import Error from '../Error/Error';
 import Paragraph from '../UI/Paragraph';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
@@ -46,10 +46,8 @@ const RegisterPage: React.FC<Props> = () => {
       });
 
       // Dispatch the setUser action with the extracted user data
-
-      console.log('User logged in successfully');
-    } catch (e) {
-      toast.error('Something Went Wrong');
+    } catch (e: any) {
+      toast.error(e.response.data);
     }
   };
 

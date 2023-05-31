@@ -10,7 +10,7 @@ import Heading from '../UI/Heading';
 import Link from 'next/link';
 import { useFormik } from 'formik';
 
-import Error from '../UI/Error';
+import Error from '../Error/Error';
 import Paragraph from '../UI/Paragraph';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
@@ -48,10 +48,8 @@ const LoginPage: React.FC<Props> = () => {
       });
 
       // Dispatch the setUser action with the extracted user data
-
-      console.log('User logged in successfully');
-    } catch (e) {
-      toast.error('Something Went Wrong');
+    } catch (e: any) {
+      toast.error(e.response.data);
     }
   };
   const loginWithCredentials = async (email: string, password: string) => {
@@ -61,7 +59,6 @@ const LoginPage: React.FC<Props> = () => {
       password: password,
       callbackUrl: '/profile',
     });
-    console.log(status);
   };
   const formik = useFormik({
     initialValues: { email: '', password: '' },

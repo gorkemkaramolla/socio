@@ -13,7 +13,7 @@ const inputVariants = cva(
   {
     variants: {
       variant: {
-        default: 'text-gray-700 leading-2',
+        default: 'text-gray-700  text-sm',
       },
       align: {
         center: 'text-center',

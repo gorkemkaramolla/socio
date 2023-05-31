@@ -1,9 +1,7 @@
-import Button from '@/components/UI/Button';
 import React from 'react';
 
-import { redirect, useRouter } from 'next/navigation';
+import { redirect } from 'next/navigation';
 import LoginPage from '@/components/Login/Login';
-import { getSession } from 'next-auth/react';
 import { getServerSession } from 'next-auth';
 interface Props {}
 

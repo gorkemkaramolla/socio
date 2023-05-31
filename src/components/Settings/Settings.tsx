@@ -1,5 +1,4 @@
 'use client';
-import { Buffer } from 'buffer';
 import FormInput from '@/components/UI/Input';
 import Label from '@/components/UI/Label';
 import { RootState } from '@/store';
@@ -17,8 +16,7 @@ import ModalUi from '@/components/UI/Modal';
 import { getLocation, getLocationDetails } from '@/util/getLocation';
 import Paragraph from '@/components/UI/Paragraph';
 import LogoutButton from '@/components/LogoutButton/LogoutButton';
-import Error from '@/components/UI/Error';
-import { blobToArrayBuffer } from 'blob-util';
+import Error from '@/components/Error/Error';
 interface Props {}
 
 const SettingsPage: React.FC<Props> = () => {
@@ -39,7 +37,6 @@ const SettingsPage: React.FC<Props> = () => {
   const errorToast = (e: any) => toast.error(e);
   const closeHandler = () => {
     setVisible(false);
-    console.log('closed');
   };
 
   useEffect(() => {
@@ -52,9 +49,7 @@ const SettingsPage: React.FC<Props> = () => {
   useEffect(() => {
     dispatch(setUser({ ...selector, image: imageSrc! }));
   }, [imageSrc]);
-  useEffect(() => {
-    console.log(base64Image);
-  }, [base64Image]);
+  useEffect(() => {}, [base64Image]);
   const base64StringToBlob = (base64String: string, type: string): Blob => {
     const sliceSize = 512;
     const byteCharacters = atob(

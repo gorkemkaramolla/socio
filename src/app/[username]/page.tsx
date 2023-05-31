@@ -1,7 +1,6 @@
 import ProfilePage from '@/components/Profile/ProfilePage';
 import { getImage } from '@/util/getImage';
 import axios from 'axios';
-
 interface Props {
   params: {
     username: string;
@@ -14,7 +13,7 @@ export default async function Profile({ params }: Props) {
       const user = await axios.get('http://localhost:3000/user', {
         params: { username: params.username },
       });
-      console.log(user);
+
       const posts = await axios.get('http://localhost:3000/post', {
         params: { user_id: user.data.user.id },
       });
@@ -30,6 +29,6 @@ export default async function Profile({ params }: Props) {
       );
     }
   } catch (e) {
-    return <div>404 NOT FOUND</div>;
+    return <div>404</div>;
   }
 }
