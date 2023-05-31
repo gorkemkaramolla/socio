@@ -4,25 +4,28 @@ import { cn } from '@/lib/utils';
 
 const inputVariants = cva(
   `className='
-   block
-   border-[1.5px]
-   border-pink-400 
-   focus:ring
-   outline-none 
-   focus:outline-none
-   ring-pink-400
-  
-   px-3 py-2
-   w-[100%]
-   rounded-lg 
-   transition-all
-   dark:bg-black
+
    `,
   {
     variants: {
       variant: {
         default: '',
+        formInput: `
+        block
+        border-[1.5px]
+        border-pink-400 
+        focus:ring
+        outline-none 
+        focus:outline-none
+        ring-pink-400
+       
+        px-3 py-2
+        w-[100%]
+        rounded-lg 
+        transition-all
+        dark:bg-black`,
       },
+
       inputSize: {
         default: '',
       },

@@ -15,7 +15,7 @@ import Label from './UI/Label';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Search from './Search/Search';
-import { getImage } from '@/app/settings/page';
+import { getImage } from '@/util/getImage';
 interface Props {
   children: ReactNode;
 }
@@ -23,12 +23,12 @@ interface Props {
 const Providers: React.FC<Props> = ({ children }) => {
   const getUser = async () => {
     // Get the user data from local storage or cache
-    const cachedUserData = localStorage.getItem('userData');
-    if (cachedUserData) {
-      const parsedData = JSON.parse(cachedUserData);
-      const imgSrc = getImage(parsedData.image);
-      dispatch(setUser({ ...parsedData, image: imgSrc }));
-    }
+    // const cachedUserData = localStorage.getItem('userData');
+    // if (cachedUserData) {
+    //   const parsedData = JSON.parse(cachedUserData);
+    //   const imgSrc = getImage(parsedData.image);
+    //   dispatch(setUser({ ...parsedData, image: imgSrc }));
+    // }
 
     const session = await getSession();
     if (session) {
@@ -41,11 +41,11 @@ const Providers: React.FC<Props> = ({ children }) => {
         const newData = currentUser.data.user;
 
         // Check if the data has changed
-        if (JSON.stringify(newData) !== cachedUserData) {
-          localStorage.setItem('userData', JSON.stringify(newData));
-          const imgSrc = getImage(newData.image);
-          dispatch(setUser({ ...newData, image: imgSrc }));
-        }
+        // if (JSON.stringify(newData) !== cachedUserData) {
+        // localStorage.setItem('userData', JSON.stringify(newData));
+        const imgSrc = getImage(newData.image);
+        dispatch(setUser({ ...newData, image: imgSrc }));
+        // }
       } else {
         dispatch(setUser(null));
       }

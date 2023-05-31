@@ -117,6 +117,7 @@ const RegisterPage: React.FC<Props> = () => {
                 Email
               </Label>
               <FormInput
+                variant={'formInput'}
                 onBlur={handleBlur1}
                 onFocus={handleFocus1}
                 className='mt-2'
@@ -137,6 +138,7 @@ const RegisterPage: React.FC<Props> = () => {
                 Password
               </Label>
               <FormInput
+                variant={'formInput'}
                 onBlur={handleBlur2}
                 onFocus={handleFocus2}
                 className='mt-2 transition-all'
