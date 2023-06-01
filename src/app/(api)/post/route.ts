@@ -37,7 +37,7 @@ export async function GET(req: Request) {
     }
   } else {
     const posts = await prisma.post.findMany({
-      take: 100,
+      take: 5,
       orderBy: { created_at: 'desc' },
       select: {
         id: true,

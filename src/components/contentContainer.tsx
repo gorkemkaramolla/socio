@@ -82,10 +82,10 @@ const ContentContainer: FC<Props> = ({ post, user }) => {
         <div className={'ml-4 flex items-center'}>
           {/* <span>{user.name}</span> */}
           <Link
-            href={`/${post.user?.username || user?.username}`}
+            href={`/${post?.user?.username || user?.username}`}
             className={'text-sm text-red-400 mx-2.5'}
           >
-            @{post.user?.username || user?.username}
+            @{post?.user?.username || user?.username}
           </Link>
           <Paragraph>{formatDate(post?.created_at?.toString()!)}</Paragraph>
         </div>
