@@ -19,6 +19,7 @@ const GorkemTypeWriter: FC<Props<HTMLElement>> = ({
 
   useEffect(() => {
     const container = containerRef.current;
+
     let childElements: HTMLElement[] = [];
 
     if (container && container.children.length === 1) {

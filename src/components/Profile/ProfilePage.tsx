@@ -13,6 +13,7 @@ import { useFormik } from 'formik';
 import Error from '../Error/Error';
 import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
+import { Loader } from 'lucide-react';
 interface Props {
   username: string;
   posts: Post[];
@@ -21,10 +22,12 @@ interface Props {
 
 const ProfilePage = ({ username, requestedUser, posts }: Props) => {
   const [loading, setLoading] = useState<boolean>(false);
+  const [postLoading, setPostLoading] = useState<boolean>(true);
 
   const [postProps, setPostProps] = useState<Post[]>();
   useEffect(() => {
     setPostProps(posts);
+    setPostLoading(false);
   }, []);
   const handlePostSent = async (
     user_id: number,
@@ -222,6 +225,7 @@ const ProfilePage = ({ username, requestedUser, posts }: Props) => {
               <ContentContainer key={i} post={post!} user={requestedUser} />
             ))}
           </div>
+          {postLoading && <Loader className='h-4 w-4 animate-spin' />}
         </div>
 
         <div className='w-full flex justify-center items-center'>

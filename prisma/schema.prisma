@@ -48,8 +48,8 @@ model Reaction {
   reactions   String
   created_at  DateTime  @default(now())
   modified_at DateTime?
-  post_id     Int
-  user_id     Int
+  post_id     Int       @unique
+  user_id     Int       @unique
   user        User      @relation(fields: [user_id], references: [id])
   post        Post      @relation(fields: [post_id], references: [id])
 }
@@ -58,7 +58,7 @@ model PostLike {
   id         Int      @id @default(autoincrement())
   reactions  String
   created_at DateTime @default(now())
-  liked      Boolean  @default(false)
+  liked      Boolean  @default(true)
   post_id    Int
   user_id    Int
   user       User     @relation(fields: [user_id], references: [id])

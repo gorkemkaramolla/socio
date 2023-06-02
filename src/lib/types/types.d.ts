@@ -25,4 +25,10 @@ interface PostWithUsers {
     imageUri?: string;
     location?: string | null;
   };
+  PostLike: {
+    id: number;
+    user_id: number;
+    post_id: number;
+    liked: boolean;
+  }[];
 }

@@ -12,6 +12,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import Link from 'next/link';
 import Paragraph from './UI/Paragraph';
+import axios from 'axios';
 interface Props {
   post: PostWithUsers;
   user?: User;
@@ -30,14 +31,40 @@ const ContentContainer: FC<Props> = ({ post, user }) => {
     return formattedDate;
   };
   const currentUser = useSelector((state: RootState) => state.user);
+  // const [postState, setPostState] = useState<PostWithUsers>();
   const [liked, setLiked] = useState(false);
+  const [numberLikes, setNumberLikes] = useState<number>(
+    post?.PostLike?.length
+  );
   const [focused, setFocused] = useState(false);
   const [bgColor, setBgColor] = useState<string>('bg-white dark:bg-blackSwan');
-  const handleLikeClick = () => {
-    setLiked(!liked);
+  useEffect(() => {
+    const likeToDelete = post?.PostLike?.find(
+      (like) => like.user_id === parseInt(currentUser?.id)
+    );
+    if (likeToDelete) setLiked(true);
+  }, [post, currentUser]);
+
+  const handleLikeClick = async (post_id: number) => {
+    try {
+      const response = await axios.post('/post/like', {
+        user_id: currentUser.id,
+        post_id: post_id,
+      });
+      if (response.data.liked) {
+        setNumberLikes((prev) => prev + 1);
+      } else {
+        setNumberLikes((prev) => prev - 1);
+      }
+      setLiked(response.data.liked);
+    } catch (error) {
+      console.error('Error liking post', error);
+    }
   };
 
-  const handleOptionsClick = () => {};
+  const handleSetLike = () => {
+    handleLikeClick(post.id);
+  };
   const handleCommentClick = (e: any) => {
     if (!focused) {
       const unBluredContents = document.querySelectorAll('.unBlured');
@@ -98,7 +125,7 @@ const ContentContainer: FC<Props> = ({ post, user }) => {
                 ? ' text-red-500 ease-out duration-300'
                 : 'heart text-stone-300 ease-out duration-300'
             }
-            onClick={handleLikeClick}
+            onClick={handleSetLike}
           >
             <FontAwesomeIcon icon={faHeart} />
           </Button>
@@ -109,7 +136,7 @@ const ContentContainer: FC<Props> = ({ post, user }) => {
           >
             <FontAwesomeIcon icon={faCommentDots} />
           </Button>
-          <div onClick={handleOptionsClick}>
+          <div>
             <Button
               variant={'ghost'}
               size={'smSquare'}
@@ -125,9 +152,9 @@ const ContentContainer: FC<Props> = ({ post, user }) => {
         <div className={'content w-fit text-[0.95rem]'}>{post?.content!}</div>
         <div className={'flex gap-5 items-center'}>
           <div
-            className={
-              'content pt-2 text-xs text-red-500 font-bold flex items-center cursor-pointer'
-            }
+            className={`${
+              liked ? 'text-red-500' : 'text-stone-300'
+            } content pt-2 text-xs font-bold flex items-center cursor-pointer`}
           >
             <div
               className={`${
@@ -147,11 +174,11 @@ const ContentContainer: FC<Props> = ({ post, user }) => {
             <Button
               variant={'ghost'}
               size={'smSquare'}
-              className={'text-red-500 flex justify-center items-center z-10'}
+              className={' flex justify-center items-center z-10'}
             >
               <FontAwesomeIcon icon={faHeart} />
             </Button>
-            3.653 likes
+            <p className=''>{numberLikes?.toString()}</p>
           </div>
 
           <div

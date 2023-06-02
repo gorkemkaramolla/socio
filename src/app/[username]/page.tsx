@@ -17,6 +17,7 @@ export default async function Profile({ params }: Props) {
       const posts = await axios.get('http://localhost:3000/post', {
         params: { user_id: user.data.user.id },
       });
+
       return (
         <ProfilePage
           requestedUser={{

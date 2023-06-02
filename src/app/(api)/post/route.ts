@@ -10,6 +10,21 @@ export async function GET(req: Request) {
       const posts = await prisma.post.findMany({
         where: { user_id: user_id },
         orderBy: { created_at: 'desc' },
+        select: {
+          id: true,
+          created_at: true,
+          title: true,
+          content: true,
+
+          PostLike: {
+            select: {
+              id: true,
+              user_id: true,
+              post_id: true,
+              liked: true,
+            },
+          },
+        },
       });
       prisma.$disconnect();
       if (posts)
@@ -51,6 +66,14 @@ export async function GET(req: Request) {
             username: true,
             imageUri: true,
             location: true,
+          },
+        },
+        PostLike: {
+          select: {
+            id: true,
+            user_id: true,
+            post_id: true,
+            liked: true,
           },
         },
       },
