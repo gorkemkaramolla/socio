@@ -42,7 +42,7 @@ const SideNavbar: FC<Props> = () => {
               />
               <div
                 className={
-                  'min-w-[60px] min-h-[60px] absolute top-[60px]  border-grey border-2 rounded-full bg-white'
+                  'min-w-[60px] min-h-[60px] absolute top-[60px]  border-lavender border-2 rounded-full bg-white'
                 }
               >
                 {/* todo:******* Burda bir sıkıntı var benim resim gelmiyor bakarsın ********** */}

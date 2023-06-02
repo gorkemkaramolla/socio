@@ -4,19 +4,18 @@ import { cn } from '@/lib/utils';
 
 const textAreaVariants = cva(
   `className='
-  block
-  border-[1.5px]
-  border-pink-400 
-  focus:ring
-  outline-none 
-  focus:outline-none
-  ring-pink-400
- 
-  px-3 py-2
-  w-[100%]
-  rounded-lg 
-  transition-all
-  dark:bg-black
+   block
+        px-3 
+        w-full 
+        rounded-2xl 
+      
+        outline-none 
+        focus:outline-none
+        
+        py-2
+        transition-all
+        bg-white/80
+        dark:bg-black/80
    `,
   {
     variants: {
@@ -43,6 +42,7 @@ export interface TextAreaProps
 
 const Textarea: FC<TextAreaProps> = ({
   name,
+  rows,
   className,
   variant,
   inputSize,
@@ -51,6 +51,7 @@ const Textarea: FC<TextAreaProps> = ({
 }) => {
   return (
     <textarea
+        rows={rows}
       className={cn(textAreaVariants({ variant, inputSize, className }))} // Use inputSize instead of size
       {...props}
     />

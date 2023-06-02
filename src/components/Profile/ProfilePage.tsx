@@ -23,7 +23,6 @@ interface Props {
 const ProfilePage = ({ username, requestedUser, posts }: Props) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [postLoading, setPostLoading] = useState<boolean>(true);
-
   const [postProps, setPostProps] = useState<Post[]>();
   useEffect(() => {
     setPostProps(posts);
@@ -120,7 +119,7 @@ const ProfilePage = ({ username, requestedUser, posts }: Props) => {
               />
             </div>
             {/* Profile Picture */}
-            <div className='w-[120px] h-[120px] rounded-full bg-white absolute -bottom-12 left-6 border-4 border-grey dark:border-blackSwan'>
+            <div className='w-[120px] h-[120px] rounded-full bg-white absolute -bottom-12 left-6 border-4 border-lavender'>
               {/* Image Overlay */}
               <div
                 className='w-full h-full absolute opacity-0 hover:opacity-100 rounded-full'
@@ -149,13 +148,25 @@ const ProfilePage = ({ username, requestedUser, posts }: Props) => {
           <div className='w-full h-[140px] flex justify-end'>
             <div className='w-3/12 flex flex-col justify-end items-center gap-2'>
               {userPage && (
-                <div className='bg-white dark:bg-blackSwan rounded-full px-3 py-1 w-10/12 text-center shadow-md cursor-pointer'>
+                <div className='
+                bg-lavender
+                text-white
+                hover:bg-white
+                hover:text-black
+               transition-all duration-300
+                rounded-full px-3 py-1 w-10/12 text-center shadow-md cursor-pointer'>
                   <span className='md:block xs:hidden'>Edit Profile</span>
                   <span className='md:hidden'>Edit</span>
                 </div>
               )}
               {userPage && (
-                <div className='bg-white dark:bg-blackSwan rounded-full px-3 py-1 w-10/12 text-center shadow-md cursor-pointer'>
+                <div className='
+                 bg-lavender
+                text-white
+                hover:bg-white
+                hover:text-black
+               transition-all duration-300
+                rounded-full px-3 py-1 w-10/12 text-center shadow-md cursor-pointer'>
                   Settings
                 </div>
               )}

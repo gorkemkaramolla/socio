@@ -20,9 +20,10 @@ const inputVariants = cva(
         w-[100%]
         rounded-md 
         transition-all
-        dark:bg-black`,
+        dark:bg-black
+        `,
 
-        formInput: `
+        xxx: `
         block
         border-[1.5px]
         border-pink-400 
@@ -36,6 +37,20 @@ const inputVariants = cva(
         rounded-lg 
         transition-all
         dark:bg-black`,
+
+        formInput: `
+        block
+        px-3 
+        w-full 
+        rounded-full 
+       
+        outline-none 
+        focus:outline-none
+      
+        py-2
+        transition-all
+        bg-white/80
+        dark:bg-black/80`,
       },
 
       inputSize: {

@@ -83,16 +83,16 @@ const ContentContainer: FC<Props> = ({ post, user }) => {
     }
     setFocused(!focused);
   };
-  //
+  const postID = Math.floor(Math.random() * 100000000)
   useEffect(() => {}, [focused]);
 
   return (
-    <div
+    <div id={postID}
       className={` unBlured flex flex-col ${bgColor} h-fit min-h-[50px] my-4 shadow-2xl rounded-xl relative ease-out duration-300 max-h-fit`}
     >
       <div
         className={
-          ' flex items-center justify-between header h-fit px-4 w-full p-2 border-b-[1px] border-b-red-500 font-bold'
+          ' flex items-center justify-between header h-fit px-4 w-full p-2 border-b-[1px] border-b-lavender font-bold'
         }
       >
         <div
@@ -101,7 +101,7 @@ const ContentContainer: FC<Props> = ({ post, user }) => {
           }
         >
           <img
-            className={'rounded-full w-[40px] object-cover h-[40px]'}
+            className={'rounded-full border-2 border-lavender w-[40px] object-cover h-[40px]'}
             src={user?.image! || post?.user?.image!}
             alt=''
           />
@@ -110,7 +110,7 @@ const ContentContainer: FC<Props> = ({ post, user }) => {
           {/* <span>{user.name}</span> */}
           <Link
             href={`/${post?.user?.username || user?.username}`}
-            className={'text-sm text-red-400 mx-2.5'}
+            className={'text-sm text-lavender mx-2.5'}
           >
             @{post?.user?.username || user?.username}
           </Link>
@@ -194,7 +194,11 @@ const ContentContainer: FC<Props> = ({ post, user }) => {
             >
               <FontAwesomeIcon icon={faCommentDots} />
             </Button>
-            50 comments
+            <Link href={`/Post`}
+            >
+              50 comments
+            </Link>
+
           </div>
         </div>
         <ContentEmojis setBgColor={setBgColor} />

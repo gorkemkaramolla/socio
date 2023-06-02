@@ -194,136 +194,163 @@ const SettingsPage: React.FC<Props> = () => {
   };
 
   return (
-    <div className='w-full flex flex-col items-center h-[100dvh] mt-12 '>
-      <Heading
-        weight={'extra'}
-        align={'center'}
-        size={'md'}
-        variant={'default'}
-        heading='h1'
-      >
-        Settings
-      </Heading>
+    <div className='w-full flex flex-col items-center h-[100dvh] '>
+     <div className={'w-5/6 flex flex-col items-center md:my-16 m-auto'}>
+       <Heading heading='h6' size={'md'} className={'m-4 justify-start w-full'}>
+         Settings
+       </Heading>
+       <div className=' w-full'>
+         <div className='flex gap-8 items-center'>
+           <img
+               className='w-[60px] h-[60px] profile-img dark:bg-white object-cover rounded-full border-2 border-lavender '
+               src={selector.imageUri || imageSrc || '/userdefault.png'}
+               alt='/userdefault.png'
+           />
+           <Button
+               className='active:text-blue-900'
+               onClick={handler}
+               variant={'ghost'}
+           >
+             <Heading
+                 className='transition-colors hover:text-blue-500   '
+                 weight={'default'}
+                 heading='h5'
+                 size={'default'}
+             >
+               Change your profile picture
+             </Heading>
+           </Button>
+         </div>
+       </div>
 
-      <form
-        onSubmit={formik.handleSubmit}
-        className='px-12 w-full justify-start flex items-center  flex-col gap-12'
-      >
-        <div>
-          <ModalUi
-            userHasPic={!selector.image}
-            deleteCurrentPic={deleteCurrentPic}
-            handleFileUpload={handleFileUpload}
-            closeHandler={closeHandler}
-            visible={visible}
-          />
-        </div>
-        <div className='lg:w-[85%] w-[95%] relative'>
-          <div className='flex gap-8 items-center'>
-            <img
-              style={{ borderRadius: '50%' }}
-              className='w-[60px] h-[60px] profile-img dark:bg-white object-cover rounded-full '
-              src={selector.imageUri || imageSrc || '/userdefault.png'}
-              alt='/userdefault.png'
-            />
-            <Button
-              className='active:text-blue-900'
-              onClick={handler}
-              variant={'ghost'}
-            >
-              <Heading
-                className='transition-colors hover:text-blue-500   '
-                weight={'default'}
-                heading='h5'
-                size={'default'}
-              >
-                Change your profile picture
-              </Heading>
-            </Button>
-          </div>
-        </div>
-        <div className='lg:w-[85%] w-[95%]'>
-          <Label isFocus>Username</Label>
-          <FormInput
-            variant={'formInput'}
-            name='username'
-            id='username'
-            placeholder='your username'
-            type='text'
-            onChange={formik.handleChange}
-            value={formik.values.username}
-          ></FormInput>
-          {formik.touched.username && formik.errors.username ? (
-            <Error>{formik.errors.username}</Error>
-          ) : null}
-        </div>
-        <div className='lg:w-[85%] w-[95%]'>
-          <Label isFocus>Name</Label>
-          <FormInput
-            variant={'formInput'}
-            name='name'
-            id='name'
-            placeholder='Whats your name'
-            type='text'
-            onChange={formik.handleChange}
-            value={formik.values.name}
-          ></FormInput>
-          {formik.touched.name && formik.errors.name ? (
-            <Error>{formik.errors.name}</Error>
-          ) : null}
-        </div>
-        <div className='lg:w-[85%] w-[95%]'>
-          <Label isFocus>Email</Label>
-          <FormInput
-            variant={'formInput'}
-            name='name'
-            id='email'
-            type='text'
-            onChange={formik.handleChange}
-            value={formik.values.email}
-          ></FormInput>
-          {formik.touched.email && formik.errors.email ? (
-            <Error>{formik.errors.email}</Error>
-          ) : null}
-        </div>
-        <div className='lg:w-[85%] w-[95%]'>
-          <Label isFocus>Location</Label>
-          <div className='flex  items-center r gap-3'>
-            <Button className='p-0' variant={'ghost'} onClick={handleLocation}>
-              <svg
-                xmlns='http://www.w3.org/2000/svg'
-                height='24'
-                viewBox='0 -960 960 960'
-                width='24'
-                fill={mode.mode === '' ? `black` : 'white'}
-              >
-                <path d='M480.089-490Q509-490 529.5-510.589q20.5-20.588 20.5-49.5Q550-589 529.411-609.5q-20.588-20.5-49.5-20.5Q451-630 430.5-609.411q-20.5 20.588-20.5 49.5Q410-531 430.589-510.5q20.588 20.5 49.5 20.5ZM480-159q133-121 196.5-219.5T740-552q0-117.79-75.292-192.895Q589.417-820 480-820t-184.708 75.105Q220-669.79 220-552q0 75 65 173.5T480-159Zm0 79Q319-217 239.5-334.5T160-552q0-150 96.5-239T480-880q127 0 223.5 89T800-552q0 100-79.5 217.5T480-80Zm0-472Z' />
-              </svg>
-            </Button>
-            <Paragraph>{selector.location || location}</Paragraph>
-          </div>
-        </div>
-        <div className='lg:w-[85%] w-[95%]'>
-          <Label isFocus>Bio</Label>
-          <Textarea
-            placeholder='Tell me about yourself'
-            name='bio'
-            id='bio'
-            onChange={formik.handleChange}
-            value={formik.values.bio}
-          ></Textarea>
-        </div>
-        <Button
-          isLoading={loading}
-          type='submit'
-          disabled={loading}
-          variant={'ghost'}
-        >
-          Save changes
-        </Button>
-        <LogoutButton></LogoutButton>
-        <Toaster position='bottom-left' />
-      </form>
+       <form
+           onSubmit={formik.handleSubmit}
+           className=' w-full flex flex-col '
+       ><div className={'w-full flex md:flex-row flex-col '}>
+         <div className={'flex flex-col w-full md:w-1/2 h-full justify-end pr-0 md:pr-5 gap-3'}>
+           <div>
+             <ModalUi
+                 userHasPic={!selector.image}
+                 deleteCurrentPic={deleteCurrentPic}
+                 handleFileUpload={handleFileUpload}
+                 closeHandler={closeHandler}
+                 visible={visible}
+             />
+           </div>
+
+           <div className=''>
+             {/*<Label isFocus>Username</Label>*/}
+             <label htmlFor="">Username</label>
+             <div className={' p-0.5 rounded-full  bg-gradient-to-r from-aqua via-aurora to-lavender'}>
+               <FormInput
+                   variant={'formInput'}
+                   name='username'
+                   id='username'
+                   placeholder='your username'
+                   type='text'
+                   onChange={formik.handleChange}
+                   value={formik.values.username}
+               ></FormInput>
+             </div>
+             {formik.touched.username && formik.errors.username ? (
+                 <Error>{formik.errors.username}</Error>
+             ) : null}
+           </div>
+           <div className=''>
+             {/*<Label isFocus>Name</Label>*/}
+             <label htmlFor="">Name</label>
+             <div className={' p-0.5 rounded-full  bg-gradient-to-r from-aqua via-aurora to-lavender'}>
+               <FormInput
+                   variant={'formInput'}
+                   name='name'
+                   id='name'
+                   placeholder='Whats your name'
+                   type='text'
+                   onChange={formik.handleChange}
+                   value={formik.values.name}
+               ></FormInput>
+             </div>
+
+             {formik.touched.name && formik.errors.name ? (
+                 <Error>{formik.errors.name}</Error>
+             ) : null}
+           </div>
+           <div className=']'>
+             {/*<Label isFocus>Email</Label>*/}
+             <label htmlFor="">Email</label>
+             <div className={' p-0.5 rounded-full  bg-gradient-to-r from-aqua via-aurora to-lavender'}>
+               <FormInput
+                   variant={'formInput'}
+                   name='name'
+                   id='email'
+                   type='text'
+                   onChange={formik.handleChange}
+                   value={formik.values.email}
+               ></FormInput>
+             </div>
+
+             {formik.touched.email && formik.errors.email ? (
+                 <Error>{formik.errors.email}</Error>
+             ) : null}
+           </div>
+
+         </div>
+         <div className={'flex flex-col w-full md:w-1/2 h-full justify-end pl-0 md:pl-5'}>
+           <div className='LOCATION'>
+             {/*<Label isFocus>Location</Label>*/}
+             <label htmlFor="">Location</label>
+
+             <div className='flex  items-center r gap-3'>
+               <Button className='p-0' variant={'ghost'} onClick={handleLocation}>
+                 <svg
+                     xmlns='http://www.w3.org/2000/svg'
+                     height='24'
+                     viewBox='0 -960 960 960'
+                     width='24'
+                     fill={mode.mode === '' ? `black` : 'white'}
+                 >
+                   <path d='M480.089-490Q509-490 529.5-510.589q20.5-20.588 20.5-49.5Q550-589 529.411-609.5q-20.588-20.5-49.5-20.5Q451-630 430.5-609.411q-20.5 20.588-20.5 49.5Q410-531 430.589-510.5q20.588 20.5 49.5 20.5ZM480-159q133-121 196.5-219.5T740-552q0-117.79-75.292-192.895Q589.417-820 480-820t-184.708 75.105Q220-669.79 220-552q0 75 65 173.5T480-159Zm0 79Q319-217 239.5-334.5T160-552q0-150 96.5-239T480-880q127 0 223.5 89T800-552q0 100-79.5 217.5T480-80Zm0-472Z' />
+                 </svg>
+               </Button>
+               <Paragraph>{selector.location || location}</Paragraph>
+             </div>
+           </div>
+           <div className='BIO'>
+             {/*<Label isFocus>Bio</Label>*/}
+             <label htmlFor="">Bio</label>
+             <div className={' p-0.5 rounded-2xl  bg-gradient-to-r from-aqua via-aurora to-lavender'}>
+               <Textarea
+                   style={{
+                     resize: 'none'
+                   }}
+                   rows= {4}
+                   placeholder='Tell me about yourself'
+                   name='bio'
+                   id='bio'
+                   onChange={formik.handleChange}
+                   value={formik.values.bio}
+
+               ></Textarea>
+             </div>
+
+           </div>
+         </div>
+       </div>
+         <div className={'w-full flex flex-col items-end my-5 gap-3'}>
+           <Button
+               isLoading={loading}
+               type='submit'
+               disabled={loading}
+               variant={'ghost'}
+               className={'bg-lavender text-white rounded-full h-[32px]'}
+           >
+             Save changes
+           </Button>
+           <div className={'w-[118px] h-[32px] bg-blackSwan text-white flex items-center rounded-full'}><LogoutButton></LogoutButton></div>
+         </div>
+       </form>
+     </div>
+      <Toaster position='bottom-left' />
     </div>
   );
 };
