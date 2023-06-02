@@ -13,12 +13,14 @@ import { RootState } from '@/store';
 import Link from 'next/link';
 import Paragraph from './UI/Paragraph';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 interface Props {
   post: PostWithUsers;
   user?: User;
 }
 
 const ContentContainer: FC<Props> = ({ post, user }) => {
+  const router = useRouter();
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     const formattedDate = date.toLocaleString('en-US', {
@@ -62,7 +64,8 @@ const ContentContainer: FC<Props> = ({ post, user }) => {
     }
   };
 
-  const handleSetLike = () => {
+  const handleSetLike = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
     handleLikeClick(post.id);
   };
   const handleCommentClick = (e: any) => {
@@ -83,12 +86,16 @@ const ContentContainer: FC<Props> = ({ post, user }) => {
     }
     setFocused(!focused);
   };
-  const postID = Math.floor(Math.random() * 100000000)
   useEffect(() => {}, [focused]);
 
   return (
-    <div id={postID}
-      className={` unBlured flex flex-col ${bgColor} h-fit min-h-[50px] my-4 shadow-2xl rounded-xl relative ease-out duration-300 max-h-fit`}
+    <div
+      onClick={() => {
+        router.push(
+          `/${post.user?.username || user?.username}/post/${post.id}`
+        );
+      }}
+      className={`cursor-pointer unBlured flex flex-col ${bgColor} h-fit min-h-[50px] my-4 shadow-2xl rounded-xl relative ease-out duration-300 max-h-fit`}
     >
       <div
         className={
@@ -101,7 +108,9 @@ const ContentContainer: FC<Props> = ({ post, user }) => {
           }
         >
           <img
-            className={'rounded-full border-2 border-lavender w-[40px] object-cover h-[40px]'}
+            className={
+              'rounded-full border-2 border-lavender w-[40px] object-cover h-[40px]'
+            }
             src={user?.image! || post?.user?.image!}
             alt=''
           />
@@ -149,7 +158,15 @@ const ContentContainer: FC<Props> = ({ post, user }) => {
         </div>
       </div>
       <div className={'px-4 py-2 relative'}>
-        <div className={'content w-fit text-[0.95rem]'}>{post?.content!}</div>
+        <div
+          style={{
+            wordBreak: 'break-word',
+            overflowWrap: 'break-word',
+          }}
+          className={'content break-words w-full text-[0.95rem]'}
+        >
+          {post?.content!}
+        </div>
         <div className={'flex gap-5 items-center'}>
           <div
             className={`${
@@ -194,11 +211,7 @@ const ContentContainer: FC<Props> = ({ post, user }) => {
             >
               <FontAwesomeIcon icon={faCommentDots} />
             </Button>
-            <Link href={`/Post`}
-            >
-              50 comments
-            </Link>
-
+            <Link href={`/Post`}>50 comments</Link>
           </div>
         </div>
         <ContentEmojis setBgColor={setBgColor} />

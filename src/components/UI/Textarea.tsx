@@ -14,8 +14,8 @@ const textAreaVariants = cva(
         
         py-2
         transition-all
-        bg-white/80
-        dark:bg-black/80
+        bg-white
+        dark:bg-black
    `,
   {
     variants: {
@@ -51,7 +51,7 @@ const Textarea: FC<TextAreaProps> = ({
 }) => {
   return (
     <textarea
-        rows={rows}
+      rows={rows}
       className={cn(textAreaVariants({ variant, inputSize, className }))} // Use inputSize instead of size
       {...props}
     />

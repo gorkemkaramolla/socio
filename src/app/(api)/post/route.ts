@@ -3,8 +3,9 @@ import { prisma } from '@/lib/prisma';
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
-  if (searchParams.get('user_id')) {
-    const user_id = Number(searchParams.get('user_id'));
+  const user_id = Number(searchParams.get('user_id'));
+  const post_id = Number(searchParams.get('post_id'));
+  if (user_id) {
     try {
       prisma.$connect();
       const posts = await prisma.post.findMany({
@@ -50,6 +51,40 @@ export async function GET(req: Request) {
         }
       );
     }
+  } else if (post_id) {
+    const post = await prisma.post.findFirst({
+      where: {
+        id: post_id,
+      },
+      select: {
+        id: true,
+        created_at: true,
+        title: true,
+        content: true,
+        user: {
+          select: {
+            name: true,
+            image: true,
+            username: true,
+            imageUri: true,
+            location: true,
+          },
+        },
+        PostLike: {
+          select: {
+            id: true,
+            user_id: true,
+            post_id: true,
+            liked: true,
+          },
+        },
+        Comment: true,
+      },
+    });
+    return new NextResponse(JSON.stringify({ post }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    });
   } else {
     const posts = await prisma.post.findMany({
       take: 5,

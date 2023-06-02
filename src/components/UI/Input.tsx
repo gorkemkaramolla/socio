@@ -49,8 +49,8 @@ const inputVariants = cva(
       
         py-2
         transition-all
-        bg-white/80
-        dark:bg-black/80`,
+        bg-white
+        dark:bg-black`,
       },
 
       inputSize: {
