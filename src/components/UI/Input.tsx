@@ -43,10 +43,8 @@ const inputVariants = cva(
         px-3 
         w-full 
         rounded-full 
-       
         outline-none 
         focus:outline-none
-      
         py-2
         transition-all
         bg-white

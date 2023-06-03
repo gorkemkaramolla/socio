@@ -11,6 +11,7 @@ import Shortcuts from '@/components/Shortcuts';
 import { Loader } from 'lucide-react';
 import GorkemTypeWriter from '@/util/GorkemTypeWriter';
 import { Fade } from 'react-awesome-reveal';
+import { useRouter } from 'next/navigation';
 
 interface Props {
   posts: PostWithUsers[];
@@ -18,12 +19,14 @@ interface Props {
 
 const HomePage: FC<Props> = ({ posts }) => {
   const [loading, setLoading] = useState(true); // Add the loading state
+  const router = useRouter();
   const [show, setShow] = useState(false);
   const imageRef = useRef<HTMLImageElement>(null);
 
   const currentUser = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
   useEffect(() => {
+    router.refresh();
     setLoading(false);
   }, []);
 

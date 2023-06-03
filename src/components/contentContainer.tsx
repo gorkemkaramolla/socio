@@ -36,7 +36,7 @@ const ContentContainer: FC<Props> = ({ post, user }) => {
   // const [postState, setPostState] = useState<PostWithUsers>();
   const [liked, setLiked] = useState(false);
   const [numberLikes, setNumberLikes] = useState<number>(
-    post?.PostLike?.length
+    post?.PostLike?.length!
   );
   const [focused, setFocused] = useState(false);
   const [bgColor, setBgColor] = useState<string>('bg-white dark:bg-blackSwan');
@@ -53,11 +53,13 @@ const ContentContainer: FC<Props> = ({ post, user }) => {
         user_id: currentUser.id,
         post_id: post_id,
       });
+
       if (response.data.liked) {
         setNumberLikes((prev) => prev + 1);
       } else {
         setNumberLikes((prev) => prev - 1);
       }
+
       setLiked(response.data.liked);
     } catch (error) {
       console.error('Error liking post', error);
@@ -66,8 +68,15 @@ const ContentContainer: FC<Props> = ({ post, user }) => {
 
   const handleSetLike = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
+    event.preventDefault();
     handleLikeClick(post.id);
   };
+  const handleGoProfile = (event: React.MouseEvent<HTMLDivElement>) => {
+    event.stopPropagation();
+    event.preventDefault();
+    router.push(`/${post?.user?.username || user?.username}`);
+  };
+
   const handleCommentClick = (e: any) => {
     if (!focused) {
       const unBluredContents = document.querySelectorAll('.unBlured');
@@ -86,16 +95,10 @@ const ContentContainer: FC<Props> = ({ post, user }) => {
     }
     setFocused(!focused);
   };
-  useEffect(() => {}, [focused]);
 
   return (
     <div
-      onClick={() => {
-        router.push(
-          `/${post.user?.username || user?.username}/post/${post.id}`
-        );
-      }}
-      className={`cursor-pointer unBlured flex flex-col ${bgColor} h-fit min-h-[50px] my-4 shadow-2xl rounded-xl relative ease-out duration-300 max-h-fit`}
+      className={` unBlured flex flex-col ${bgColor} h-fit min-h-[50px] my-4 shadow-2xl rounded-xl relative ease-out duration-300 max-h-fit`}
     >
       <div
         className={
@@ -103,6 +106,7 @@ const ContentContainer: FC<Props> = ({ post, user }) => {
         }
       >
         <div
+          onClick={handleGoProfile}
           className={
             'w-[40px] h-[40px] absolute -top-[0.5em] -left-[0.5em] rounded-full  bg-white"'
           }
@@ -117,15 +121,16 @@ const ContentContainer: FC<Props> = ({ post, user }) => {
         </div>
         <div className={'ml-4 flex items-center'}>
           {/* <span>{user.name}</span> */}
-          <Link
-            href={`/${post?.user?.username || user?.username}`}
-            className={'text-sm text-lavender mx-2.5'}
+          <div
+            // variant={'ghost'}
+            onClick={handleGoProfile}
+            className={'text-sm text-lavender mx-2.5 p-0 inline'}
           >
             @{post?.user?.username || user?.username}
-          </Link>
+          </div>
           <Paragraph>{formatDate(post?.created_at?.toString()!)}</Paragraph>
         </div>
-        <div className={'flex'}>
+        <div className={'flex '}>
           <Button
             variant={'ghost'}
             size={'smSquare'}
@@ -179,7 +184,7 @@ const ContentContainer: FC<Props> = ({ post, user }) => {
               } w-5 h-5 bg-red-100 absolute z-0  bottom-3 rounded-full ease-out duration-300`}
             >
               <img
-                className={'bg-white rounded-full'}
+                className='rounded-full object-cover w-full h-full'
                 src={
                   currentUser.imageUri ||
                   currentUser.image! ||
@@ -189,6 +194,7 @@ const ContentContainer: FC<Props> = ({ post, user }) => {
               />
             </div>
             <Button
+              onClick={handleSetLike}
               variant={'ghost'}
               size={'smSquare'}
               className={' flex justify-center items-center z-10'}
@@ -211,7 +217,12 @@ const ContentContainer: FC<Props> = ({ post, user }) => {
             >
               <FontAwesomeIcon icon={faCommentDots} />
             </Button>
-            <Link href={`/Post`}>50 comments</Link>
+
+            <Link
+              href={`/${post.user?.username || user?.username}/post/${post.id}`}
+            >
+              50 comments
+            </Link>
           </div>
         </div>
         <ContentEmojis setBgColor={setBgColor} />

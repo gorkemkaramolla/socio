@@ -1,3 +1,5 @@
+export const revalidate = 5;
+export const dynamic = 'force-dynamic';
 import ProfilePage from '@/components/Profile/ProfilePage';
 import { getImage } from '@/util/getImage';
 import axios from 'axios';

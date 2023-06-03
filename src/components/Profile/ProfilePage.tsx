@@ -14,6 +14,7 @@ import Error from '../Error/Error';
 import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 import { Loader } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 interface Props {
   username: string;
   posts: Post[];
@@ -21,11 +22,11 @@ interface Props {
 }
 
 const ProfilePage = ({ username, requestedUser, posts }: Props) => {
+  const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
   const [postLoading, setPostLoading] = useState<boolean>(true);
-  const [postProps, setPostProps] = useState<Post[]>();
+
   useEffect(() => {
-    setPostProps(posts);
     setPostLoading(false);
   }, []);
   const handlePostSent = async (
@@ -42,7 +43,7 @@ const ProfilePage = ({ username, requestedUser, posts }: Props) => {
       });
       if (post) {
         toast.success('Successfully posted');
-        setPostProps([post.data as unknown as Post, ...postProps!]);
+        // setPostProps([post.data as unknown as Post, ...postProps!]);
       }
       setLoading(false);
     } catch (e: any) {
@@ -66,6 +67,7 @@ const ProfilePage = ({ username, requestedUser, posts }: Props) => {
       return errors;
     },
     onSubmit: (values) => {
+      router.refresh();
       handlePostSent(Number(currentUser.id), values.post, '');
     },
   });
@@ -148,25 +150,29 @@ const ProfilePage = ({ username, requestedUser, posts }: Props) => {
           <div className='w-full h-[140px] flex justify-end'>
             <div className='w-3/12 flex flex-col justify-end items-center gap-2'>
               {userPage && (
-                <div className='
+                <div
+                  className='
                 bg-lavender
                 text-white
                 hover:bg-white
                 hover:text-black
                transition-all duration-300
-                rounded-full px-3 py-1 w-10/12 text-center shadow-md cursor-pointer'>
+                rounded-full px-3 py-1 w-10/12 text-center shadow-md cursor-pointer'
+                >
                   <span className='md:block xs:hidden'>Edit Profile</span>
                   <span className='md:hidden'>Edit</span>
                 </div>
               )}
               {userPage && (
-                <div className='
+                <div
+                  className='
                  bg-lavender
                 text-white
                 hover:bg-white
                 hover:text-black
                transition-all duration-300
-                rounded-full px-3 py-1 w-10/12 text-center shadow-md cursor-pointer'>
+                rounded-full px-3 py-1 w-10/12 text-center shadow-md cursor-pointer'
+                >
                   Settings
                 </div>
               )}
@@ -232,7 +238,7 @@ const ProfilePage = ({ username, requestedUser, posts }: Props) => {
             <Error>{formik.errors.post}</Error>
           ) : null}
           <div className='w-full md:p-3 p-6'>
-            {postProps?.map((post, i) => (
+            {posts?.map((post, i) => (
               <ContentContainer key={i} post={post!} user={requestedUser} />
             ))}
           </div>

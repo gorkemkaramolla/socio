@@ -1,3 +1,5 @@
+import { CommentLike } from '@prisma/client';
+
 interface User {
   name: string;
   email: string;
@@ -25,10 +27,24 @@ interface PostWithUsers {
     imageUri?: string;
     location?: string | null;
   };
-  PostLike: {
+  PostLike?: {
     id: number;
     user_id: number;
     post_id: number;
     liked: boolean;
+  }[];
+  Comment?: {
+    content: string;
+    id: number;
+    user_id: number;
+    post_id: number;
+    CommentLike: CommentLike[];
+    user: {
+      name: string;
+      image: string;
+      username?: string;
+      imageUri?: string;
+      location?: string | null;
+    };
   }[];
 }

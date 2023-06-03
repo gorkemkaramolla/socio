@@ -78,7 +78,18 @@ export async function GET(req: Request) {
             liked: true,
           },
         },
-        Comment: true,
+        Comment: {
+          select: {
+            id: true,
+            user: {
+              select: {
+                image: true,
+                username: true,
+              },
+            },
+            content: true,
+          },
+        },
       },
     });
     return new NextResponse(JSON.stringify({ post }), {
@@ -109,6 +120,13 @@ export async function GET(req: Request) {
             user_id: true,
             post_id: true,
             liked: true,
+          },
+        },
+        Comment: {
+          select: {
+            id: true,
+
+            user: true,
           },
         },
       },

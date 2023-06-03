@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 
 //BUTTON VARIANTS STYLE
 const buttonVariants = cva(
-  `px-3 py-2 focus:ring-offset-2  disabled:opacity-50
+  `px-3 py-2 focus:ring-offset-0  disabled:opacity-50
    rounded-sm text-sm font-medium 
    active:scale-95 `,
   {
