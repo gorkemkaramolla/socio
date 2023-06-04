@@ -280,6 +280,23 @@ const PostPage: FC<Props> = ({ post, user, comments }) => {
         </div>
         {/*<HomeCommentContainer focused={focused} />*/}
         {/* Comments */}
+        <form
+          onSubmit={formik.handleSubmit}
+          className='flex p-4 gap-2 justify-center items-center my-6'
+        >
+          <FormInput
+            id='comment'
+            name='comment'
+            onChange={formik.handleChange}
+            value={formik.values.comment}
+            placeholder='What do you think?'
+            variant={'default'}
+          ></FormInput>
+          <Button type='submit'>Send</Button>
+        </form>
+        {formik.touched.comment && formik.errors.comment ? (
+          <Error>{formik.errors.comment}</Error>
+        ) : null}
         <div className='w-full flex flex-col gap-3 '>
           adsdas
           {comments?.map((comment: Comment) => (

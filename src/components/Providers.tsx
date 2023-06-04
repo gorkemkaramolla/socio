@@ -79,14 +79,15 @@ const Providers: React.FC<Props> = ({ children }) => {
     <html lang='en' className={mode.mode}>
       <body className={' text-black dark:text-white '}>
         {loading ? (
-          <div className='w-screen bg-night flex-col gap-12 h-screen flex  justify-center items-center'>
-            <img
-              className=' animate-bounce w-24 h-24  '
-              src='/logo.png'
-              alt=''
-            />
-          </div>
+          <div></div>
         ) : (
+          // <div className='w-screen bg-purple-300 flex-col gap-12 h-screen flex  justify-center items-center'>
+          //   <img
+          //     className=' animate-bounce w-24 h-24  '
+          //     src='/logo.png'
+          //     alt=''
+          //   />
+          // </div>
           <div
             className={
               'w-screen h-[100dvh] bg-grey dark:bg-black overflow-hidden'
