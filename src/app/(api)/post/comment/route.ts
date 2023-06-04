@@ -2,11 +2,28 @@ import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 
 export async function GET(req: Request) {
-  const { post_id } = await req.json();
+  const { searchParams } = new URL(req.url);
+  const post_id = Number(searchParams.get('post_id'));
+  console.log(post_id);
   if (post_id) {
     const comments = await prisma.comment.findMany({
+      take: 5,
+      orderBy: { created_at: 'desc' },
       where: {
         post_id: post_id,
+      },
+      select: {
+        content: true,
+        id: true,
+        post_id: true,
+        user_id: true,
+        user: {
+          select: {
+            image: true,
+            username: true,
+            imageUri: true,
+          },
+        },
       },
     });
     return new NextResponse(JSON.stringify(comments), {

@@ -3,8 +3,9 @@ import { prisma } from '@/lib/prisma';
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
-  const user_id = Number(searchParams.get('user_id'));
   const post_id = Number(searchParams.get('post_id'));
+
+  const user_id = Number(searchParams.get('user_id'));
   if (user_id) {
     try {
       prisma.$connect();
@@ -78,18 +79,6 @@ export async function GET(req: Request) {
             liked: true,
           },
         },
-        Comment: {
-          select: {
-            id: true,
-            user: {
-              select: {
-                image: true,
-                username: true,
-              },
-            },
-            content: true,
-          },
-        },
       },
     });
     return new NextResponse(JSON.stringify({ post }), {
@@ -120,13 +109,6 @@ export async function GET(req: Request) {
             user_id: true,
             post_id: true,
             liked: true,
-          },
-        },
-        Comment: {
-          select: {
-            id: true,
-
-            user: true,
           },
         },
       },

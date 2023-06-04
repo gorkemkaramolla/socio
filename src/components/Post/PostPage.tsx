@@ -18,17 +18,18 @@ import { useRouter } from 'next/navigation';
 import FormInput from '../UI/Input';
 import { useFormik } from 'formik';
 import { Toaster, toast } from 'react-hot-toast';
-import { error } from 'console';
-import { PostWithUsers, User } from '@/lib/types/types';
-import { getImage } from '@/util/getImage';
+import { PostWithUser, User } from '@/lib/types/types';
+import { Comment } from '@/lib/types/types';
 interface Props {
-  post: PostWithUsers;
+  post: PostWithUser;
   user?: User;
+  comments?: Comment[];
 }
 
-const PostPage: FC<Props> = ({ post, user }) => {
+const PostPage: FC<Props> = ({ post, user, comments }) => {
   const router = useRouter();
   useEffect(() => {
+    console.log(comments);
     router.refresh();
   }, []);
   const formatDate = (dateString: string) => {
@@ -279,28 +280,20 @@ const PostPage: FC<Props> = ({ post, user }) => {
         </div>
         {/*<HomeCommentContainer focused={focused} />*/}
         {/* Comments */}
-        <form
-          onSubmit={formik.handleSubmit}
-          className='flex p-4 gap-2 justify-center items-center my-6'
-        >
-          <FormInput
-            id='comment'
-            name='comment'
-            onChange={formik.handleChange}
-            value={formik.values.comment}
-            placeholder='What do you think?'
-            variant={'default'}
-          ></FormInput>
-          <Button type='submit'>Send</Button>
-        </form>
-        {formik.touched.comment && formik.errors.comment ? (
-          <Error>{formik.errors.comment}</Error>
-        ) : null}
         <div className='w-full flex flex-col gap-3 '>
-          {post?.Comment?.map((comment) => (
-            <div className='w-full  '>
-              <img className={'w-4 h-4'} src={comment?.user?.image!} />
-              <p>{comment.content}</p>
+          adsdas
+          {comments?.map((comment: Comment) => (
+            <div>
+              <div className='flex  gap-3'>
+                <img
+                  className='w-6 h-6'
+                  src={comment.user.image || comment.user.imageUri}
+                  alt=''
+                />
+                <div>{comment.user.username}</div>
+              </div>
+
+              <p className='px-3 py-3'>{comment.content}</p>
             </div>
           ))}
           <ContentEmojis setBgColor={setBgColor} />

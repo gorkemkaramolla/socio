@@ -14,8 +14,9 @@ import Link from 'next/link';
 import Paragraph from './UI/Paragraph';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import { PostWithUser, User } from '@/lib/types/types';
 interface Props {
-  post: PostWithUsers;
+  post: PostWithUser;
   user?: User;
 }
 

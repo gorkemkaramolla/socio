@@ -6,7 +6,7 @@ export async function GET(req: Request) {
   prisma.$connect();
   const id = Number(searchParams.get('id'));
   const username = searchParams.get('username');
-
+  const post_id = searchParams.get('post_id');
   const user = await prisma.user.findFirstOrThrow({
     select: {
       id: true,
@@ -19,8 +19,8 @@ export async function GET(req: Request) {
     },
     where: {
       OR: [
-        { id: id ? id : undefined }, // Search by ID if it exists
-        { username: username ? username : undefined }, // Search by username if it exists
+        { id: id ? id : undefined },
+        { username: username ? username : undefined },
       ],
     },
   });

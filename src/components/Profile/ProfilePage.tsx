@@ -15,6 +15,7 @@ import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 import { Loader } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { User } from '@/lib/types/types';
 interface Props {
   username: string;
   posts: Post[];
@@ -212,28 +213,30 @@ const ProfilePage = ({ username, requestedUser, posts }: Props) => {
               Likes
             </Heading>
           </div>
-          <form
-            className='flex items-center justify-center gap-1'
-            onSubmit={formik.handleSubmit}
-          >
-            <FormInput
-              name='post'
-              id='post'
-              placeholder='Say something'
-              value={formik.values.post}
-              onChange={formik.handleChange}
-              variant={'default'}
-            ></FormInput>
-
-            <Button
-              isLoading={loading}
-              type='submit'
-              disabled={loading}
-              variant={'ghost'}
+          {userPage && (
+            <form
+              className='flex items-center justify-center gap-1'
+              onSubmit={formik.handleSubmit}
             >
-              post
-            </Button>
-          </form>
+              <FormInput
+                name='post'
+                id='post'
+                placeholder='Say something'
+                value={formik.values.post}
+                onChange={formik.handleChange}
+                variant={'default'}
+              ></FormInput>
+
+              <Button
+                isLoading={loading}
+                type='submit'
+                disabled={loading}
+                variant={'ghost'}
+              >
+                post
+              </Button>
+            </form>
+          )}
           {formik.touched.post && formik.errors.post ? (
             <Error>{formik.errors.post}</Error>
           ) : null}

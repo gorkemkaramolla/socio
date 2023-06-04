@@ -77,7 +77,9 @@ model CommentLike {
 }
 
 model Comment {
-  id          Int           @id @default(autoincrement())
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+
   content     String?
   post_id     Int
   user_id     Int
