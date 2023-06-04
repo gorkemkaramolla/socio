@@ -2,9 +2,11 @@ import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 
 export async function GET(req: Request) {
+  const sharp = require('sharp');
+
   const { searchParams } = new URL(req.url);
   const post_id = Number(searchParams.get('post_id'));
-  console.log(post_id);
+
   if (post_id) {
     const comments = await prisma.comment.findMany({
       take: 5,
@@ -26,6 +28,17 @@ export async function GET(req: Request) {
         },
       },
     });
+
+    for (const comment of comments) {
+      if (comment.user?.image) {
+        const resizedImageBuffer = await sharp(comment.user.image)
+          .resize(32)
+          .toBuffer();
+
+        // Update the comment object with the resized image buffer
+        comment.user.image = resizedImageBuffer;
+      }
+    }
     return new NextResponse(JSON.stringify(comments), {
       status: 201,
       headers: { 'Content-Type': 'application/json' },
