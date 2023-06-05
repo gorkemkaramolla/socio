@@ -1,17 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 /*:root {*/
 /*  --tw-bg-custom: theme('colors.pink'); !* Tailwind CSS'ten bir renk seçin *!*/
 /*}*/
 
-/*[data-mode="ggg"] .ggg\:bg {*/
+/*[data-mode="ggg"] .gegg\:bg {*/
 /*  background-color: var(--tw-bg-custom);*/
 /*}*/
 
 *:focus {
   outline: none;
+  font-family: 'Geologica', sans-serif;
 }
 .sidebarIconButtons:disabled {
   opacity: 1 !important;

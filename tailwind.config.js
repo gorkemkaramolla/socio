@@ -42,7 +42,7 @@ module.exports = {
         transparent: 'transparent',
         current: 'currentColor',
         white: '#fdfdfd',
-        grey: '#eeeff1',
+        grey: '#e8ebf0', //eeeff1 -eski rengi-
         midnight: '#020617',
         pig: '#f23f5d',
         tahiti: '#3ab7bf',
@@ -52,6 +52,7 @@ module.exports = {
         gorkem: 'lch(5.6 0.88 251.33 / 1)',
         night: '#0C090A',
         blackSwan: '#151718',
+        ash: '#a5a2b5',
         aqua: '#06b9f0',
         plum : '#100f15',
         aurora: '#4653d9',
