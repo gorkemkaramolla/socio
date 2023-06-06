@@ -46,7 +46,7 @@ const Shortcuts: FC<Props> = ({}) => {
         show={true}
       />
       <SideNavbarIcons
-        href='/messages'
+        href='/chat'
         icon={faComments}
         title={'Messages'}
         show={true}

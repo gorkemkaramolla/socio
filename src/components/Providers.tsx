@@ -8,15 +8,27 @@ import { useDispatch } from 'react-redux';
 import { setTheme } from '@/lib/redux/darkMode';
 import { getSession } from 'next-auth/react';
 import { setUser } from '@/lib/redux/userSlice';
+import {Poppins} from '@next/font/google'
+
 import axios from 'axios';
 
 import Search from './Search/Search';
 import { getImage } from '@/util/getImage';
+import ConnectionsContainer from "@/components/connectionsContainer";
+import Heading from "@/components/UI/Heading";
+import RightBar from "@/components/rightBar";
+const poppins = Poppins({
+  weight: ['400', '700'],
+  style: ['normal'],
+  subsets: ['latin'],
+  display: 'swap',
+});
 interface Props {
   children: ReactNode;
 }
 
 const Providers: React.FC<Props> = ({ children }) => {
+
   const [loading, setLoading] = useState<boolean>(true);
   const getUser = async () => {
     try {
@@ -76,7 +88,7 @@ const Providers: React.FC<Props> = ({ children }) => {
   }, [mode.mode]);
 
   return (
-    <html lang='en' className={mode.mode}>
+    <html lang='en' className={`${mode.mode} ${poppins.className}`}>
       <body className={' text-black dark:text-white '}>
         {loading ? (
           <div></div>
@@ -100,8 +112,8 @@ const Providers: React.FC<Props> = ({ children }) => {
               <div className={'flex justify-center xl:w-6/12 w-full'}>
                 {children}
               </div>
-              <div className='flex flex-col  justify-start w-0 xl:w-3/12 py-12'>
-                <Search />
+              <div className='flex flex-col  justify-center w-0 xl:w-3/12 '>
+                {currentUser?.email !== '' &&  <RightBar/>}
               </div>
             </div>
             <Button

@@ -35,7 +35,7 @@ const Search: React.FC<Props> = () => {
   // useEffect(() => {}, [users]);
 
   return (
-    <div>
+    <div className={'h-full w-full'}>
       <div className='flex h-10 '>
         <FormInput
           type='search'
