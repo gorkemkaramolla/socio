@@ -1,6 +1,6 @@
 'use client';
 import React, { FC, useEffect, useRef, useState } from 'react';
-import ContentContainer from '@/components/contentContainer';
+import ContentContainer from '@/components/ContentContainer';
 import Heading from '@/components/UI/Heading';
 import Button from '@/components/UI/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -13,6 +13,7 @@ import GorkemTypeWriter from '@/util/GorkemTypeWriter';
 import { Fade } from 'react-awesome-reveal';
 import { useRouter } from 'next/navigation';
 import { PostWithUser } from '@/lib/types/types';
+import { Toaster } from 'react-hot-toast';
 
 interface Props {
   posts: PostWithUser[];
@@ -65,6 +66,7 @@ const HomePage: FC<Props> = ({ posts }) => {
             <ContentContainer key={i} post={post} />
           ))}
         </div>
+        <Toaster position='bottom-left' />
       </div>
     );
   }

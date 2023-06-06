@@ -7,7 +7,7 @@ import {
   faHeart,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import ContentEmojis from '@/components/contentEmojis';
+import ContentEmojis from './ContentEmojis';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import Link from 'next/link';
@@ -15,6 +15,8 @@ import Paragraph from './UI/Paragraph';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { PostWithUser, User } from '@/lib/types/types';
+import FormInput from './UI/Input';
+import CommentForm from './Comment/CommentForm';
 interface Props {
   post: PostWithUser;
   user?: User;
@@ -36,6 +38,7 @@ const ContentContainer: FC<Props> = ({ post, user }) => {
   const currentUser = useSelector((state: RootState) => state.user);
   // const [postState, setPostState] = useState<PostWithUsers>();
   const [liked, setLiked] = useState(false);
+  const [commentOpen, setCommentOpen] = useState(false);
   const [numberLikes, setNumberLikes] = useState<number>(
     post?.PostLike?.length!
   );
@@ -218,17 +221,23 @@ const ContentContainer: FC<Props> = ({ post, user }) => {
             >
               <FontAwesomeIcon icon={faCommentDots} />
             </Button>
-
-            <Link
+            {/* <Link
               href={`/${post.user?.username || user?.username}/post/${post.id}`}
             >
-              50 comments
-            </Link>
+              Comment
+            </Link> */}
+            <div
+              onClick={() => {
+                setCommentOpen(!commentOpen);
+              }}
+            >
+              Comment
+            </div>
           </div>
         </div>
         <ContentEmojis setBgColor={setBgColor} />
       </div>
-      {/*<HomeCommentContainer focused={focused} />*/}
+      {commentOpen && <CommentForm post_id={post.id} />}
     </div>
   );
 };

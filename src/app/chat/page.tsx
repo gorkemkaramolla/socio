@@ -5,7 +5,7 @@ import {faEllipsisVertical, faMagnifyingGlass, faPhoneVolume, faVideo} from "@fo
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Poppins} from '@next/font/google'
 import {Message} from "@mui/icons-material";
-import Messages from "@/components/message";
+import Messages from "@/components/Message";
 const poppins = Poppins({
     weight: ['400', '700'],
     style: ['normal'],

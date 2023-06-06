@@ -1,6 +1,5 @@
 'use client';
 import React, { FC, useEffect, useState } from 'react';
-import Error from '../Error/Error';
 import Button from '@/components/UI/Button';
 import {
   faCommentDots,
@@ -8,18 +7,17 @@ import {
   faHeart,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import ContentEmojis from '@/components/contentEmojis';
+import ContentEmojis from '@/components/ContentEmojis';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import Link from 'next/link';
 import Paragraph from '../UI/Paragraph';
 import axios from 'axios';
-import { useRouter } from 'next/navigation';
-import FormInput from '../UI/Input';
-import { useFormik } from 'formik';
-import { Toaster, toast } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 import { PostWithUser, User } from '@/lib/types/types';
 import { Comment } from '@/lib/types/types';
+import CommentForm from '../Comment/CommentForm';
+import CommentContainer from '../CommentContainer';
 interface Props {
   post: PostWithUser;
   user?: User;
@@ -27,10 +25,9 @@ interface Props {
 }
 
 const PostPage: FC<Props> = ({ post, user, comments }) => {
-  const router = useRouter();
   useEffect(() => {
     console.log(comments);
-    router.refresh();
+    // router.refresh();
   }, []);
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -99,66 +96,6 @@ const PostPage: FC<Props> = ({ post, user, comments }) => {
     setFocused(!focused);
   };
 
-  const handlePostSent = async (
-    user_id: number,
-    content: string,
-    title?: string
-  ) => {
-    try {
-      setLoading(true);
-      const post = await axios.post('/post', {
-        title: '',
-        content: content,
-        user_id: user_id,
-      });
-      if (post) {
-        toast.success('Successfully posted');
-        // setPostProps([post.data as unknown as Post, ...postProps!]);
-      }
-      setLoading(false);
-    } catch (e: any) {
-      setLoading(false);
-      toast.error(e.response.data);
-    }
-  };
-
-  const formik = useFormik({
-    initialValues: {
-      comment: '',
-    },
-    enableReinitialize: true,
-
-    validate(values) {
-      const errors: {
-        comment?: string;
-      } = {};
-      if (!values.comment) {
-        errors.comment = 'Post field can not be empty';
-      }
-      return errors;
-    },
-    onSubmit: (values) => {
-      router.refresh();
-      handleCommentSent(values.comment, currentUser.id, post?.id?.toString()!);
-    },
-  });
-  const handleCommentSent = async (
-    content: string,
-    user_id: string,
-    post_id: string
-  ) => {
-    try {
-      const response = await axios.post('/post/comment', {
-        content: content,
-        user_id: user_id,
-        post_id: post_id,
-      });
-      console.log(response.data);
-      toast.success('Successfully sent');
-    } catch (e: any) {
-      toast.error(e.response.message);
-    }
-  };
   return (
     <div className={'w-full md:p-3 p-6'}>
       <div
@@ -184,7 +121,6 @@ const PostPage: FC<Props> = ({ post, user, comments }) => {
             />
           </Link>
           <div className={'ml-4 flex items-center'}>
-            {/* <span>{user.name}</span> */}
             <Link
               href={`/${post?.user?.username || user?.username}`}
               className={'text-sm text-lavender mx-2.5'}
@@ -226,7 +162,13 @@ const PostPage: FC<Props> = ({ post, user, comments }) => {
           </div>
         </div>
         <div className={'px-4 py-2 relative'}>
-          <div className={'content w-full text-[0.95rem]'}>
+          <div
+            style={{
+              wordBreak: 'break-word',
+              overflowWrap: 'break-word',
+            }}
+            className={'content w-full text-[0.95rem]'}
+          >
             {post?.content!}
           </div>
           <div className={'flex gap-5 items-center'}>
@@ -266,53 +208,15 @@ const PostPage: FC<Props> = ({ post, user, comments }) => {
                 'content pt-2 text-xs text-slate-500 font-bold flex items-center cursor-pointer'
               }
               onClick={handleCommentClick}
-            >
-              {/* <Button
-                variant={'ghost'}
-                size={'smSquare'}
-                className={'text-slate-500 flex justify-center items-center'}
-              >
-                <FontAwesomeIcon icon={faCommentDots} />
-              </Button>
-              <Link href={`/Post`}>50 comments</Link> */}
-            </div>
+            ></div>
           </div>
         </div>
-        {/*<HomeCommentContainer focused={focused} />*/}
-        {/* Comments */}
-        <form
-          onSubmit={formik.handleSubmit}
-          className='flex p-4 gap-2 justify-center items-center my-6'
-        >
-          <FormInput
-            id='comment'
-            name='comment'
-            onChange={formik.handleChange}
-            value={formik.values.comment}
-            placeholder='What do you think?'
-            variant={'default'}
-          ></FormInput>
-          <Button type='submit'>Send</Button>
-        </form>
-        {formik.touched.comment && formik.errors.comment ? (
-          <Error>{formik.errors.comment}</Error>
-        ) : null}
+        <CommentForm post_id={post.id}></CommentForm>
         <div className='w-full flex flex-col gap-3 '>
-          adsdas
           {comments?.map((comment: Comment) => (
-            <div>
-              <div className='flex  gap-3'>
-                <img
-                  className='w-6 h-6'
-                  src={comment.user.image || comment.user.imageUri}
-                  alt=''
-                />
-                <div>{comment.user.username}</div>
-              </div>
-
-              <p className='px-3 py-3'>{comment.content}</p>
-            </div>
+            <CommentContainer comment={comment} />
           ))}
+          <CommentForm post_id={post.id}></CommentForm>
           <ContentEmojis setBgColor={setBgColor} />
         </div>
       </div>
