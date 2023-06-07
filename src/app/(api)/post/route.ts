@@ -6,6 +6,7 @@ export async function GET(req: Request) {
   const post_id = Number(searchParams.get('post_id'));
 
   const user_id = Number(searchParams.get('user_id'));
+  const skip = Number(searchParams.get('user_id')) || 0;
   if (user_id) {
     try {
       prisma.$connect();
@@ -24,6 +25,11 @@ export async function GET(req: Request) {
               user_id: true,
               post_id: true,
               liked: true,
+            },
+          },
+          Comment: {
+            select: {
+              id: true,
             },
           },
         },
@@ -87,6 +93,7 @@ export async function GET(req: Request) {
     });
   } else {
     const posts = await prisma.post.findMany({
+      skip: skip,
       take: 5,
       orderBy: { created_at: 'desc' },
       select: {
@@ -111,9 +118,13 @@ export async function GET(req: Request) {
             liked: true,
           },
         },
+        Comment: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
-
     return new NextResponse(JSON.stringify({ posts }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
