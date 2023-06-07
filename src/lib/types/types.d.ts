@@ -16,6 +16,7 @@ interface LocationUser {
 }
 interface Comment {
   id: string;
+  created_at: Date;
   content: string;
   post_id: number;
   user_id: number;
@@ -42,5 +43,8 @@ interface PostWithUser {
     user_id: number;
     post_id: number;
     liked: boolean;
+  }[];
+  Comment: {
+    id: number;
   }[];
 }
