@@ -6,9 +6,11 @@ export async function GET(req: Request) {
 
   const { searchParams } = new URL(req.url);
   const post_id = Number(searchParams.get('post_id'));
+  const skip = Number(searchParams.get('skip')) || 0;
 
   if (post_id) {
     const comments = await prisma.comment.findMany({
+      skip: skip,
       take: 5,
       orderBy: { created_at: 'desc' },
       where: {
@@ -18,6 +20,7 @@ export async function GET(req: Request) {
         content: true,
         id: true,
         post_id: true,
+        created_at: true,
         user_id: true,
         user: {
           select: {
