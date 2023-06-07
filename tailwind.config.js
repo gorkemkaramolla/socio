@@ -12,19 +12,19 @@ module.exports = {
   theme: {
     extend: {
       screens: {
-        'xs': '1px',
+        xs: '1px',
         // => @media (min-width: 640px) { ... }
 
-        'sm': '640px',
+        sm: '640px',
         // => @media (min-width: 640px) { ... }
 
-        'md': '768px',
+        md: '768px',
         // => @media (min-width: 768px) { ... }
 
-        'lg': '1024px',
+        lg: '1024px',
         // => @media (min-width: 1024px) { ... }
 
-        'xl': '1280px',
+        xl: '1280px',
         // => @media (min-width: 1280px) { ... }
 
         '2xl': '1536px',
@@ -54,12 +54,12 @@ module.exports = {
         blackSwan: '#151718',
         ash: '#a5a2b5',
         aqua: '#06b9f0',
-        plum : '#100f15',
+        plum: '#100f15',
         aurora: '#4653d9',
-        amethyst : '#161525',
-        lavender : '#6a4ebb',
+        amethyst: '#161525',
+        lavender: '#6a4ebb',
         lilac: '#eae1ff',
-
+        brown: '#242526',
       },
     },
   },
