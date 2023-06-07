@@ -17,6 +17,7 @@ import { useRouter } from 'next/navigation';
 import { PostWithUser, User } from '@/lib/types/types';
 import FormInput from './UI/Input';
 import CommentForm from './Comment/CommentForm';
+import { formatDate } from '@/util/getDate';
 interface Props {
   post: PostWithUser;
   user?: User;
@@ -24,17 +25,7 @@ interface Props {
 
 const ContentContainer: FC<Props> = ({ post, user }) => {
   const router = useRouter();
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    const formattedDate = date.toLocaleString('en-US', {
-      day: 'numeric',
-      month: 'short',
-      hour: 'numeric',
-      minute: 'numeric',
-    });
 
-    return formattedDate;
-  };
   const currentUser = useSelector((state: RootState) => state.user);
   // const [postState, setPostState] = useState<PostWithUsers>();
   const [liked, setLiked] = useState(false);
@@ -44,11 +35,18 @@ const ContentContainer: FC<Props> = ({ post, user }) => {
   );
   const [focused, setFocused] = useState(false);
   const [bgColor, setBgColor] = useState<string>('bg-white dark:bg-blackSwan');
+  useEffect(() => {}, []);
   useEffect(() => {
-    const likeToDelete = post?.PostLike?.find(
-      (like) => like.user_id === parseInt(currentUser?.id)
-    );
-    if (likeToDelete) setLiked(true);
+    setNumberLikes(post?.PostLike?.length!);
+
+    const likeToDelete = post?.PostLike?.find((like) => {
+      return (
+        like.user_id === parseInt(currentUser?.id) && like.post_id === post.id
+      );
+    });
+
+    if (likeToDelete && post.PostLike?.length! !== 0) setLiked(true);
+    else setLiked(false);
   }, [post, currentUser]);
 
   const handleLikeClick = async (post_id: number) => {
@@ -132,7 +130,14 @@ const ContentContainer: FC<Props> = ({ post, user }) => {
           >
             @{post?.user?.username || user?.username}
           </div>
-          <Paragraph>{formatDate(post?.created_at?.toString()!)}</Paragraph>
+          <Paragraph
+            className='text-sm'
+            style={{
+              fontWeight: 500,
+            }}
+          >
+            {formatDate(post?.created_at?.toString()!)}
+          </Paragraph>
         </div>
         <div className={'flex '}>
           <Button
@@ -180,7 +185,7 @@ const ContentContainer: FC<Props> = ({ post, user }) => {
           <div
             className={`${
               liked ? 'text-red-500' : 'text-stone-300'
-            } content pt-2 text-xs font-bold flex items-center cursor-pointer`}
+            } content pt-2 text-xs flex items-center cursor-pointer`}
           >
             <div
               className={`${
@@ -210,29 +215,32 @@ const ContentContainer: FC<Props> = ({ post, user }) => {
 
           <div
             className={
-              'content pt-2 text-xs text-slate-500 font-bold flex items-center cursor-pointer'
+              'content pt-2 text-xs text-slate-500 flex items-center cursor-pointer'
             }
             onClick={handleCommentClick}
           >
             <Button
               variant={'ghost'}
               size={'smSquare'}
-              className={'text-slate-500 flex justify-center items-center'}
+              className={'text-slate-500 flex justify-center  items-center'}
             >
               <FontAwesomeIcon icon={faCommentDots} />
             </Button>
-            {/* <Link
+            <Link
+              className='font-bold'
               href={`/${post.user?.username || user?.username}/post/${post.id}`}
             >
-              Comment
-            </Link> */}
-            <div
+              {post?.Comment?.length! > 0
+                ? post?.Comment?.length! + ' comments'
+                : ' comment'}
+            </Link>
+            {/* <div
               onClick={() => {
                 setCommentOpen(!commentOpen);
               }}
             >
               Comment
-            </div>
+            </div> */}
           </div>
         </div>
         <ContentEmojis setBgColor={setBgColor} />
