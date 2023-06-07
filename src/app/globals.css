@@ -11,7 +11,7 @@
 
 *:focus {
   outline: none;
-  font-family: 'Geologica', sans-serif;
+  /* font-family: 'Geologica', sans-serif; */
 }
 .sidebarIconButtons:disabled {
   opacity: 1 !important;
