@@ -33,7 +33,9 @@ const HomePage: FC<Props> = ({ posts }) => {
   {
     return (
       <div
-        className={'flex w-full flex-col overflow-y-scroll items-center px-3.5'}
+        className={
+          'flex w-full  flex-col overflow-y-scroll items-center px-3.5'
+        }
       >
         <div
           className={

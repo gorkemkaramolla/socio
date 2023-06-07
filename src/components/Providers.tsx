@@ -8,15 +8,15 @@ import { useDispatch } from 'react-redux';
 import { setTheme } from '@/lib/redux/darkMode';
 import { getSession } from 'next-auth/react';
 import { setUser } from '@/lib/redux/userSlice';
-import {Poppins} from '@next/font/google'
+import { Poppins } from '@next/font/google';
 
 import axios from 'axios';
 
 import Search from './Search/Search';
 import { getImage } from '@/util/getImage';
-import ConnectionsContainer from "@/components/connectionsContainer";
-import Heading from "@/components/UI/Heading";
-import RightBar from "@/components/rightBar";
+import ConnectionsContainer from '@/components/connectionsContainer';
+import Heading from '@/components/UI/Heading';
+import RightBar from '@/components/rightBar';
 const poppins = Poppins({
   weight: ['400', '700'],
   style: ['normal'],
@@ -28,7 +28,6 @@ interface Props {
 }
 
 const Providers: React.FC<Props> = ({ children }) => {
-
   const [loading, setLoading] = useState<boolean>(true);
   const getUser = async () => {
     try {
@@ -113,7 +112,7 @@ const Providers: React.FC<Props> = ({ children }) => {
                 {children}
               </div>
               <div className='flex flex-col  justify-center w-0 xl:w-3/12 '>
-                {currentUser?.email !== '' &&  <RightBar/>}
+                {currentUser?.email !== '' && <RightBar />}
               </div>
             </div>
             <Button
