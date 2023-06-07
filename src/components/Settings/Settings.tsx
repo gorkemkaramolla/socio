@@ -12,7 +12,7 @@ import { useDispatch } from 'react-redux';
 import { setUser } from '@/lib/redux/userSlice';
 import toast, { Toaster } from 'react-hot-toast';
 import Textarea from '@/components/UI/Textarea';
-import ModalUi from '@/components/UI/Modal';
+import ModalUi from '@/components/UI/Modals/Modal';
 import { getLocation, getLocationDetails } from '@/util/getLocation';
 import Paragraph from '@/components/UI/Paragraph';
 import LogoutButton from '@/components/LogoutButton/LogoutButton';
@@ -286,7 +286,7 @@ const SettingsPage: React.FC<Props> = () => {
                 </div>
 
                 {formik.touched.name && formik.errors.name ? (
-                  <Error>{formik.errors.name}</Error>
+                  <Error>{formik.errors.name.toString()}</Error>
                 ) : null}
               </div>
               <div className=']'>
@@ -308,7 +308,7 @@ const SettingsPage: React.FC<Props> = () => {
                 </div>
 
                 {formik.touched.email && formik.errors.email ? (
-                  <Error>{formik.errors.email}</Error>
+                  <Error>{formik.errors.email.toString()}</Error>
                 ) : null}
               </div>
             </div>

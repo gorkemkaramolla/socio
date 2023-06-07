@@ -8,12 +8,14 @@ import { cn } from '@/lib/utils';
 const buttonVariants = cva(
   `px-3 py-2 focus:ring-offset-0  disabled:opacity-50
    rounded-sm text-sm font-medium 
-   active:scale-95 `,
+    `,
   {
     variants: {
       variant: {
         default:
-          'w-fit flex items-center rounded  bg-slate-900 text-white hover:bg-slate-800',
+          'w-fit flex items-center rounded bg-brown text-white hover:bg-slate-800',
+        dropdown: 'w-fit flex items-center bg-transparent ',
+
         ghost: 'w-fit flex items-center bg-transparent ',
         white:
           'w-fit flex items-center rounded bg-slate-50 text-slate-900 hover:bg-slate-200',
@@ -22,6 +24,7 @@ const buttonVariants = cva(
         google:
           ' w-full cursor-pointer flex justify-center shadow-sm shadow-gray-600 rounded-md  items-center gap-2 ',
       },
+
       size: {
         default: 'h-10 py-2 px-4',
         sm: 'h-6 p-auto',

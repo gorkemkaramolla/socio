@@ -20,7 +20,7 @@ const textAreaVariants = cva(
   {
     variants: {
       variant: {
-        default: '',
+        default: ' border-2',
       },
       inputSize: {
         default: '',
