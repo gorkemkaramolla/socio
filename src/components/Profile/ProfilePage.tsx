@@ -7,7 +7,7 @@ import ContentContainer from '@/components/ContentContainer';
 import Button from '@/components/UI/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
-import { Post } from '@prisma/client';
+import { PostWithUser } from '@/lib/types/types';
 import FormInput from '@/components/UI/Input';
 import { useFormik } from 'formik';
 import Error from '../Error/Error';
@@ -18,7 +18,7 @@ import { useRouter } from 'next/navigation';
 import { User } from '@/lib/types/types';
 interface Props {
   username: string;
-  posts: Post[];
+  posts: PostWithUser[];
   requestedUser: User;
 }
 
