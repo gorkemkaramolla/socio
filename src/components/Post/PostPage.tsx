@@ -13,42 +13,51 @@ import { RootState } from '@/store';
 import Link from 'next/link';
 import Paragraph from '../UI/Paragraph';
 import axios from 'axios';
-import { Toaster } from 'react-hot-toast';
+import { Toaster, toast } from 'react-hot-toast';
 import { PostWithUser, User } from '@/lib/types/types';
 import { Comment } from '@/lib/types/types';
 import CommentForm from '../Comment/CommentForm';
 import CommentContainer from '../CommentContainer';
+import { formatDate } from '@/util/getDate';
+import { getImage } from '@/util/getImage';
+import { useRouter } from 'next/navigation';
+import { Loader } from 'lucide-react';
+import { error } from 'console';
 interface Props {
   post: PostWithUser;
   user?: User;
   comments?: Comment[];
 }
+interface LoadError {
+  message: string;
+  error: boolean;
+}
 
 const PostPage: FC<Props> = ({ post, user, comments }) => {
+  const [skipCount, setSkipCount] = useState<number>(5);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [loadError, setLoadError] = useState<LoadError>({
+    message: '',
+    error: false,
+  });
+  const [loadedComments, setLoadedComments] = useState<Comment[]>();
   useEffect(() => {
-    console.log(comments);
-    // router.refresh();
-  }, []);
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    const formattedDate = date.toLocaleString('en-US', {
-      day: 'numeric',
-      month: 'short',
-      hour: 'numeric',
-      minute: 'numeric',
-    });
+    setLoadedComments(comments!);
+    setSkipCount(5);
+  }, [comments]);
 
-    return formattedDate;
-  };
+  useEffect(() => {
+    if (loadError.error) toast.error(loadError.message);
+    setLoadError({ ...loadError, error: false });
+  }, [loadError.error]);
   const currentUser = useSelector((state: RootState) => state.user);
-  // const [postState, setPostState] = useState<PostWithUsers>();
+
   const [liked, setLiked] = useState(false);
   const [numberLikes, setNumberLikes] = useState<number>(
     post?.PostLike?.length!
   );
   const [focused, setFocused] = useState(false);
   const [bgColor, setBgColor] = useState<string>('bg-white dark:bg-blackSwan');
-  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const likeToDelete = post?.PostLike?.find(
@@ -58,19 +67,24 @@ const PostPage: FC<Props> = ({ post, user, comments }) => {
   }, [post, currentUser]);
 
   const handleLikeClick = async (post_id: number) => {
-    try {
-      const response = await axios.post('/post/like', {
-        user_id: currentUser.id,
-        post_id: post_id,
-      });
-      if (response.data.liked) {
-        setNumberLikes((prev) => prev + 1);
-      } else {
-        setNumberLikes((prev) => prev - 1);
+    if (!loadError.error) {
+      try {
+        const response = await axios.post('/post/like', {
+          user_id: currentUser.id,
+          post_id: post_id,
+        });
+
+        if (response.data.liked) {
+          setNumberLikes((prev) => prev + 1);
+        } else {
+          setNumberLikes((prev) => prev - 1);
+        }
+        setLiked(response.data.liked);
+      } catch (error) {
+        console.error('Error liking post', error);
       }
-      setLiked(response.data.liked);
-    } catch (error) {
-      console.error('Error liking post', error);
+    } else {
+      toast.error(loadError.message);
     }
   };
 
@@ -96,8 +110,64 @@ const PostPage: FC<Props> = ({ post, user, comments }) => {
     setFocused(!focused);
   };
 
+  const loadMorePosts = async () => {
+    setLoading(true);
+    setSkipCount((prev) => prev + 5);
+    try {
+      if (!loadError.error) {
+        const response = await axios
+          .get('http://localhost:3000/post/comment', {
+            params: {
+              post_id: post.id,
+              skip: skipCount,
+            },
+          })
+          .then((res) => res.data);
+        const commentsImaged: Comment[] = response.map((comment: any) => {
+          const image = getImage(comment.user.image);
+          return {
+            ...comment,
+            user: {
+              ...comment.user,
+              image: image,
+            },
+          };
+        });
+        if (response?.length === 0 && skipCount !== 5) {
+          console.log(response.length);
+          console.log(skipCount);
+          setLoadError({
+            error: true,
+            message: `${post?.user?.username} has no more posts.`,
+          });
+        }
+        if (response.length !== 0) toast.success('Stalker');
+
+        setLoadedComments((prevComments) => {
+          if (Array.isArray(prevComments)) {
+            return [...prevComments, ...commentsImaged];
+          } else if (prevComments) {
+            return [prevComments, ...commentsImaged];
+          } else {
+            return commentsImaged;
+          }
+        });
+      } else {
+        setLoading(false);
+      }
+    } catch (e: any) {
+      setLoadError({
+        message: e.response.message,
+        error: true,
+      });
+      if (loadError.message) toast.error(loadError.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div className={'w-full md:p-3 p-6'}>
+    <div className={'w-full  overflow-y-scroll md:p-3 p-6'}>
       <div
         className={` unBlured flex flex-col ${bgColor} h-fit min-h-[50px] my-4 shadow-2xl rounded-xl relative ease-out duration-300 max-h-fit`}
       >
@@ -161,7 +231,7 @@ const PostPage: FC<Props> = ({ post, user, comments }) => {
             </div>
           </div>
         </div>
-        <div className={'px-4 py-2 relative'}>
+        <div className={'px-4  py-2 relative'}>
           <div
             style={{
               wordBreak: 'break-word',
@@ -170,6 +240,7 @@ const PostPage: FC<Props> = ({ post, user, comments }) => {
             className={'content w-full text-[0.95rem]'}
           >
             {post?.content!}
+            <hr className='mt-2' />
           </div>
           <div className={'flex gap-5 items-center'}>
             <div
@@ -211,12 +282,24 @@ const PostPage: FC<Props> = ({ post, user, comments }) => {
             ></div>
           </div>
         </div>
-        <CommentForm post_id={post.id}></CommentForm>
-        <div className='w-full flex flex-col gap-3 '>
-          {comments?.map((comment: Comment) => (
-            <CommentContainer comment={comment} />
-          ))}
+        <div className='w-fulloverflow-y-scroll flex flex-col gap-3 '>
           <CommentForm post_id={post.id}></CommentForm>
+
+          {loadedComments?.map((comment: Comment, i: number) => (
+            <CommentContainer key={i} comment={comment} />
+          ))}
+          {comments?.length! >= 5 &&
+            (loading ? (
+              <Loader className='animate-spin' />
+            ) : (
+              <p
+                onClick={loadMorePosts}
+                className='hover:underline cursor-pointer px-6'
+              >
+                Show more comments
+              </p>
+            ))}
+
           <ContentEmojis setBgColor={setBgColor} />
         </div>
       </div>

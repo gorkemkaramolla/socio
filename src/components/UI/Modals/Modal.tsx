@@ -1,8 +1,8 @@
 'use client';
 import React from 'react';
 import { Modal } from '@nextui-org/react';
-import Button from './Button';
-import Heading from './Heading';
+import Button from '../Button';
+import Heading from '../Heading';
 
 interface Props {
   visible: boolean;
