@@ -21,6 +21,7 @@ interface Comment {
   post_id: number;
   user_id: number;
   user: {
+    id: number;
     image: string;
     username: string;
     imageUri: string;
@@ -47,4 +48,10 @@ interface PostWithUser {
   Comment: {
     id: number;
   }[];
+}
+interface Message {
+  receiver_id: number;
+  sender_id: number;
+  message: string;
+  created_at?: Date;
 }
