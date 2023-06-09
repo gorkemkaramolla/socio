@@ -1,3 +1,4 @@
+'use client';
 import {
   faEllipsis,
   faDeleteLeft,
@@ -9,6 +10,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Text } from '@nextui-org/react';
+import { Comment } from '@/lib/types/types';
 
 import Button from '../Button';
 import { Dropdown } from '@nextui-org/react';
@@ -19,8 +21,12 @@ interface MenuItem {
   key: string;
   name: string;
 }
+interface Props {
+  deletePost: () => void;
+  comment: Comment;
+}
 
-export default function CommentSettingsModal() {
+export default function CommentSettingsModal({ deletePost, comment }: Props) {
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const iconRef = useRef<SVGSVGElement>(null);
@@ -76,8 +82,12 @@ export default function CommentSettingsModal() {
           className='w-54  z-50 my-4 shadow-md rounded-lg bg-white shadow-black flex flex-col justify-center items-start'
         >
           <Button
-            className='flex  items-center justify-center gap-3 '
-            variant={'dropdown'}
+            onClick={() => {
+              setDropdownOpen(false);
+              deletePost();
+            }}
+            className='flex bg-white dark:bg-night dark:hover:bg-blackSwan hover:bg-gray-200 transition-all rounded-md items-center w-full justify-center gap-3 '
+            variant={'ghost'}
           >
             <div> Report this comment</div>
 
@@ -85,25 +95,30 @@ export default function CommentSettingsModal() {
           </Button>
 
           <Button
-            className='flex items-center justify-center gap-3 '
-            variant={'dropdown'}
+            onClick={deletePost}
+            className='flex bg-white dark:bg-night dark:hover:bg-blackSwan hover:bg-gray-200 transition-all rounded-md items-center w-full justify-center gap-3 '
+            variant={'ghost'}
           >
             <div> Share this comment</div>
             <FontAwesomeIcon onClick={handleDrop} icon={faShare} />
           </Button>
           <Button
-            className='flex items-center justify-center gap-3 '
-            variant={'dropdown'}
+            onClick={deletePost}
+            className='flex bg-white dark:bg-night dark:hover:bg-blackSwan hover:bg-gray-200 transition-all rounded-md items-center w-full justify-center gap-3 '
+            variant={'ghost'}
           >
             <div>Save this comment</div>
             <FontAwesomeIcon onClick={handleDrop} icon={faSave} />
           </Button>
           <Button
-            className='flex bg-red-500 items-center justify-center gap-3 '
-            variant={'dropdown'}
+            onClick={() => {
+              setDropdownOpen(false);
+              deletePost();
+            }}
+            className='flex bg-white dark:bg-night dark:hover:bg-blackSwan hover:bg-gray-200 transition-all rounded-md items-center w-full justify-center gap-3 '
+            variant={'ghost'}
           >
-            <div> Delete this comment</div>
-
+            Delete this post
             <FontAwesomeIcon onClick={handleDrop} icon={faTrash} />
           </Button>
         </div>
