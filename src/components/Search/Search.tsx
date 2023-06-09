@@ -5,6 +5,7 @@ import Button from '../UI/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
+import { User } from '@/lib/types/types';
 
 interface Props {}
 

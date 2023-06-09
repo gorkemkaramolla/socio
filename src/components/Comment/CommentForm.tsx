@@ -2,7 +2,7 @@
 import { useFormik } from 'formik';
 import FormInput from '../UI/Input';
 import Button from '../UI/Button';
-import { useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import Error from '../Error/Error';
@@ -51,7 +51,10 @@ export default function CommentForm({ post_id }: Props) {
       }
       router.refresh();
     } catch (e: any) {
-      toast.error(e.response.message);
+      toast.error(e.response.status);
+      if (Number(e.response.status) === 401) {
+        router.push('/login');
+      }
       router.refresh();
     } finally {
       setLoading(false);

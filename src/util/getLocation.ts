@@ -30,9 +30,13 @@ async function getLocationDetails(
   longitude: number
 ): Promise<Location> {
   const apiUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`;
-
+  const config = {
+    headers: {
+      'Accept-Language': 'en-US,en;q=0.9', // Set the desired language code here
+    },
+  };
   try {
-    const response = await axios.get(apiUrl);
+    const response = await axios.get(apiUrl, config);
     const { address } = response.data;
 
     const city = address.city || address.town || address.village || '';
