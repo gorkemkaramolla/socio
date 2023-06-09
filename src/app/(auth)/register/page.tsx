@@ -7,6 +7,7 @@ interface Props {}
 
 const Register = async () => {
   const session = await getServerSession();
+
   if (session) {
     redirect('/home');
   }
