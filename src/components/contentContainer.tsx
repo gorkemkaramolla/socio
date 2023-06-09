@@ -110,7 +110,7 @@ const ContentContainer: FC<Props> = ({ post, user }) => {
         <div
           onClick={handleGoProfile}
           className={
-            'w-[40px] h-[40px] absolute -top-[0.5em] -left-[0.5em] rounded-full  bg-white"'
+            'w-[40px] h-[40px] absolute  cursor-pointer -top-[0.5em] -left-[0.5em] rounded-full  bg-white"'
           }
         >
           <img
@@ -121,10 +121,8 @@ const ContentContainer: FC<Props> = ({ post, user }) => {
             alt=''
           />
         </div>
-        <div className={'ml-4 flex items-center'}>
-          {/* <span>{user.name}</span> */}
+        <div className={'ml-4 flex cursor-pointer items-center'}>
           <div
-            // variant={'ghost'}
             onClick={handleGoProfile}
             className={'text-sm text-lavender mx-2.5 p-0 inline'}
           >
