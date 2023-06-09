@@ -1,7 +1,10 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { getToken } from 'next-auth/jwt';
 
 export async function GET(req: Request) {
+  const sharp = require('sharp');
+
   const { searchParams } = new URL(req.url);
   const post_id = Number(searchParams.get('post_id'));
 
@@ -35,6 +38,7 @@ export async function GET(req: Request) {
         },
       });
       prisma.$disconnect();
+
       if (posts)
         return new NextResponse(JSON.stringify(posts), {
           status: 200,
@@ -87,6 +91,14 @@ export async function GET(req: Request) {
         },
       },
     });
+    if (post) {
+      const resizedImageBuffer = await sharp(post.user.image)
+        .resize(48)
+        .toBuffer();
+
+      post.user.image = resizedImageBuffer;
+    }
+
     return new NextResponse(JSON.stringify({ post }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
@@ -125,6 +137,16 @@ export async function GET(req: Request) {
         },
       },
     });
+    for (const post of posts) {
+      if (post.user?.image) {
+        const resizedImageBuffer = await sharp(post.user.image)
+          .resize(48)
+          .toBuffer();
+
+        // Update the post object with the resized image buffer
+        post.user.image = resizedImageBuffer;
+      }
+    }
     return new NextResponse(JSON.stringify({ posts }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
@@ -132,6 +154,19 @@ export async function GET(req: Request) {
   }
 }
 export async function POST(req: Request) {
+  const token = await getToken({
+    // @ts-ignore
+    req,
+    secret: process.env.NEXTAUTH_SECRET,
+  });
+  console.log(token);
+
+  if (!token) {
+    return new NextResponse('Unauthorized', {
+      status: 401,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
   try {
     const { title, content, user_id } = await req.json();
     if (content === '') {

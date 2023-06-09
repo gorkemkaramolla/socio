@@ -1,6 +1,9 @@
+import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
-import { NextResponse } from 'next/server';
-
+import { getServerSession } from 'next-auth';
+import { getCsrfToken, getSession } from 'next-auth/react';
+import { NextResponse, NextRequest } from 'next/server';
+import { getToken } from 'next-auth/jwt';
 export async function GET(req: Request) {
   const sharp = require('sharp');
 
@@ -24,6 +27,7 @@ export async function GET(req: Request) {
         user_id: true,
         user: {
           select: {
+            id: true,
             image: true,
             username: true,
             imageUri: true,
@@ -35,7 +39,7 @@ export async function GET(req: Request) {
     for (const comment of comments) {
       if (comment.user?.image) {
         const resizedImageBuffer = await sharp(comment.user.image)
-          .resize(32)
+          .resize(48)
           .toBuffer();
 
         // Update the comment object with the resized image buffer
@@ -56,7 +60,78 @@ export async function GET(req: Request) {
     );
   }
 }
+export async function DELETE(req: Request) {
+  const token = await getToken({
+    // @ts-ignore
+    req,
+    secret: process.env.NEXTAUTH_SECRET,
+  });
+
+  if (!token) {
+    return new NextResponse('Unauthorized', {
+      status: 401,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+  const { searchParams } = new URL(req.url);
+
+  const comment_id = Number(searchParams.get('id'));
+  const user_id = Number(searchParams.get('user_id'));
+
+  console.log(user_id);
+  console.log(token.id);
+  try {
+    if (token.id === user_id) {
+      console.log('HELLO WORLD');
+      const deletedComment = await prisma.comment.delete({
+        where: {
+          id: comment_id,
+        },
+      });
+      if (deletedComment) {
+        return new NextResponse(JSON.stringify(deletedComment), {
+          status: 202,
+          headers: { 'Content-Type': 'application/json' },
+        });
+      } else {
+        return new NextResponse('deleted', {
+          status: 401,
+          headers: { 'Content-Type': 'application/json' },
+        });
+      }
+    } else {
+      return new NextResponse('You are unauthorized to do this delete action', {
+        status: 401,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+  } catch (error) {
+    return new NextResponse(
+      JSON.stringify({
+        error: 'Something went wrong',
+      }),
+      {
+        status: 401,
+        headers: { 'Content-Type': 'application/json' },
+      }
+    );
+  }
+}
 export async function POST(req: Request) {
+  const token = await getToken({
+    // @ts-ignore
+
+    req,
+    secret: process.env.NEXTAUTH_SECRET,
+  });
+  console.log(token);
+
+  if (!token) {
+    return new NextResponse('Unauthorized', {
+      status: 401,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
   try {
     const { content, post_id, user_id } = await req.json();
     if (content === '') {

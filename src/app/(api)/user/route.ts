@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { getToken } from 'next-auth/jwt';
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
 
@@ -7,36 +8,38 @@ export async function GET(req: Request) {
   const id = Number(searchParams.get('id'));
   const username = searchParams.get('username');
   const post_id = searchParams.get('post_id');
-  const user = await prisma.user.findFirstOrThrow({
-    select: {
-      id: true,
-      email: true,
-      name: true,
-      image: true,
-      bio: true,
-      username: true,
-      location: true,
-    },
-    where: {
-      OR: [
-        { id: id ? id : undefined },
-        { username: username ? username : undefined },
-      ],
-    },
-  });
-  if (user)
-    return new NextResponse(JSON.stringify({ user }), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' },
+  try {
+    const user = await prisma.user.findFirstOrThrow({
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        image: true,
+        bio: true,
+        username: true,
+        location: true,
+      },
+      where: {
+        OR: [
+          { id: id ? id : undefined },
+          { username: username ? username : undefined },
+        ],
+      },
     });
-  else
-    return new NextResponse(
-      JSON.stringify({ message: 'something went wrong' }),
-      {
-        status: 401,
+    if (user)
+      return new NextResponse(JSON.stringify({ user }), {
+        status: 200,
         headers: { 'Content-Type': 'application/json' },
-      }
-    );
+      });
+    else
+      return new NextResponse(
+        JSON.stringify({ message: 'something went wrong' }),
+        {
+          status: 401,
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
+  } catch (e: any) {}
 }
 export async function PUT(req: Request) {
   const formData = await req.formData();
