@@ -68,12 +68,12 @@ const ProfilePage = () => {
                   <FontAwesomeIcon icon={faPenToSquare} />
                 </Button>
               </div>
-              <img
+              {/* <img
                 className='rounded-full object-cover w-full h-full'
                 // src='/userdefault.png'
                 // src={requestedUser.imageUri || requestedUser.image!}
                 alt=''
-              />
+              /> */}
             </div>
           </div>
 

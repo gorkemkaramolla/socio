@@ -17,6 +17,7 @@ import { getLocation, getLocationDetails } from '@/util/getLocation';
 import Paragraph from '@/components/UI/Paragraph';
 import LogoutButton from '@/components/LogoutButton/LogoutButton';
 import Error from '@/components/Error/Error';
+import ProfileImage from '../Profile/ProfileImage';
 interface Props {}
 
 const SettingsPage: React.FC<Props> = () => {
@@ -205,11 +206,13 @@ const SettingsPage: React.FC<Props> = () => {
         </Heading>
         <div className=' w-full'>
           <div className='flex gap-8 items-center'>
-            <img
-              className='w-[60px] h-[60px] profile-img dark:bg-white object-cover rounded-full border-2 border-lavender '
-              src={imageSrc || selector.imageUri || '/userdefault.png'}
-              alt='/userdefault.png'
-            />
+            <div className='w-[60px] h-[60px]'>
+              <ProfileImage
+                googleImage={selector.imageUri}
+                imageSrc={imageSrc!}
+              />
+            </div>
+
             <Button
               className='active:text-blue-900'
               onClick={handler}

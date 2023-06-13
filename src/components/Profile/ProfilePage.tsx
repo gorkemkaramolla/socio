@@ -16,6 +16,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { Loader } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { User } from '@/lib/types/types';
+import ProfileImage from './ProfileImage';
 interface Props {
   username: string;
   posts: PostWithUser[];
@@ -139,10 +140,14 @@ const ProfilePage = ({ username, requestedUser, posts }: Props) => {
                   <FontAwesomeIcon icon={faPenToSquare} />
                 </Button>
               </div>
-              <img
+              {/* <img
                 className='rounded-full object-cover w-full h-full'
                 src={requestedUser.imageUri || requestedUser.image!||"/userdefault.png"}
                 alt=''
+              /> */}
+              <ProfileImage
+                imageSrc={requestedUser.image!}
+                googleImage={requestedUser.imageUri}
               />
             </div>
           </div>

@@ -23,6 +23,7 @@ import { getImage } from '@/util/getImage';
 import { useRouter } from 'next/navigation';
 import { Loader } from 'lucide-react';
 import { error } from 'console';
+import ProfileImage from '../Profile/ProfileImage';
 interface Props {
   post: PostWithUser;
   user?: User;
@@ -180,12 +181,17 @@ const PostPage: FC<Props> = ({ post, user, comments }) => {
               'w-[40px] h-[40px] absolute -top-[0.5em] -left-[0.5em] rounded-full  bg-white"'
             }
           >
-            <img
+            {/* <img
               className={
                 'rounded-full border-2 border-lavender w-[40px] object-cover h-[40px]'
               }
               src={user?.image! || user?.imageUri || post?.user?.image!}
               alt=''
+            /> */}
+            <ProfileImage
+              googleImage={user?.imageUri!}
+              imageSrc={user?.image!}
+              postsImage={post?.user?.image!}
             />
           </Link>
           <div className={'ml-4 flex items-center'}>
@@ -251,14 +257,9 @@ const PostPage: FC<Props> = ({ post, user, comments }) => {
                   liked ? 'scale-100 left-2' : 'scale-0 left-4'
                 } w-5 h-5 bg-red-100 absolute z-0  bottom-3 rounded-full ease-out duration-300`}
               >
-                <img
-                  className={'bg-white w-full h-full rounded-full'}
-                  src={
-                    currentUser.imageUri ||
-                    currentUser.image! ||
-                    '/userdefault.png'
-                  }
-                  alt='/userdefault.png'
+                <ProfileImage
+                  googleImage={currentUser.imageUri}
+                  imageSrc={currentUser.image!}
                 />
               </div>
               <Button

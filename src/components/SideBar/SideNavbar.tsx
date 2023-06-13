@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
 
 import Shortcuts from '@/components/Shortcuts';
+import ProfileImage from '../Profile/ProfileImage';
 
 interface Props {}
 
@@ -45,14 +46,9 @@ const SideNavbar: FC<Props> = () => {
                   'w-[60px] h-[60px] absolute top-[60px]   border-lavender border-2 rounded-full bg-white'
                 }
               >
-                {/* todo:******* Burda bir sıkıntı var benim resim gelmiyor bakarsın ********** */}
-                <img
-                  className='w-full h-full rounded-full object-cover '
-                  src={
-                    currentUser.image! ||
-                    currentUser.imageUri ||
-                    '/userdefault.png'
-                  }
+                <ProfileImage
+                  imageSrc={currentUser.image!}
+                  googleImage={currentUser.imageUri}
                 />
               </div>
             </div>
