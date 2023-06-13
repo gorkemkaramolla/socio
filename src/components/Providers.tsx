@@ -112,9 +112,9 @@ const Providers: React.FC<Props> = ({ children }) => {
                 <div className={'flex justify-center xl:w-6/12 w-full'}>
                   {children}
                 </div>
-                <div className='flex flex-col  justify-center w-0 xl:w-3/12 '>
+                {/* <div className='flex flex-col  justify-center w-0 xl:w-3/12 '>
                   {currentUser?.email !== '' && <RightBar />}
-                </div>
+                </div> */}
               </div>
               <Button
                 variant={'ghost'}

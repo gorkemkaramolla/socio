@@ -141,7 +141,7 @@ const ProfilePage = ({ username, requestedUser, posts }: Props) => {
               </div>
               <img
                 className='rounded-full object-cover w-full h-full'
-                src={requestedUser.imageUri || requestedUser.image!}
+                src={requestedUser.imageUri || requestedUser.image!||"/userdefault.png"}
                 alt=''
               />
             </div>

@@ -18,16 +18,31 @@ model User {
   image    Bytes?
   username String? @unique() @default(uuid())
 
-  imageUri   String?
-  location   String?
-  bio        String?  @db.VarChar(500)
-  created_at DateTime @default(now())
+  imageUri          String?
+  location          String?
+  bio               String?   @db.VarChar(500)
+  created_at        DateTime  @default(now())
+  messages_sent     Message[] @relation("sender_id")
+  messages_received Message[] @relation("receiver_id")
 
   posts       Post[]
   Comment     Comment[]
   Reaction    Reaction[]
   PostLike    PostLike[]
   CommentLike CommentLike[]
+}
+
+model Message {
+  id          Int      @id @default(autoincrement())
+  sender      User     @relation("sender_id", fields: [sender_id], references: [id])
+  sender_id   Int
+  receiver    User     @relation("receiver_id", fields: [receiver_id], references: [id])
+  receiver_id Int
+  message     String
+  created_at  DateTime @default(now())
+
+  @@index([sender_id])
+  @@index([receiver_id])
 }
 
 model Post {
@@ -77,9 +92,8 @@ model CommentLike {
 }
 
 model Comment {
-  id         Int      @id @default(autoincrement())
-  created_at DateTime @default(now())
-
+  id          Int           @id @default(autoincrement())
+  created_at  DateTime      @default(now())
   content     String?
   post_id     Int
   user_id     Int
@@ -88,9 +102,6 @@ model Comment {
   CommentLike CommentLike[]
 }
 
-model Message {
-  id          Int    @id @default(autoincrement())
-  receiver_id Int    @unique
-  sender_id   Int    @unique
-  message     String @db.VarChar(500)
+model ActiveChats {
+  id Int @id @default(autoincrement())
 }

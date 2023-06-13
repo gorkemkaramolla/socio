@@ -207,7 +207,7 @@ const SettingsPage: React.FC<Props> = () => {
           <div className='flex gap-8 items-center'>
             <img
               className='w-[60px] h-[60px] profile-img dark:bg-white object-cover rounded-full border-2 border-lavender '
-              src={selector.imageUri || imageSrc || '/userdefault.png'}
+              src={imageSrc || selector.imageUri || '/userdefault.png'}
               alt='/userdefault.png'
             />
             <Button

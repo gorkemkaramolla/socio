@@ -49,8 +49,8 @@ const SideNavbar: FC<Props> = () => {
                 <img
                   className='w-full h-full rounded-full object-cover '
                   src={
-                    currentUser.imageUri ||
                     currentUser.image! ||
+                    currentUser.imageUri ||
                     '/userdefault.png'
                   }
                 />

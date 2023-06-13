@@ -159,7 +159,6 @@ export async function POST(req: Request) {
     req,
     secret: process.env.NEXTAUTH_SECRET,
   });
-  console.log(token);
 
   if (!token) {
     return new NextResponse('Unauthorized', {

@@ -40,11 +40,9 @@ export default function CommentSettingsModal({ deletePost, comment }: Props) {
       const { bottom } = dropdownRef.current.getBoundingClientRect();
       if (bottom > window.innerHeight) {
         dropdownRef.current.style.bottom = '180px';
-        console.log(true);
       } else {
         // Reset placement
         dropdownRef.current.style.bottom = 'auto';
-        console.log(false);
       }
     }
   }, [dropdownOpen]);
@@ -56,7 +54,6 @@ export default function CommentSettingsModal({ deletePost, comment }: Props) {
         !iconRef?.current?.contains(event.target)
       ) {
         setDropdownOpen(false);
-        console.log('outside');
       }
     };
 

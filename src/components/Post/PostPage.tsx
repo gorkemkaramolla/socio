@@ -134,8 +134,6 @@ const PostPage: FC<Props> = ({ post, user, comments }) => {
           };
         });
         if (response?.length === 0 && skipCount !== 5) {
-          console.log(response.length);
-          console.log(skipCount);
           setLoadError({
             error: true,
             message: `${post?.user?.username} has no more posts.`,
@@ -186,7 +184,7 @@ const PostPage: FC<Props> = ({ post, user, comments }) => {
               className={
                 'rounded-full border-2 border-lavender w-[40px] object-cover h-[40px]'
               }
-              src={user?.image! || post?.user?.image!}
+              src={user?.image! || user?.imageUri || post?.user?.image!}
               alt=''
             />
           </Link>

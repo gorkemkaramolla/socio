@@ -15,7 +15,7 @@ export async function GET(req: Request) {
     const comments = await prisma.comment.findMany({
       skip: skip,
       take: 5,
-      orderBy: { created_at: 'desc' },
+      orderBy: { created_at: 'asc' },
       where: {
         post_id: post_id,
       },
@@ -78,11 +78,8 @@ export async function DELETE(req: Request) {
   const comment_id = Number(searchParams.get('id'));
   const user_id = Number(searchParams.get('user_id'));
 
-  console.log(user_id);
-  console.log(token.id);
   try {
     if (token.id === user_id) {
-      console.log('HELLO WORLD');
       const deletedComment = await prisma.comment.delete({
         where: {
           id: comment_id,
@@ -124,7 +121,6 @@ export async function POST(req: Request) {
     req,
     secret: process.env.NEXTAUTH_SECRET,
   });
-  console.log(token);
 
   if (!token) {
     return new NextResponse('Unauthorized', {
