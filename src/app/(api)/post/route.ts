@@ -92,11 +92,10 @@ export async function GET(req: Request) {
       },
     });
     if (post) {
-      const resizedImageBuffer = await sharp(post.user.image)
-        .resize(48)
-        .toBuffer();
-
-      post.user.image = resizedImageBuffer;
+      // const resizedImageBuffer = await sharp(post.user.image)
+      //   .resize(48)
+      //   .toBuffer();
+      // post.user.image = resizedImageBuffer;
     }
 
     return new NextResponse(JSON.stringify({ post }), {

@@ -4,9 +4,8 @@ import { getServerSession } from 'next-auth';
 import { getCsrfToken, getSession } from 'next-auth/react';
 import { NextResponse, NextRequest } from 'next/server';
 import { getToken } from 'next-auth/jwt';
+import { resizeImage } from '@/util/imageSharp';
 export async function GET(req: Request) {
-  const sharp = require('sharp');
-
   const { searchParams } = new URL(req.url);
   const post_id = Number(searchParams.get('post_id'));
   const skip = Number(searchParams.get('skip')) || 0;
@@ -35,14 +34,11 @@ export async function GET(req: Request) {
         },
       },
     });
+    const sharp = require('sharp');
 
     for (const comment of comments) {
       if (comment.user?.image) {
-        const resizedImageBuffer = await sharp(comment.user.image)
-          .resize(48)
-          .toBuffer();
-
-        // Update the comment object with the resized image buffer
+        const resizedImageBuffer = await resizeImage(comment.user.image!, 48);
         comment.user.image = resizedImageBuffer;
       }
     }

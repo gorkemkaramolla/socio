@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getToken } from 'next-auth/jwt';
+import { resizeImage } from '@/util/imageSharp';
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
 
@@ -27,6 +28,11 @@ export async function GET(req: Request) {
         ],
       },
     });
+
+    if (user.image) {
+      const resizedImage = await resizeImage(user.image!, 256);
+      user.image = resizedImage;
+    }
     if (user)
       return new NextResponse(JSON.stringify({ user }), {
         status: 200,
@@ -40,7 +46,12 @@ export async function GET(req: Request) {
           headers: { 'Content-Type': 'application/json' },
         }
       );
-  } catch (e: any) {}
+  } catch (e: any) {
+    console.log(e);
+    console.log('asda');
+
+    throw new Error(e.message);
+  }
 }
 export async function PUT(req: Request) {
   const formData = await req.formData();
@@ -122,6 +133,7 @@ export async function PUT(req: Request) {
         headers: { 'Content-Type': 'application/json' },
       });
     }
+    console.log(imageData?.length);
     if (imageData) {
       updatedData.image = imageData;
     }
