@@ -6,6 +6,8 @@ const errorVariants = cva(
   `className='border-[0.1px]
     text-red-500
     transition-all
+    my-4 px-4 
+    leading-6
   ' `,
   {
     variants: {

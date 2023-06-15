@@ -22,7 +22,7 @@ const buttonVariants = cva(
         rose: 'w-fit flex items-center rounded bg-rose-500 text-violet-50',
         nav: 'flex items-center justify-center rounded',
         google:
-          ' w-full cursor-pointer flex justify-center shadow-sm shadow-gray-600 rounded-md  items-center gap-2 ',
+          'w-full cursor-pointer flex justify-center rounded-md border-[1px]  border-black dark:border-white active:animate-pulse active:text-white active:bg-blackSwan items-center gap-2 ',
       },
 
       size: {

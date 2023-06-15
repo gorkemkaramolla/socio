@@ -18,6 +18,10 @@ import Paragraph from '@/components/UI/Paragraph';
 import LogoutButton from '@/components/LogoutButton/LogoutButton';
 import Error from '@/components/Error/Error';
 import ProfileImage from '../Profile/ProfileImage';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
+import Shortcuts from '../Shortcuts';
+import { base64StringToBlob } from '@/util/base64StringtoBlob';
 interface Props {}
 
 const SettingsPage: React.FC<Props> = () => {
@@ -26,6 +30,7 @@ const SettingsPage: React.FC<Props> = () => {
   const [visible, setVisible] = useState<boolean>(false);
   const [location, setLocation] = useState<string>('');
   const [imageSrc, setImageSrc] = useState<string | null>(null);
+  const [show, setShow] = useState(false);
 
   const handler = () => setVisible(true);
   const [loading, setLoading] = useState<boolean>(false);
@@ -51,27 +56,6 @@ const SettingsPage: React.FC<Props> = () => {
     dispatch(setUser({ ...selector, image: imageSrc! }));
   }, [imageSrc]);
   useEffect(() => {}, [base64Image]);
-  const base64StringToBlob = (base64String: string, type: string): Blob => {
-    const sliceSize = 512;
-    const byteCharacters = atob(
-      base64String.slice(base64String.indexOf(',') + 1)
-    );
-    const byteArrays: Uint8Array[] = [];
-    let offset = 0;
-
-    while (offset < byteCharacters.length) {
-      const slice = byteCharacters.slice(offset, offset + sliceSize);
-      const byteNumbers = new Array(slice.length);
-      for (let i = 0; i < slice.length; i++) {
-        byteNumbers[i] = slice.charCodeAt(i);
-      }
-      const byteArray = new Uint8Array(byteNumbers);
-      byteArrays.push(byteArray);
-      offset += sliceSize;
-    }
-
-    return new Blob(byteArrays, { type });
-  };
 
   const handleFileUpload = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -196,18 +180,33 @@ const SettingsPage: React.FC<Props> = () => {
 
   return (
     <div className='w-full flex flex-col items-center h-[100dvh] overflow-auto '>
-      <div className={'w-full px-4 flex flex-col items-center md:my-16 m-auto'}>
-        <Heading
-          heading='h6'
-          size={'md'}
-          className={'m-4 justify-start w-full'}
-        >
-          Settings
-        </Heading>
-        <div className=' w-full flex justify-around items-center'>
+      <div className={'w-full px-4 flex flex-col items-center  m-auto'}>
+        <div className='sticky top-0 w-full h-fit flex md:justify-center justify-between items-center bg-white/75 drop-shadow-xl dark:bg-black/75 backdrop-blur-sm z-40'>
+          <Heading heading='h6' size='sm' className='m-4'>
+            Settings
+          </Heading>
+          <Button
+            className={
+              'sidebarIconButtons ease-out duration-200 text-xl text-black dark:text-white px-10 md:hidden'
+            }
+            variant={'ghost'}
+            size={'smSquare'}
+            onClick={() => setShow(!show)}
+          >
+            <FontAwesomeIcon icon={faBars} />
+          </Button>
+          <div
+            className={`${
+              show ? '-right-4 ' : '-right-48'
+            } top-16 md:hidden absolute ease-out duration-300 `}
+          >
+            <Shortcuts />
+          </div>
+        </div>
+        <div className=' w-full flex flex-col justify-center mt-3 items-center'>
           <div className='flex gap-8 flex-col '>
             <Button
-              className='active:text-blue-900  p-0'
+              className='active:text-blue-900 text-center  p-0'
               onClick={handler}
               variant={'ghost'}
             >
@@ -220,16 +219,24 @@ const SettingsPage: React.FC<Props> = () => {
                 Change your profile picture
               </Heading>
             </Button>
-            <div className='w-[200px] h-[200px]  border-lavender border-2 rounded-full bg-white'>
+            <div className='w-[120px] h-[120px] self-center border-lavender border-2 rounded-full bg-white'>
               <ProfileImage
                 googleImage={selector.imageUri}
                 imageSrc={imageSrc!}
               />
             </div>
           </div>
-          <div className='LOCATION'>
+          <div className='LOCATION self-start'>
             {/*<Label isFocus>Location</Label>*/}
-            <label htmlFor=''>Location</label>
+            <Heading
+              className='transition-colors text-left  hover:text-blue-500   '
+              weight={'default'}
+              align={'left'}
+              heading='h5'
+              size={'default'}
+            >
+              Location
+            </Heading>
 
             <div className='flex  items-center  gap-3'>
               <Button
@@ -356,21 +363,25 @@ const SettingsPage: React.FC<Props> = () => {
               </div>
             </div>
           </div>
-          <div className={'w-full  flex flex-col items-end my-5 gap-3'}>
+          <div
+            className={
+              ' flex  w-full justify-center items-center flex-col items-end my-5 gap-3'
+            }
+          >
             <Button
               isLoading={loading}
               type='submit'
               disabled={loading}
               variant={'ghost'}
               className={
-                'bg-lavender text-white  w-full flex justify-center rounded-full'
+                'bg-lavender text-white  w-3/4  flex justify-center rounded-full'
               }
             >
               Save changes
             </Button>
             <div
               className={
-                ' w-full  bg-blackSwan text-white flex items-center rounded-full'
+                ' w-3/4   bg-blackSwan text-white flex items-center rounded-full'
               }
             >
               <LogoutButton></LogoutButton>

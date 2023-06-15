@@ -34,7 +34,7 @@ interface LoadError {
   error: boolean;
 }
 
-const PostPage: FC<Props> = ({ post, user, comments }) => {
+const PostPage: FC<Props> = ({ post, comments }) => {
   const [skipCount, setSkipCount] = useState<number>(5);
   const [loading, setLoading] = useState<boolean>(false);
   const [loadError, setLoadError] = useState<LoadError>({
@@ -176,22 +176,22 @@ const PostPage: FC<Props> = ({ post, user, comments }) => {
           }
         >
           <Link
-            href={`/${post?.user?.username || user?.username}`}
+            href={`/${post?.user?.username}`}
             className={
               'w-[40px] h-[40px] absolute -top-[0.5em] -left-[0.5em] rounded-full  bg-white"'
             }
           >
             <ProfileImage
-              googleImage={user?.imageUri!}
-              imageSrc={user?.image!}
+              googleImage={post.user?.imageUri!}
+              imageSrc={post.user?.image!}
             />
           </Link>
           <div className={'ml-4 flex items-center'}>
             <Link
-              href={`/${post?.user?.username || user?.username}`}
+              href={`/${post?.user?.username}`}
               className={'text-sm text-lavender mx-2.5'}
             >
-              @{post?.user?.username || user?.username}
+              @{post?.user?.username}
             </Link>
             <Paragraph>{formatDate(post?.created_at?.toString()!)}</Paragraph>
           </div>

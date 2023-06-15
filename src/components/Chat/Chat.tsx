@@ -17,6 +17,7 @@ import { redirect } from 'next/navigation';
 import Heading from '@/components/UI/Heading';
 import Messages from '@/components/messages';
 import { Message, User } from '@/lib/types/types';
+import ProfileImage from '../Profile/ProfileImage';
 
 interface Props {
   receiverId: number;
@@ -141,13 +142,17 @@ const ChatPage: React.FC<Props> = ({ receiverId, receiverUser }) => {
               className='contact w-fit h-full flex items-center gap-2 px-3'
             >
               <div className='w-[55px] h-[55px] rounded-full border-2 border-ash'>
-                <img
+                {/* <img
                   className='w-full h-full rounded-full bg-white '
                   src={
                     receiverUser.imageUri ||
                     receiverUser.image! ||
                     '/userdefault.png'
                   }
+                /> */}
+                <ProfileImage
+                  googleImage={receiverUser.imageUri}
+                  imageSrc={receiverUser.image!}
                 />
               </div>
               <div className='w-fit h-full flex flex-col justify-center'>

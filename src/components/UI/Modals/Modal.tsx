@@ -7,8 +7,8 @@ import Heading from '../Heading';
 interface Props {
   visible: boolean;
   closeHandler: () => void;
-  handleFileUpload: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  deleteCurrentPic: () => void;
+  handleFileUpload?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  deleteCurrentPic?: () => void;
   userHasPic: boolean;
 }
 

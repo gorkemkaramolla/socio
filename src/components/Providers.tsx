@@ -11,7 +11,7 @@ import { setUser } from '@/lib/redux/userSlice';
 import { Poppins } from '@next/font/google';
 
 import axios from 'axios';
-
+import Head from 'next/head';
 import Search from './Search/Search';
 import { getImage } from '@/util/getImage';
 import ConnectionsContainer from '@/components/connectionsContainer';
@@ -89,6 +89,9 @@ const Providers: React.FC<Props> = ({ children }) => {
   return (
     <SessionProvider>
       <html lang='en' className={`${mode.mode} ${poppins.className}`}>
+        <head>
+          <link rel='icon' href='/favicon.ico' sizes='96x96' />
+        </head>
         <body className={' text-black dark:text-white '}>
           {loading ? (
             <div></div>
@@ -101,9 +104,7 @@ const Providers: React.FC<Props> = ({ children }) => {
             //   />
             // </div>
             <div
-              className={
-                'w-screen h-[100dvh] bg-grey dark:bg-black overflow-hidden'
-              }
+              className={'w-screen h-[100dvh] dark:bg-black overflow-hidden'}
             >
               <div className={'flex h-full'}>
                 {currentUser.email !== '' && (
@@ -122,6 +123,7 @@ const Providers: React.FC<Props> = ({ children }) => {
                 {/* <div className='flex flex-col  justify-center w-0 xl:w-3/12 '>
                   {currentUser?.email !== '' && <RightBar />}
                 </div> */}
+                {/* <Search /> */}
               </div>
               <Button
                 variant={'ghost'}

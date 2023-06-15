@@ -1,5 +1,5 @@
 'use client';
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import {} from '@fortawesome/free-solid-svg-icons';
 
 import LogoutButton from '../LogoutButton/LogoutButton';
@@ -9,11 +9,13 @@ import { RootState } from '@/store';
 
 import Shortcuts from '@/components/Shortcuts';
 import ProfileImage from '../Profile/ProfileImage';
+import { useRouter } from 'next/navigation';
 
 interface Props {}
 
 const SideNavbar: FC<Props> = () => {
   const currentUser = useSelector((state: RootState) => state.user);
+  const router = useRouter();
 
   return (
     <div
