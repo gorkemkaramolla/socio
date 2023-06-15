@@ -23,7 +23,7 @@ const HomePage: FC<Props> = ({ posts }) => {
   const router = useRouter();
   const [show, setShow] = useState(false);
   const imageRef = useRef<HTMLImageElement>(null);
-
+  console.log(posts);
   const currentUser = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
   useEffect(() => {

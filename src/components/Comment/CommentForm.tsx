@@ -18,18 +18,11 @@ interface Props {
 export default function CommentForm({ post_id }: Props) {
   const mode = useSelector((state: RootState) => state.mode);
 
-  useEffect(() => {
-    if (formik.values.comment === '') {
-      if (inputRef.current) {
-        inputRef.current.innerText = 'What do you think?';
-        inputRef.current.style.color = '#ccc';
-      }
-    }
-  }, []);
   const router = useRouter();
   const currentUser = useSelector((state: RootState) => state.user);
   const [loading, setLoading] = useState<boolean>(false);
   const inputRef = useRef<HTMLDivElement>(null);
+
   const handleCommentSent = async (
     content: string,
     user_id: string,
@@ -47,7 +40,10 @@ export default function CommentForm({ post_id }: Props) {
       if (response) {
         toast.success('Successfully sent');
         formik.values.comment = '';
-        if (inputRef.current) inputRef.current.innerText = '';
+        if (inputRef.current && formik.values.comment === '') {
+          inputRef.current.innerText = 'What do you think?';
+          inputRef.current.style.color = '#ccc';
+        }
       }
       router.refresh();
     } catch (e: any) {
@@ -81,6 +77,14 @@ export default function CommentForm({ post_id }: Props) {
       handleCommentSent(values.comment, currentUser.id, post_id.toString()!);
     },
   });
+  useEffect(() => {
+    if (formik.values.comment === '') {
+      if (inputRef.current) {
+        inputRef.current.innerText = 'What do you think?';
+        inputRef.current.style.color = '#ccc';
+      }
+    }
+  }, [inputRef.current]);
   return (
     <div className='text-md '>
       <form
@@ -103,6 +107,9 @@ export default function CommentForm({ post_id }: Props) {
           id='comment'
           contentEditable={true}
           onInput={(event: React.KeyboardEvent<HTMLDivElement>) => {
+            if (formik.values.comment !== '') {
+              inputRef.current?.focus();
+            }
             const content = event.currentTarget.textContent;
             if (inputRef.current)
               inputRef.current.style.color =
@@ -119,13 +126,7 @@ export default function CommentForm({ post_id }: Props) {
             formik.handleBlur(event);
             if (inputRef.current && formik.values.comment === '') {
               inputRef.current.style.color = '#ccc';
-              inputRef.current.innerText = 'What do you think';
-            }
-          }}
-          onKeyDown={(event: React.KeyboardEvent<HTMLDivElement>) => {
-            if (event.key === 'Enter') {
-              event.preventDefault();
-              formik.handleSubmit();
+              inputRef.current.innerText = 'What do you think?';
             }
           }}
         />
@@ -134,9 +135,7 @@ export default function CommentForm({ post_id }: Props) {
           variant={'default'}
           className=''
           isLoading={loading}
-          onClick={() => {
-            formik.submitForm();
-          }}
+          type='submit'
         >
           <FontAwesomeIcon icon={faPaperPlane}></FontAwesomeIcon>
         </Button>
