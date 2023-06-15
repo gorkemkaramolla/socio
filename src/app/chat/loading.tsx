@@ -1,9 +1,11 @@
+import BasicLoader from '@/components/Loader/BasicLoader';
+import { Loader } from 'lucide-react';
 import React from 'react';
 
-interface Props {}
+type Props = {};
 
-const Loading: React.FC<Props> = () => {
-  return <div>asd</div>;
+const Loading = (props: Props) => {
+  return <BasicLoader></BasicLoader>;
 };
 
 export default Loading;

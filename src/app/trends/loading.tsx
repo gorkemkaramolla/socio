@@ -1,14 +1,11 @@
+import BasicLoader from '@/components/Loader/BasicLoader';
 import { Loader } from 'lucide-react';
 import React from 'react';
 
 type Props = {};
 
 const Loading = (props: Props) => {
-  return (
-    <div className='w-screen h-screen flex justify-center items-center'>
-      <Loader className='animate-spin' />
-    </div>
-  );
+  return <BasicLoader></BasicLoader>;
 };
 
 export default Loading;
