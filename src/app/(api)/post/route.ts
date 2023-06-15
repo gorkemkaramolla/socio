@@ -14,6 +14,7 @@ export async function GET(req: Request) {
     try {
       prisma.$connect();
       const posts = await prisma.post.findMany({
+        take: 15,
         where: { user_id: user_id },
         orderBy: { created_at: 'desc' },
         select: {

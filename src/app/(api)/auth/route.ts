@@ -16,9 +16,9 @@ export async function POST(req: Request) {
   if (isUserExists) {
     prisma.$disconnect();
     return new NextResponse(
-      JSON.stringify({ message: 'User Already Exists...!' }),
+      JSON.stringify({ message: 'Email already using by another user!' }),
       {
-        status: 201,
+        status: 403,
         headers: { 'Content-Type': 'application/json' },
       }
     );

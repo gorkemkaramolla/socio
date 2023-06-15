@@ -48,12 +48,12 @@ export async function GET(req: Request) {
       );
   } catch (e: any) {
     console.log(e);
-    console.log('asda');
 
     throw new Error(e.message);
   }
 }
 export async function PUT(req: Request) {
+  console.log('worked');
   const formData = await req.formData();
   const id = formData.get('id');
   const email = formData.get('email');
@@ -133,7 +133,6 @@ export async function PUT(req: Request) {
         headers: { 'Content-Type': 'application/json' },
       });
     }
-    console.log(imageData?.length);
     if (imageData) {
       updatedData.image = imageData;
     }
