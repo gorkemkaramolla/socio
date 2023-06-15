@@ -1,6 +1,6 @@
 'use client';
-import React, { useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import Heading from '@/components/UI/Heading';
 import ContentContainer from '@/components/ContentContainer';
@@ -21,6 +21,11 @@ import { Loader } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { User } from '@/lib/types/types';
 import ProfileImage from './ProfileImage';
+import Shortcuts from '../Shortcuts';
+import { base64StringToBlob } from '@/util/base64StringtoBlob';
+import { setUser } from '@/lib/redux/userSlice';
+import { getImage } from '@/util/getImage';
+
 interface Props {
   username: string;
   posts: PostWithUser[];
@@ -28,6 +33,11 @@ interface Props {
 }
 
 const ProfilePage = ({ username, requestedUser, posts }: Props) => {
+  const dispatch = useDispatch();
+
+  const [imageFile, setImageFile] = useState<Blob | undefined>(undefined);
+  const [imageSrc, setImageSrc] = useState<string | null>(null);
+
   const inputRef = useRef<HTMLDivElement>(null);
 
   const router = useRouter();
@@ -47,7 +57,7 @@ const ProfilePage = ({ username, requestedUser, posts }: Props) => {
         user_id: user_id,
       });
       if (post) {
-        toast.success('Successfully posted');
+        // toast.success('Successfully posted');
         // setPostProps([post.data as unknown as Post, ...postProps!]);
 
         formik.values.post = '';
@@ -99,6 +109,52 @@ const ProfilePage = ({ username, requestedUser, posts }: Props) => {
       }
     }
   }, [inputRef.current]);
+  const changeProfilePicture = async (file: Blob) => {
+    const formData = new FormData();
+    formData.append('image', file);
+    formData.append('id', currentUser.id);
+    console.log('worked');
+
+    try {
+      const updatedUser = await axios.put('/user', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data', // Add this header
+        },
+      });
+      console.log(updatedUser);
+
+      if (updatedUser) {
+        dispatch(setUser(updatedUser.data.user));
+        setLoading(false);
+        toast.success('success');
+      }
+    } catch (e: any) {
+      toast.error(e.response.data);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    setImageSrc(currentUser.image!);
+  }, [currentUser.image]);
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setImageFile(file);
+      const reader = new FileReader();
+      reader.onloadend = async () => {
+        const base64String = reader.result as string;
+        const imgBlob = base64StringToBlob(base64String, file.type);
+        changeProfilePicture(imgBlob!);
+
+        setImageSrc(base64String);
+
+        setImageFile(imgBlob);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   if (requestedUser)
     return (
       <div className='flex flex-col  overflow-y-scroll items-center px-3.5'>
@@ -108,13 +164,22 @@ const ProfilePage = ({ username, requestedUser, posts }: Props) => {
             {username}
           </Heading>
           <Button
-            className='sidebarIconButtons ease-out duration-200 text-xl text-black dark:text-white px-10 md:hidden'
-            variant='ghost'
-            size='smSquare'
+            className={
+              'sidebarIconButtons ease-out duration-200 text-xl text-black dark:text-white px-10 md:hidden'
+            }
+            variant={'ghost'}
+            size={'smSquare'}
             onClick={() => setShow(!show)}
           >
             <FontAwesomeIcon icon={faBars} />
           </Button>
+          <div
+            className={`${
+              show ? '-right-4 ' : '-right-48'
+            } top-16 md:hidden absolute ease-out duration-300 `}
+          >
+            <Shortcuts />
+          </div>
         </div>
 
         <div className='h-fit w-full flex flex-col items-center'>
@@ -132,7 +197,7 @@ const ProfilePage = ({ username, requestedUser, posts }: Props) => {
                   variant='ghost'
                   size='smSquare'
                 >
-                  <FontAwesomeIcon icon={faPenToSquare} />
+                  <FontAwesomeIcon icon={faPenToSquare}></FontAwesomeIcon>
                 </Button>
               </div>
               <img
@@ -145,30 +210,43 @@ const ProfilePage = ({ username, requestedUser, posts }: Props) => {
             <div className='w-[120px] h-[120px] rounded-full bg-white absolute -bottom-12 left-6 border-4 border-lavender'>
               {/* Image Overlay */}
               <div
-                className='w-full h-full absolute opacity-0 hover:opacity-100 rounded-full'
+                className='w-full h-full  absolute opacity-0 hover:opacity-100 rounded-full'
                 style={{
                   background:
                     'linear-gradient(90deg, rgba(0,0,0,0.13769257703081228) 0%, rgba(0,0,0,0.13769257703081228) 100%)',
                 }}
               >
                 <Button
-                  className='sidebarIconButtons ease-out duration-200 text-xl text-grey absolute right-7 bottom-4'
+                  className='sidebarIconButtons ease-out duration-200 text-xl text-grey absolute right-3 bottom-3'
                   variant='ghost'
                   size='smSquare'
                 >
-                  <FontAwesomeIcon icon={faPenToSquare} />
+                  <label
+                    htmlFor='image-upload'
+                    className='w-full p-0 m-0 rounded-md cursor-pointer items-center flex justify-center '
+                  >
+                    <FontAwesomeIcon icon={faPenToSquare} />
+                  </label>
+                  <input
+                    type='file'
+                    id='image-upload'
+                    className='hidden p-0 m-0 '
+                    accept='image/jpeg, image/png'
+                    onChange={handleFileUpload}
+                  />
                 </Button>
               </div>
 
               <ProfileImage
-                imageSrc={requestedUser.image!}
+                imageSrc={imageSrc || requestedUser.image!}
                 googleImage={requestedUser.imageUri}
+                alt={requestedUser.username}
               />
             </div>
           </div>
 
           {/* Bio Section */}
-          <div className='w-full h-[140px] flex gap-3  justify-end'>
+          <div className='w-full h-[140px] mt-6 flex gap-3  justify-end'>
             <div className='w-3/12 flex flex-col justify-end items-center gap-2'>
               {userPage && (
                 <div

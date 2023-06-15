@@ -8,7 +8,7 @@ const LogoutButton: React.FC<Props> = () => {
     localStorage.removeItem('userData');
     await signOut({
       redirect: true,
-      callbackUrl: `/login`,
+      callbackUrl: `/home`,
     });
   };
 
