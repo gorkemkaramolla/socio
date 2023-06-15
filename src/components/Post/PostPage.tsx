@@ -181,17 +181,9 @@ const PostPage: FC<Props> = ({ post, user, comments }) => {
               'w-[40px] h-[40px] absolute -top-[0.5em] -left-[0.5em] rounded-full  bg-white"'
             }
           >
-            {/* <img
-              className={
-                'rounded-full border-2 border-lavender w-[40px] object-cover h-[40px]'
-              }
-              src={user?.image! || user?.imageUri || post?.user?.image!}
-              alt=''
-            /> */}
             <ProfileImage
               googleImage={user?.imageUri!}
               imageSrc={user?.image!}
-              postsImage={post?.user?.image!}
             />
           </Link>
           <div className={'ml-4 flex items-center'}>

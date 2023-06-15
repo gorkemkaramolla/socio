@@ -18,12 +18,12 @@ const SideNavbar: FC<Props> = () => {
   return (
     <div
       className={
-        'fixed h-full mx-5 md:flex hidden flex-col justify-between py-9 w-[300px] '
+        'fixed h-full mx-5 md:flex hidden flex-col items-center justify-center w-[300px] '
       }
     >
-      <Heading heading='h6' size={'sm'} className={'m-1'}>
+      {/* <Heading heading='h6' size={'sm'} className={'m-1'}>
         Profile
-      </Heading>
+      </Heading> */}
       <div className={'flex flex-col gap-3 '}>
         <div
           className={
@@ -53,7 +53,7 @@ const SideNavbar: FC<Props> = () => {
               </div>
             </div>
           </div>
-          <div className={'flex flex-col gap-2 text-center'}>
+          <div className={'flex flex-col gap-2 break-all text-center'}>
             <Heading heading='h6' size={'sm'} className={'m-1 text-center'}>
               {currentUser?.name}
             </Heading>

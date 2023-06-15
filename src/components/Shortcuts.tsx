@@ -18,7 +18,7 @@ const Shortcuts: FC<Props> = ({}) => {
   return (
     <div
       className={
-        'bg-white shadow-2xl dark:md:bg-blackSwan dark:bg-black rounded-2xl'
+        'bg-white shadow-2xl h-full dark:md:bg-blackSwan dark:bg-black rounded-2xl'
       }
     >
       <SideNavbarIcons

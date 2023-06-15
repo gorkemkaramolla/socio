@@ -25,6 +25,7 @@ interface Props {
 }
 
 const ContentContainer: FC<Props> = ({ post, user }) => {
+  console.log(post);
   const router = useRouter();
 
   const currentUser = useSelector((state: RootState) => state.user);
@@ -114,17 +115,9 @@ const ContentContainer: FC<Props> = ({ post, user }) => {
             'w-[40px] h-[40px] absolute  cursor-pointer -top-[0.5em] -left-[0.5em] rounded-full  bg-white"'
           }
         >
-          {/* <img
-            className={
-              'rounded-full border-2 border-lavender w-[40px] object-cover h-[40px]'
-            }
-            src={user?.image! || post?.user?.image!}
-            alt=''
-          /> */}
-
           <ProfileImage
-            imageSrc={user?.image!}
-            googleImage={post?.user?.image!}
+            imageSrc={user?.image! || post.user?.image!}
+            googleImage={user?.imageUri! || post.user?.image!}
           />
         </div>
         <div className={'ml-4 flex cursor-pointer items-center'}>

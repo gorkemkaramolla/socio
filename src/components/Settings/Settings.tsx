@@ -195,8 +195,8 @@ const SettingsPage: React.FC<Props> = () => {
   };
 
   return (
-    <div className='w-full flex flex-col items-center h-[100dvh] '>
-      <div className={'w-5/6 flex flex-col items-center md:my-16 m-auto'}>
+    <div className='w-full flex flex-col items-center h-[100dvh] overflow-auto '>
+      <div className={'w-full px-4 flex flex-col items-center md:my-16 m-auto'}>
         <Heading
           heading='h6'
           size={'md'}
@@ -204,22 +204,15 @@ const SettingsPage: React.FC<Props> = () => {
         >
           Settings
         </Heading>
-        <div className=' w-full'>
-          <div className='flex gap-8 items-center'>
-            <div className='w-[60px] h-[60px]'>
-              <ProfileImage
-                googleImage={selector.imageUri}
-                imageSrc={imageSrc!}
-              />
-            </div>
-
+        <div className=' w-full flex justify-around items-center'>
+          <div className='flex gap-8 flex-col '>
             <Button
-              className='active:text-blue-900'
+              className='active:text-blue-900  p-0'
               onClick={handler}
               variant={'ghost'}
             >
               <Heading
-                className='transition-colors hover:text-blue-500   '
+                className='transition-colors  hover:text-blue-500   '
                 weight={'default'}
                 heading='h5'
                 size={'default'}
@@ -227,6 +220,35 @@ const SettingsPage: React.FC<Props> = () => {
                 Change your profile picture
               </Heading>
             </Button>
+            <div className='w-[200px] h-[200px]  border-lavender border-2 rounded-full bg-white'>
+              <ProfileImage
+                googleImage={selector.imageUri}
+                imageSrc={imageSrc!}
+              />
+            </div>
+          </div>
+          <div className='LOCATION'>
+            {/*<Label isFocus>Location</Label>*/}
+            <label htmlFor=''>Location</label>
+
+            <div className='flex  items-center  gap-3'>
+              <Button
+                className='p-0'
+                variant={'ghost'}
+                onClick={handleLocation}
+              >
+                <svg
+                  xmlns='http://www.w3.org/2000/svg'
+                  height='24'
+                  viewBox='0 -960 960 960'
+                  width='24'
+                  fill={mode.mode === '' ? `black` : 'white'}
+                >
+                  <path d='M480.089-490Q509-490 529.5-510.589q20.5-20.588 20.5-49.5Q550-589 529.411-609.5q-20.588-20.5-49.5-20.5Q451-630 430.5-609.411q-20.5 20.588-20.5 49.5Q410-531 430.589-510.5q20.588 20.5 49.5 20.5ZM480-159q133-121 196.5-219.5T740-552q0-117.79-75.292-192.895Q589.417-820 480-820t-184.708 75.105Q220-669.79 220-552q0 75 65 173.5T480-159Zm0 79Q319-217 239.5-334.5T160-552q0-150 96.5-239T480-880q127 0 223.5 89T800-552q0 100-79.5 217.5T480-80Zm0-472Z' />
+                </svg>
+              </Button>
+              <Paragraph>{selector.location || location}</Paragraph>
+            </div>
           </div>
         </div>
 
@@ -234,7 +256,7 @@ const SettingsPage: React.FC<Props> = () => {
           <div className={'w-full flex md:flex-row flex-col '}>
             <div
               className={
-                'flex flex-col w-full md:w-1/2 h-full justify-end pr-0 md:pr-5 gap-3'
+                'flex flex-col w-full  h-full justify-end pr-0 md:pr-5 gap-3'
               }
             >
               <div>
@@ -248,7 +270,6 @@ const SettingsPage: React.FC<Props> = () => {
               </div>
 
               <div className=''>
-                {/*<Label isFocus>Username</Label>*/}
                 <label htmlFor=''>Username</label>
                 <div
                   className={
@@ -270,7 +291,6 @@ const SettingsPage: React.FC<Props> = () => {
                 ) : null}
               </div>
               <div className=''>
-                {/*<Label isFocus>Name</Label>*/}
                 <label htmlFor=''>Name</label>
                 <div
                   className={
@@ -293,7 +313,6 @@ const SettingsPage: React.FC<Props> = () => {
                 ) : null}
               </div>
               <div className=']'>
-                {/*<Label isFocus>Email</Label>*/}
                 <label htmlFor=''>Email</label>
                 <div
                   className={
@@ -314,37 +333,8 @@ const SettingsPage: React.FC<Props> = () => {
                   <Error>{formik.errors.email.toString()}</Error>
                 ) : null}
               </div>
-            </div>
-            <div
-              className={
-                'flex flex-col w-full md:w-1/2 h-full justify-end pl-0 md:pl-5'
-              }
-            >
-              <div className='LOCATION'>
-                {/*<Label isFocus>Location</Label>*/}
-                <label htmlFor=''>Location</label>
 
-                <div className='flex  items-center r gap-3'>
-                  <Button
-                    className='p-0'
-                    variant={'ghost'}
-                    onClick={handleLocation}
-                  >
-                    <svg
-                      xmlns='http://www.w3.org/2000/svg'
-                      height='24'
-                      viewBox='0 -960 960 960'
-                      width='24'
-                      fill={mode.mode === '' ? `black` : 'white'}
-                    >
-                      <path d='M480.089-490Q509-490 529.5-510.589q20.5-20.588 20.5-49.5Q550-589 529.411-609.5q-20.588-20.5-49.5-20.5Q451-630 430.5-609.411q-20.5 20.588-20.5 49.5Q410-531 430.589-510.5q20.588 20.5 49.5 20.5ZM480-159q133-121 196.5-219.5T740-552q0-117.79-75.292-192.895Q589.417-820 480-820t-184.708 75.105Q220-669.79 220-552q0 75 65 173.5T480-159Zm0 79Q319-217 239.5-334.5T160-552q0-150 96.5-239T480-880q127 0 223.5 89T800-552q0 100-79.5 217.5T480-80Zm0-472Z' />
-                    </svg>
-                  </Button>
-                  <Paragraph>{selector.location || location}</Paragraph>
-                </div>
-              </div>
               <div className='BIO'>
-                {/*<Label isFocus>Bio</Label>*/}
                 <label htmlFor=''>Bio</label>
                 <div
                   className={
@@ -366,19 +356,21 @@ const SettingsPage: React.FC<Props> = () => {
               </div>
             </div>
           </div>
-          <div className={'w-full flex flex-col items-end my-5 gap-3'}>
+          <div className={'w-full  flex flex-col items-end my-5 gap-3'}>
             <Button
               isLoading={loading}
               type='submit'
               disabled={loading}
               variant={'ghost'}
-              className={'bg-lavender text-white rounded-full h-[32px]'}
+              className={
+                'bg-lavender text-white  w-full flex justify-center rounded-full'
+              }
             >
               Save changes
             </Button>
             <div
               className={
-                'w-[118px] h-[32px] bg-blackSwan text-white flex items-center rounded-full'
+                ' w-full  bg-blackSwan text-white flex items-center rounded-full'
               }
             >
               <LogoutButton></LogoutButton>

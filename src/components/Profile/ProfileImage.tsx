@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import React from 'react';
 
 interface Props {
@@ -12,10 +13,12 @@ const ProfileImage: React.FC<Props> = ({
   postsImage,
 }) => {
   return (
-    <img
+    <Image
       className=' w-full h-full profile-img dark:bg-white object-cover rounded-full border-2 border-lavender '
       src={imageSrc || googleImage || postsImage || '/userdefault.png'}
       alt='/userdefault.png'
+      width={64}
+      height={64}
     />
   );
 };
