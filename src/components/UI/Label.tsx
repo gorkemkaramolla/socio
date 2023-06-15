@@ -9,13 +9,12 @@ const inputVariants = cva(
    focus:outline-none
    focus:ring-[1px] focus:ring-indigo-600 
    rounded-lg 
-   text-pink-400
    z-20
    pl-4
    absolute
    
    
-   font-extrabold
+  font-bold
    tracking-widest
    transition-all  
    dark:bg-transparent' `,

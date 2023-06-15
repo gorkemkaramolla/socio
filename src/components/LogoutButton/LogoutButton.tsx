@@ -14,7 +14,7 @@ const LogoutButton: React.FC<Props> = () => {
 
   return (
     <Button
-      className='text-center self-center justify-self-center w-full items-center flex justify-center'
+      className='text-center self-center justify-self-center w-full  items-center flex justify-center'
       onClick={logoutSession}
       variant={'ghost'}
     >

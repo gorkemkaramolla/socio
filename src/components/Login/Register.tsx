@@ -94,9 +94,9 @@ const RegisterPage: React.FC<Props> = () => {
 
   return (
     <div className='justify-center p-12   w-[100%] h-[100%] flex flex-col  items-center'>
-      <div className='gap-3 flex flex-col md:p-12  p-5  shadow-md shadow-pink-400   rounded-xl'>
+      <div className='gap-3 flex flex-col md:p-12  p-5  shadow-md   rounded-xl'>
         <div className='flex flex-col gap-8'>
-          <Heading size={'md'} align={'center'} variant={'pink'} heading='h1'>
+          <Heading size={'md'} align={'center'} heading='h1'>
             Register
           </Heading>
           <Paragraph align={'center'}>
