@@ -91,5 +91,8 @@ export const authOptions: NextAuthOptions = {
       }
       return session;
     },
+    async redirect({ url, baseUrl }: { url: any; baseUrl: any }) {
+      return baseUrl;
+    },
   },
 };
