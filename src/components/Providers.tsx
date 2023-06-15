@@ -106,12 +106,19 @@ const Providers: React.FC<Props> = ({ children }) => {
               }
             >
               <div className={'flex h-full'}>
-                <div className='flex justify-end w-0 md:min-w-[330px] xl:w-3/12 '>
-                  {currentUser?.email !== '' && <SideNavbar />}
-                </div>
-                <div className={'flex justify-center xl:w-6/12 w-full'}>
-                  {children}
-                </div>
+                {currentUser.email !== '' && (
+                  <div className='flex justify-center w-0 md:min-w-[330px] h-full xl:w-3/12 '>
+                    {currentUser?.email !== '' && <SideNavbar />}
+                  </div>
+                )}
+                {currentUser.email === '' ? (
+                  <div className={'flex justify-center w-full'}>{children}</div>
+                ) : (
+                  <div className={'flex justify-center xl:w-6/12 w-full'}>
+                    {children}
+                  </div>
+                )}
+
                 {/* <div className='flex flex-col  justify-center w-0 xl:w-3/12 '>
                   {currentUser?.email !== '' && <RightBar />}
                 </div> */}
