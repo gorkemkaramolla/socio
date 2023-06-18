@@ -16,7 +16,7 @@ model User {
   password String?
   name     String?
   image    Bytes?
-  username String? @unique() @default(uuid())
+  username String? @unique() @default(nanoid()) @db.VarChar(21)
 
   imageUri          String?
   location          String?
