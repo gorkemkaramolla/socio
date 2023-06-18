@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation';
 export default async function Settings() {
   const session = await getServerSession();
   if (!session) {
-    redirect('/login');
+    redirect('/');
   }
   return <SettingsPage />;
 }

@@ -5,7 +5,7 @@ interface Props {
 }
 
 import Button from './UI/Button';
-import CommentSettingsModal from './UI/Modals/CommentSettningsDropdown';
+import Dropdown from './UI/Modals/Dropdown';
 import { useModal } from '@nextui-org/react';
 import Paragraph from './UI/Paragraph';
 import { formatDate } from '@/util/getDate';
@@ -49,10 +49,7 @@ const CommentContainer: FC<Props> = ({ comment }) => {
             {formatDate(comment.created_at?.toString())}
           </Paragraph>
 
-          <CommentSettingsModal
-            comment={comment!}
-            deletePost={deletePost}
-          ></CommentSettingsModal>
+          <Dropdown comment={comment!} buttonFunction={deletePost}></Dropdown>
         </div>
 
         <p style={{ wordBreak: 'break-word' }} className='break-words	 px-12'>
