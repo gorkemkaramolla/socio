@@ -10,6 +10,8 @@ import { RootState } from '@/store';
 import Shortcuts from '@/components/Shortcuts';
 import ProfileImage from '../Profile/ProfileImage';
 import { useRouter } from 'next/navigation';
+import Search from '../Search/Search';
+import Button from '../UI/Button';
 
 interface Props {}
 
@@ -20,13 +22,15 @@ const SideNavbar: FC<Props> = () => {
   return (
     <div
       className={
-        'fixed h-full mx-5 md:flex hidden flex-col items-center justify-center w-[300px] '
+        'fixed h-full mx-5 md:flex hidden flex-col items-center justify-start w-[300px] '
       }
     >
+      <Search />
+
       {/* <Heading heading='h6' size={'sm'} className={'m-1'}>
         Profile
       </Heading> */}
-      <div className={'flex flex-col gap-3 '}>
+      <div className={'flex w-full flex-col gap-3 '}>
         <div
           className={
             'bg-white shadow-2xl dark:bg-blackSwan rounded-2xl p-3 h-fit'
@@ -61,41 +65,56 @@ const SideNavbar: FC<Props> = () => {
             </Heading>
             <p>{currentUser.bio}</p>
           </div>
-          <div
-            className={
-              'flex w-full h-[50px] justify-center text-center mt-4 mb-2'
-            }
-          >
+          {currentUser.email !== '' ? (
             <div
-              className={'min-w-[60px] flex flex-col border-r-2 border-grey '}
+              className={
+                'flex w-full h-[50px] justify-center text-center mt-4 mb-2'
+              }
             >
-              <span className={'mx-3'}>4.543</span>
-              <span className={'text-sm mx-3'}>Post</span>
+              <div
+                className={'min-w-[60px] flex flex-col border-r-2 border-grey '}
+              >
+                <span className={'mx-3'}>4.543</span>
+                <span className={'text-sm mx-3'}>Post</span>
+              </div>
+              <div
+                className={'min-w-[60px] flex flex-col border-r-2 border-grey '}
+              >
+                <span className={'mx-3'}>43</span>
+                <span className={'text-sm mx-3'}>Followers</span>
+              </div>
+              <div className={'min-w-[60px] flex flex-col '}>
+                <span className={'mx-3'}>92</span>
+                <span className={'text-sm mx-3'}>Following</span>
+              </div>
             </div>
-            <div
-              className={'min-w-[60px] flex flex-col border-r-2 border-grey '}
-            >
-              <span className={'mx-3'}>43</span>
-              <span className={'text-sm mx-3'}>Followers</span>
+          ) : (
+            <div>
+              Lütfen Giriş Yapınız
+              <Button
+                onClick={() => {
+                  router.push('/');
+                }}
+              >
+                Giriş{' '}
+              </Button>
             </div>
-            <div className={'min-w-[60px] flex flex-col '}>
-              <span className={'mx-3'}>92</span>
-              <span className={'text-sm mx-3'}>Following</span>
-            </div>
-          </div>
+          )}
         </div>
-        <Heading heading='h6' size={'sm'} className={'m-1'}>
+        {/* <Heading heading='h6' size={'sm'} className={'m-1'}>
           Shortcuts
-        </Heading>
+        </Heading> */}
         <Shortcuts />
 
-        <div
-          className={
-            'flex justify-start bg-white shadow-2xl dark:bg-blackSwan rounded-2xl'
-          }
-        >
-          <LogoutButton />
-        </div>
+        {currentUser.email !== '' && (
+          <div
+            className={
+              'flex justify-start bg-white shadow-2xl dark:bg-blackSwan rounded-2xl'
+            }
+          >
+            <LogoutButton />
+          </div>
+        )}
       </div>
     </div>
 

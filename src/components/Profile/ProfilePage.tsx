@@ -1,5 +1,5 @@
 'use client';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import Heading from '@/components/UI/Heading';
@@ -25,6 +25,7 @@ import Shortcuts from '../Shortcuts';
 import { base64StringToBlob } from '@/util/base64StringtoBlob';
 import { setUser } from '@/lib/redux/userSlice';
 import { getImage } from '@/util/getImage';
+import TextareaAutosize from 'react-textarea-autosize';
 
 interface Props {
   username: string;
@@ -38,11 +39,8 @@ const ProfilePage = ({ username, requestedUser, posts }: Props) => {
   const [imageFile, setImageFile] = useState<Blob | undefined>(undefined);
   const [imageSrc, setImageSrc] = useState<string | null>(null);
 
-  const inputRef = useRef<HTMLDivElement>(null);
-
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
-  const [postLoading, setPostLoading] = useState<boolean>(true);
 
   const handlePostSent = async (
     user_id: number,
@@ -57,14 +55,10 @@ const ProfilePage = ({ username, requestedUser, posts }: Props) => {
         user_id: user_id,
       });
       if (post) {
-        // toast.success('Successfully posted');
+        toast.success('Successfully posted');
         // setPostProps([post.data as unknown as Post, ...postProps!]);
 
         formik.values.post = '';
-        if (inputRef.current && formik.values.post === '') {
-          inputRef.current.innerText = 'What do you think?';
-          inputRef.current.style.color = '#ccc';
-        }
       }
 
       setLoading(false);
@@ -100,19 +94,11 @@ const ProfilePage = ({ username, requestedUser, posts }: Props) => {
   const [show, setShow] = useState(false);
 
   const userPage = requestedUser?.id === currentUser.id;
-  useEffect(() => {
-    if (formik.values.post === '') {
-      if (inputRef.current) {
-        inputRef.current.innerText = 'What do you think?';
-        inputRef.current.style.color = '#ccc';
-        inputRef.current.blur();
-      }
-    }
-  }, [inputRef.current]);
+
   const changeProfilePicture = async (file: Blob) => {
     const formData = new FormData();
     formData.append('image', file);
-    formData.append('id', currentUser.id);
+    formData.append('id', requestedUser.id);
     console.log('worked');
 
     try {
@@ -146,8 +132,7 @@ const ProfilePage = ({ username, requestedUser, posts }: Props) => {
         const base64String = reader.result as string;
         const imgBlob = base64StringToBlob(base64String, file.type);
         changeProfilePicture(imgBlob!);
-
-        setImageSrc(base64String);
+        userPage && setImageSrc(base64String);
 
         setImageFile(imgBlob);
       };
@@ -157,9 +142,9 @@ const ProfilePage = ({ username, requestedUser, posts }: Props) => {
 
   if (requestedUser)
     return (
-      <div className='flex flex-col  overflow-y-scroll items-center px-3.5'>
+      <div className='flex flex-col overflow-x-hidden overflow-y-scroll items-center px-3.5'>
         {/* Header */}
-        <div className='sticky top-0 w-full h-fit flex md:justify-center justify-between items-center bg-white/75 drop-shadow-xl dark:bg-black/75 backdrop-blur-sm z-40'>
+        <div className='sticky top-0 w-full h-fit flex md:justify-center justify-between items-center bg-white/75 drop-shadow-xl dark:bg-black/75 backdrop-blur-sm z-20'>
           <Heading heading='h6' size='sm' className='m-4'>
             {username}
           </Heading>
@@ -176,7 +161,7 @@ const ProfilePage = ({ username, requestedUser, posts }: Props) => {
           <div
             className={`${
               show ? '-right-4 ' : '-right-48'
-            } top-16 md:hidden absolute ease-out duration-300 `}
+            } top-16 md:hidden absolute ease-out duration-300  `}
           >
             <Shortcuts />
           </div>
@@ -184,22 +169,24 @@ const ProfilePage = ({ username, requestedUser, posts }: Props) => {
 
         <div className='h-fit w-full flex flex-col items-center'>
           <div className='w-full h-[150px] bg-fuchsia-600 rounded-2xl my-3 relative'>
-            <div className='overflow-hidden w-full h-[150px] rounded-2xl'>
-              <div
-                className='w-full h-full absolute opacity-0 hover:opacity-100 rounded-2xl'
-                style={{
-                  background:
-                    'linear-gradient(90deg, rgba(0,0,0,0.13769257703081228) 0%, rgba(0,0,0,0.13769257703081228) 100%)',
-                }}
-              >
-                <Button
-                  className='sidebarIconButtons ease-out duration-200 text-xl text-grey absolute right-5 bottom-2'
-                  variant='ghost'
-                  size='smSquare'
+            <div className=' overflow-hidden w-full h-[150px] rounded-2xl'>
+              {userPage && (
+                <div
+                  className='w-full h-full absolute opacity-0 hover:opacity-100 rounded-2xl'
+                  style={{
+                    background:
+                      'linear-gradient(90deg, rgba(0,0,0,0.13769257703081228) 0%, rgba(0,0,0,0.13769257703081228) 100%)',
+                  }}
                 >
-                  <FontAwesomeIcon icon={faPenToSquare}></FontAwesomeIcon>
-                </Button>
-              </div>
+                  <Button
+                    className='sidebarIconButtons ease-out duration-200 text-xl text-grey absolute right-5 bottom-2'
+                    variant='ghost'
+                    size='smSquare'
+                  >
+                    <FontAwesomeIcon icon={faPenToSquare}></FontAwesomeIcon>
+                  </Button>
+                </div>
+              )}
               <img
                 className=''
                 src='https://i.ibb.co/Ct8y2gk/wallpaper.jpg'
@@ -209,33 +196,35 @@ const ProfilePage = ({ username, requestedUser, posts }: Props) => {
             {/* Profile Picture */}
             <div className='w-[120px] h-[120px] rounded-full bg-white absolute -bottom-12 left-6 border-4 border-lavender'>
               {/* Image Overlay */}
-              <div
-                className='w-full h-full  absolute opacity-0 hover:opacity-100 rounded-full'
-                style={{
-                  background:
-                    'linear-gradient(90deg, rgba(0,0,0,0.13769257703081228) 0%, rgba(0,0,0,0.13769257703081228) 100%)',
-                }}
-              >
-                <Button
-                  className='sidebarIconButtons ease-out duration-200 text-xl text-grey absolute right-3 bottom-3'
-                  variant='ghost'
-                  size='smSquare'
+              {userPage && (
+                <div
+                  className='w-full h-full  absolute opacity-0 hover:opacity-100 rounded-full'
+                  style={{
+                    background:
+                      'linear-gradient(90deg, rgba(0,0,0,0.13769257703081228) 0%, rgba(0,0,0,0.13769257703081228) 100%)',
+                  }}
                 >
-                  <label
-                    htmlFor='image-upload'
-                    className='w-full p-0 m-0 rounded-md cursor-pointer items-center flex justify-center '
+                  <Button
+                    className='sidebarIconButtons ease-out duration-200 text-xl text-grey absolute right-3 bottom-3'
+                    variant='ghost'
+                    size='smSquare'
                   >
-                    <FontAwesomeIcon icon={faPenToSquare} />
-                  </label>
-                  <input
-                    type='file'
-                    id='image-upload'
-                    className='hidden p-0 m-0 '
-                    accept='image/jpeg, image/png'
-                    onChange={handleFileUpload}
-                  />
-                </Button>
-              </div>
+                    <label
+                      htmlFor='image-upload'
+                      className='w-full p-0 m-0 rounded-md cursor-pointer items-center flex justify-center '
+                    >
+                      <FontAwesomeIcon icon={faPenToSquare} />
+                    </label>
+                    <input
+                      type='file'
+                      id='image-upload'
+                      className='hidden p-0 m-0 '
+                      accept='image/jpeg, image/png'
+                      onChange={handleFileUpload}
+                    />
+                  </Button>
+                </div>
+              )}
 
               <ProfileImage
                 imageSrc={imageSrc || requestedUser.image!}
@@ -318,42 +307,14 @@ const ProfilePage = ({ username, requestedUser, posts }: Props) => {
               className='flex w-full h-full justify-center px-6 gap-3 dark:text-white   items-center'
               onSubmit={formik.handleSubmit}
             >
-              <div
-                ref={inputRef}
-                className='w-full pl-2 pt-1 rounded-md flex items-center text-black  text-sm min-h-[2.5rem] border-brown border-2'
-                style={{
-                  overflow: 'auto',
-                  whiteSpace: 'pre-wrap',
-                  wordWrap: 'break-word',
-                }}
-                onFocus={() => {
-                  if (inputRef.current && formik.values.post === '') {
-                    inputRef.current.textContent = '';
-                  }
-                }}
+              <TextareaAutosize
                 id='post'
-                contentEditable={true}
-                onInput={(event: React.KeyboardEvent<HTMLDivElement>) => {
-                  const content = event.currentTarget.textContent;
-                  if (inputRef.current)
-                    inputRef.current.style.color =
-                      mode.mode === 'dark' ? '#d1d5db' : 'black';
-                  formik.setFieldValue('post', content);
-                }}
-                onPaste={(event: React.ClipboardEvent<HTMLDivElement>) => {
-                  event.preventDefault();
-                  const text = event.clipboardData.getData('text/plain');
-                  document.execCommand('insertText', false, text);
-                }}
-                onBlur={(event: React.FocusEvent<HTMLDivElement>) => {
-                  formik.handleBlur(event);
-                  if (inputRef.current && formik.values.post === '') {
-                    inputRef.current.style.color = '#ccc';
-                    inputRef.current.innerText = 'What do you think?';
-                  }
-                }}
+                name='post'
+                placeholder='What do you think ? '
+                className='bg-transparent w-full py-2 rounded-md resize-none'
+                value={formik.values.post}
+                onChange={formik.handleChange}
               />
-
               <Button
                 variant={'default'}
                 className=''
@@ -373,7 +334,7 @@ const ProfilePage = ({ username, requestedUser, posts }: Props) => {
               <ContentContainer key={i} post={post!} user={requestedUser} />
             ))}
           </div>
-          {postLoading && <Loader className='h-4 w-4 animate-spin' />}
+          {/* {postLoading && <Loader className='h-4 w-4 animate-spin' />} */}
         </div>
 
         <div className='w-full flex justify-center items-center'>

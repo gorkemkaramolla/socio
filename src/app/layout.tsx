@@ -1,8 +1,9 @@
 'use client';
+import React, { useEffect, useState } from 'react';
+import { Provider } from 'react-redux';
+import { SessionProvider } from 'next-auth/react';
 import Providers from '@/components/Providers';
 import './globals.css';
-import React from 'react';
-import { Provider } from 'react-redux';
 import store from '@/store';
 
 export default function RootLayout({

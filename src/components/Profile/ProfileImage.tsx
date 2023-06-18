@@ -16,7 +16,7 @@ const ProfileImage: React.FC<Props> = ({
 }) => {
   return (
     <Image
-      className=' w-full h-full profile-img dark:bg-white object-cover rounded-full border-2 border-lavender '
+      className=' w-full h-full  dark:bg-white object-cover rounded-full border-2 border-lavender '
       src={imageSrc || googleImage || postsImage || '/userdefault.png'}
       alt={'Socio user : ' + alt + ' profile picture' || '/userdefault.png'}
       width={64}

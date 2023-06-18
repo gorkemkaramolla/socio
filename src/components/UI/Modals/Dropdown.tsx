@@ -22,11 +22,14 @@ interface MenuItem {
   name: string;
 }
 interface Props {
-  deletePost: () => void;
+  buttonFunction: () => void;
   comment: Comment;
 }
 
-export default function CommentSettingsModal({ deletePost, comment }: Props) {
+export default function CommentSettingsModal({
+  buttonFunction,
+  comment,
+}: Props) {
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const iconRef = useRef<SVGSVGElement>(null);
@@ -81,7 +84,7 @@ export default function CommentSettingsModal({ deletePost, comment }: Props) {
           <Button
             onClick={() => {
               setDropdownOpen(false);
-              deletePost();
+              // deletePost();
             }}
             className='flex bg-white dark:bg-night dark:hover:bg-blackSwan hover:bg-gray-200 transition-all rounded-md items-center w-full justify-center gap-3 '
             variant={'ghost'}
@@ -92,7 +95,7 @@ export default function CommentSettingsModal({ deletePost, comment }: Props) {
           </Button>
 
           <Button
-            onClick={deletePost}
+            // onClick={deletePost}
             className='flex bg-white dark:bg-night dark:hover:bg-blackSwan hover:bg-gray-200 transition-all rounded-md items-center w-full justify-center gap-3 '
             variant={'ghost'}
           >
@@ -100,7 +103,7 @@ export default function CommentSettingsModal({ deletePost, comment }: Props) {
             <FontAwesomeIcon onClick={handleDrop} icon={faShare} />
           </Button>
           <Button
-            onClick={deletePost}
+            onClick={buttonFunction}
             className='flex bg-white dark:bg-night dark:hover:bg-blackSwan hover:bg-gray-200 transition-all rounded-md items-center w-full justify-center gap-3 '
             variant={'ghost'}
           >
@@ -110,7 +113,7 @@ export default function CommentSettingsModal({ deletePost, comment }: Props) {
           <Button
             onClick={() => {
               setDropdownOpen(false);
-              deletePost();
+              buttonFunction();
             }}
             className='flex bg-white dark:bg-night dark:hover:bg-blackSwan hover:bg-gray-200 transition-all rounded-md items-center w-full justify-center gap-3 '
             variant={'ghost'}

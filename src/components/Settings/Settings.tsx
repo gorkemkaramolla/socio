@@ -179,7 +179,7 @@ const SettingsPage: React.FC<Props> = () => {
   };
 
   return (
-    <div className='w-full flex flex-col items-center h-[100dvh] overflow-auto '>
+    <div className='w-full overflow-x-hidden flex flex-col items-center h-[100dvh] overflow-auto '>
       <div className={'w-full px-4 flex flex-col items-center  m-auto'}>
         <div className='sticky top-0 w-full h-fit flex md:justify-center justify-between items-center bg-white/75 drop-shadow-xl dark:bg-black/75 backdrop-blur-sm z-40'>
           <Heading heading='h6' size='sm' className='m-4'>
@@ -195,13 +195,6 @@ const SettingsPage: React.FC<Props> = () => {
           >
             <FontAwesomeIcon icon={faBars} />
           </Button>
-          <div
-            className={`${
-              show ? '-right-4 ' : '-right-48'
-            } top-16 md:hidden absolute ease-out duration-300 `}
-          >
-            <Shortcuts />
-          </div>
         </div>
         <div className=' w-full flex flex-col justify-center mt-3 items-center'>
           <div className='flex gap-8 flex-col '>
