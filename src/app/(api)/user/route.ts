@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getToken } from 'next-auth/jwt';
 import { resizeImage } from '@/util/imageSharp';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
 
@@ -53,7 +55,6 @@ export async function GET(req: Request) {
   }
 }
 export async function PUT(req: Request) {
-  console.log('worked');
   const formData = await req.formData();
   const id = formData.get('id');
   const email = formData.get('email');
@@ -64,6 +65,14 @@ export async function PUT(req: Request) {
   const location = formData.get('location');
 
   prisma.$connect();
+  const session = await getServerSession(authOptions);
+  if (Number(id) !== session?.user.id) {
+    console.log('wrong');
+    return new NextResponse('Unauthorized to do this action', {
+      status: 401,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
   const user = await prisma.user.findFirstOrThrow({
     where: {
       id: Number(id),
@@ -144,12 +153,12 @@ export async function PUT(req: Request) {
       data: updatedData,
     });
 
-    if (updatedUser)
+    if (updatedUser) {
       return new NextResponse(JSON.stringify({ updatedUser }), {
         status: 200,
         headers: { 'Content-Type': 'application/json' },
       });
-    else
+    } else
       return new NextResponse(
         JSON.stringify({ message: 'Something went wrong' }),
         {
