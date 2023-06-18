@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import FormInput from '@/components/UI/Input';
 import PostSkeleton from '@/components/Post/Skeleton/PostSkeleton';
+import TextareaAutosize from 'react-textarea-autosize';
 
 const ProfilePage = () => {
   return (
@@ -14,7 +15,7 @@ const ProfilePage = () => {
           <Heading heading='h6' size='sm' className='m-4'>
             <div className='flex'>
               <div className='text-stone-300 ease-out duration-300 w-8 h-8 bg-gray-300'></div>
-              <div className='text-slate-300 w-8 h-8 bg-gray-300'></div>
+              {/* <div className='text-slate-300 w-8 h-8 bg-gray-300'></div> */}
               <div className='w-8 h-8 bg-gray-300'></div>
             </div>
           </Heading>
@@ -27,7 +28,7 @@ const ProfilePage = () => {
           </Button>
         </div>
         <div className='h-fit w-full flex flex-col items-center'>
-          <div className='w-full h-[150px] bg-fuchsia-600 rounded-2xl my-3 relative'>
+          <div className='w-full h-[150px] bg-fuchsia-600 rounded-2xl my-2 relative'>
             <div className='overflow-hidden w-full h-[150px] rounded-2xl'>
               <div
                 className='w-full h-full absolute opacity-0 hover:opacity-100 rounded-2xl'
@@ -137,11 +138,12 @@ const ProfilePage = () => {
               Likes
             </Heading>
           </div>
-          <form className='flex items-center justify-center gap-1'>
+          <form className='flex w-full h-full justify-center px-6 gap-3 dark:text-white   items-center'>
             <FormInput
+              className='w-full'
               name='post'
               id='post'
-              placeholder='Say something'
+              placeholder='What do you think ? '
               variant={'default'}
             ></FormInput>
 
