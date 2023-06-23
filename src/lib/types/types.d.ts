@@ -55,3 +55,9 @@ interface Message {
   message: string;
   created_at?: Date;
 }
+interface Guide {
+  id: number;
+  content: string | null;
+  created_at: Date;
+  user_id: number;
+}

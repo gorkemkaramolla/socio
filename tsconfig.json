@@ -23,6 +23,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/util/typewriter.ts", "src/lib/db.ts", "src/pages/api/ws.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/util/typewriter.ts", "src/lib/db.ts", "src/pages/api/ws.ts", "src/components/Editor/plugins/AutoLinkPlugin.js", "src/components/Editor/plugins/ToolbarPlugin.js"],
   "exclude": ["node_modules"]
 }

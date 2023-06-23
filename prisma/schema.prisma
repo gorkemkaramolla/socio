@@ -16,7 +16,7 @@ model User {
   password String?
   name     String?
   image    Bytes?
-  username String? @unique() @default(nanoid()) @db.VarChar(21)
+  username String? @unique() @default(nanoid())
 
   imageUri          String?
   location          String?
@@ -30,6 +30,9 @@ model User {
   Reaction    Reaction[]
   PostLike    PostLike[]
   CommentLike CommentLike[]
+  Guides      Guides[]
+
+  @@index([name, username, created_at])
 }
 
 model Message {
@@ -56,6 +59,8 @@ model Post {
   Comment    Comment[]
   Reaction   Reaction[]
   PostLike   PostLike[]
+
+  @@index([created_at, user_id])
 }
 
 model Reaction {
@@ -78,6 +83,8 @@ model PostLike {
   user_id    Int
   user       User     @relation(fields: [user_id], references: [id])
   post       Post     @relation(fields: [post_id], references: [id])
+
+  @@index([post_id, user_id, created_at])
 }
 
 model CommentLike {
@@ -89,6 +96,8 @@ model CommentLike {
   user_id    Int
   user       User     @relation(fields: [user_id], references: [id])
   comment    Comment  @relation(fields: [comment_id], references: [id])
+
+  @@index([user_id, created_at])
 }
 
 model Comment {
@@ -100,8 +109,16 @@ model Comment {
   post        Post          @relation(fields: [post_id], references: [id])
   user        User          @relation(fields: [user_id], references: [id])
   CommentLike CommentLike[]
+
+  @@index([user_id, created_at, post_id])
 }
 
-model ActiveChats {
-  id Int @id @default(autoincrement())
+model Guides {
+  id         Int      @id @default(autoincrement())
+  content    String   @db.VarChar(5000)
+  user_id    Int
+  user       User     @relation(fields: [user_id], references: [id])
+  created_at DateTime @default(now())
+
+  @@index([user_id])
 }
