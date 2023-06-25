@@ -185,6 +185,15 @@ div.code {
 h1 {
   font-size: 96px;
 }
+h2 {
+  font-size: 48px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 12px;
+}
 blockquote {
   background: #f9f9f9;
   border-left: 5px solid #ccc;
@@ -202,4 +211,13 @@ blockquote:before {
 
 blockquote p {
   display: inline;
+}
+
+textarea {
+  -webkit-user-select: auto;
+  user-select: all;
+}
+[contentEditable] {
+  -webkit-user-select: auto;
+  user-select: all;
 }

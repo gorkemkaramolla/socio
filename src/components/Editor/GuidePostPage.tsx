@@ -12,12 +12,14 @@ import TextareaAutosize from 'react-textarea-autosize';
 import hljs from 'highlight.js/lib/core';
 import javascript from 'highlight.js/lib/languages/javascript';
 import 'highlight.js/styles/github-dark.css';
-
+import { marked } from 'marked';
+import Heading from '../UI/Heading';
 import { useRouter } from 'next/navigation';
 import { Guide } from '@/lib/types/types';
 import FakeEditor from '../FakeEditor/FakeEditor';
 import Editor from './Editor';
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown';
+import Button from '../UI/Button';
 
 interface Props {
   guides: Guide[];
@@ -25,19 +27,21 @@ interface Props {
 }
 
 const GuidePostPage: React.FC<Props> = ({ guides, user_id }) => {
-  const oneAndTwo = '1 \n 2';
-  console.log(oneAndTwo);
-  hljs.registerLanguage('javascript', javascript);
   const router = useRouter();
-
-  useEffect(() => {
-    hljs.highlightAll();
-    hljs.registerLanguage('javascript', javascript);
-  }, []);
+  const [draftLength, setDraftLength] = useState<number>(0);
 
   const [content, setContent] = useState<string>('');
-  const [contentModified, setContentModified] = useState<string>('');
-
+  const [highlight, setHighlight] = useState<boolean>(false);
+  useEffect(() => {
+    hljs.registerLanguage('javascript', javascript);
+    hljs.highlightAll();
+  }, [content]);
+  useEffect(() => {
+    const draftText = localStorage.getItem('draftText');
+    const textNumRows = draftText?.split('\n').length!;
+    setDraftLength(textNumRows);
+    if (draftText) setContent(draftText.toString());
+  }, []);
   useEffect(() => {
     console.log(content);
   }, [content]);
@@ -59,23 +63,34 @@ const GuidePostPage: React.FC<Props> = ({ guides, user_id }) => {
   return (
     <div className='w-screen h-screen flex md:flex-row flex-col gap-2  overflow-y-scroll'>
       <div className='w-full md:w-2/4'>
-        <Editor content={content} handleContent={handleContent}></Editor>
-        <button onClick={handleSend}>gönder</button>
+        <Editor
+          content={content}
+          handleContent={handleContent}
+          draftLength={draftLength}
+        ></Editor>
+        <Button onClick={handleSend}>Submit</Button>
       </div>
       <div
         style={{ whiteSpace: 'pre-wrap' }}
         className='w-full md:w-2/4 break-words	 '
       >
-        <ReactMarkdown>{content}</ReactMarkdown>
-        <div className='code'>
-          {guides.map((post: Guide) => (
-            <div className='code m-6 tex-sm'>
+        <div className=''>
+          <Heading heading='h2'>Preview</Heading>
+        </div>
+        <div
+          className=' p-3 '
+          dangerouslySetInnerHTML={{ __html: marked(content) }}
+        ></div>
+
+        {/* <div className='code'>
+          {guides.map((post: Guide, i) => (
+            <div key={i} className='code m-6 tex-sm'>
               <pre>
-                <code>{post.content}</code>
+                <code className='code'>{post.content}</code>
               </pre>
             </div>
           ))}
-        </div>
+        </div> */}
       </div>
       <div className='code m-6 tex-sm'></div>
       {/* <div dangerouslySetInnerHTML={{ __html: content }}></div> */}
