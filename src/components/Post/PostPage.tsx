@@ -233,7 +233,7 @@ const PostPage: FC<Props> = ({ post, comments }) => {
               wordBreak: 'break-word',
               overflowWrap: 'break-word',
             }}
-            className={'content w-full text-[0.95rem]'}
+            className={'content w-full '}
           >
             {post?.content!}
             <hr className='mt-2' />

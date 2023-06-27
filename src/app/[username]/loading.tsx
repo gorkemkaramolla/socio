@@ -106,7 +106,7 @@ const ProfilePage = () => {
               </div>
             </div>
             <div className='w-9/12 bg-gray-200 dark:bg-blackSwan shadow-md rounded-2xl px-5 flex flex-col justify-center'>
-              <p className='text-md font-semibold'>
+              <p className=' font-semibold'>
                 <div className='flex'>
                   <div className='text-stone-300 ease-out duration-300 w-8 h-8 bg-gray-300 dark:bg-black'></div>
                   <div className='text-slate-300 w-8 h-8 bg-gray-300 dark:bg-black'></div>

@@ -122,12 +122,12 @@ const ContentContainer: FC<Props> = ({ post, user }) => {
         <div className={'ml-4 flex cursor-pointer items-center'}>
           <div
             onClick={handleGoProfile}
-            className={'text-sm text-lavender mx-2.5 p-0 inline'}
+            className={'text-base text-lavender mx-2.5 p-0 inline'}
           >
             @{post?.user?.username || user?.username}
           </div>
           <Paragraph
-            className='text-sm'
+            className='text-base'
             style={{
               fontWeight: 500,
             }}
@@ -173,7 +173,7 @@ const ContentContainer: FC<Props> = ({ post, user }) => {
             wordBreak: 'break-word',
             overflowWrap: 'break-word',
           }}
-          className={'content break-words w-full text-[0.95rem]'}
+          className={'content break-words w-full '}
         >
           {post?.content!}
         </div>

@@ -42,12 +42,12 @@
 }
 
 body {
+  font-family: 'Roboto', sans-serif;
+
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-  /*overflow: hidden; !* Hide the main scroll bar *!*/
   width: 100vw;
-  /*overflow: scroll; !* Add scroll to the body *!*/
   scrollbar-width: none; /* Hide the scrollbar in Firefox */
   display: flex;
   justify-content: center;
@@ -183,19 +183,18 @@ div.code {
   white-space: pre;
 }
 h1 {
-  font-size: 96px;
+  font-size: 36px;
 }
 h2 {
-  font-size: 48px;
+  font-size: 30px;
 }
 h3 {
   font-size: 24px;
 }
 h4 {
-  font-size: 12px;
+  font-size: 18px;
 }
 blockquote {
-  background: #f9f9f9;
   border-left: 5px solid #ccc;
   padding: 0.5em 10px;
   quotes: '\201C''\201D''\2018''\2019';
@@ -220,4 +219,36 @@ textarea {
 [contentEditable] {
   -webkit-user-select: auto;
   user-select: all;
+}
+
+.scroll-bar {
+  overflow: auto;
+}
+
+.scroll-bar::-webkit-scrollbar {
+  width: 0.5em;
+  display: block;
+  cursor: pointer;
+}
+
+.dark .scroll-bar::-webkit-scrollbar-track {
+  background-color: #151718;
+}
+.scroll-bar::-webkit-scrollbar-track {
+  background-color: white;
+}
+.scroll-bar::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 4px;
+}
+
+.scroll-bar::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+.youtube {
+  width: 100%;
+  height: 400px;
+}
+.soundcloud {
+  width: 100%;
 }

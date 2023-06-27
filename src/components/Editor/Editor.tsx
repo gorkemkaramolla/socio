@@ -6,18 +6,36 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { Bold, Italic, Code, Quote, Heading } from 'lucide-react';
+import {
+  Bold,
+  Italic,
+  Code,
+  Quote,
+  Heading,
+  List,
+  ListOrdered,
+  Zap,
+  Link,
+  ImagePlus,
+} from 'lucide-react';
 import TextareaAutosize from 'react-textarea-autosize';
 import { useRouter } from 'next/router';
 import UnsavedChangesPrompt from './UnsavedChanges';
 import { Toaster, toast } from 'react-hot-toast';
+import DOMPurify from 'dompurify';
 interface Props {
   handleContent: (s: string) => void;
+  handleSave: (value: boolean) => void;
   content: string;
   draftLength: number;
 }
 
-const Editor: React.FC<Props> = ({ content, handleContent, draftLength }) => {
+const Editor: React.FC<Props> = ({
+  content,
+  handleSave,
+  handleContent,
+  draftLength,
+}) => {
   const [changesSaved, setChangesSaved] = useState<boolean>(false);
   function getTextOnCurrentLine(textarea: any) {
     const text = textarea.value;
@@ -50,10 +68,11 @@ const Editor: React.FC<Props> = ({ content, handleContent, draftLength }) => {
 
     handleContent(value);
   }
+
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   useEffect(() => {
     if (textAreaRef.current) textAreaRef.current.value = content;
-  }, [textAreaRef.current]);
+  }, [textAreaRef.current, content]);
   useEffect(() => {
     const draft = localStorage.getItem('draftText');
     if (content) {
@@ -107,9 +126,11 @@ const Editor: React.FC<Props> = ({ content, handleContent, draftLength }) => {
     }
     if (event.metaKey && event.key === 's') {
       event.preventDefault();
+
       localStorage.setItem('draftText', content);
       setChangesSaved(false);
       toast.success('Successfully Saved');
+      handleSave(true);
     }
   }
   const handleFormatting = (style: string) => {
@@ -119,11 +140,12 @@ const Editor: React.FC<Props> = ({ content, handleContent, draftLength }) => {
         textAreaRef.current.selectionEnd
       );
 
-      var bold = /^\*\*.*\*\*$/;
-      var italic = /^_.*_$/;
-      var code = /^```[\s\S]*```$/;
+      const bold = /^\*\*.*\*\*$/;
+      const italic = /^_.*_$/;
+      const code = /^```[\s\S]*```$/;
+      const embed = /^{*embed [\s\S]*}$/;
 
-      var quote = /^>[\s\S]*$/;
+      const quote = /^>[\s\S]*$/;
       let newText = '';
       let cursorPosition = 0; // Track cursor position after inserting newText
       if (style === 'bold') {
@@ -154,7 +176,7 @@ const Editor: React.FC<Props> = ({ content, handleContent, draftLength }) => {
             newText = `\`\`\`\n${selectedText}\n\`\`\``;
           }
         else {
-          newText = `\`\`\`\n\n\`\`\``;
+          newText = `\n\`\`\`\n\n\`\`\``;
         }
         cursorPosition = textAreaRef.current.selectionEnd + 4; // Set cursor position after the inserted code
       } else if (style === 'heading') {
@@ -176,6 +198,15 @@ const Editor: React.FC<Props> = ({ content, handleContent, draftLength }) => {
           }
         else {
           newText = '> ';
+        }
+      } else if (style === 'embed') {
+        if (selectedText.match(embed))
+          newText = `${selectedText
+            .replace('embed ', '')
+            .replaceAll('{', '')
+            .replaceAll('}', '')}`;
+        else {
+          newText = `{embed ${selectedText}}`;
         }
       }
       const selectionStart = textAreaRef.current.selectionStart;
@@ -219,8 +250,8 @@ const Editor: React.FC<Props> = ({ content, handleContent, draftLength }) => {
           textAreaRef.current.focus();
         } else if (style === 'code') {
           textAreaRef.current.setSelectionRange(
-            selectionStart + 4,
-            selectionStart + 4
+            selectionStart + 5,
+            selectionStart + 5
           );
           textAreaRef.current.focus();
         } else if (style === 'quote') {
@@ -243,10 +274,10 @@ const Editor: React.FC<Props> = ({ content, handleContent, draftLength }) => {
   };
 
   return (
-    <div className=''>
-      <div className='flex gap-2 py-4  justify-around '>
+    <div className='  flex-col flex justify-center'>
+      <div className='flex gap-1   justify-evenly '>
         <button
-          className='hover:bg-gray-100 dark:hover:bg-blackSwan p-4 rounded transition-all'
+          className='hover:bg-gray-100 dark:hover:bg-[#4d5fb8aa] p-2 rounded transition-all'
           onClick={() => {
             handleFormatting('bold');
           }}
@@ -254,7 +285,7 @@ const Editor: React.FC<Props> = ({ content, handleContent, draftLength }) => {
           <Bold />
         </button>
         <button
-          className='hover:bg-gray-100 dark:hover:bg-blackSwan p-4 rounded transition-all'
+          className='hover:bg-gray-100 dark:hover:bg-blackSwan p-2 rounded transition-all'
           onClick={() => {
             handleFormatting('italic');
           }}
@@ -262,24 +293,7 @@ const Editor: React.FC<Props> = ({ content, handleContent, draftLength }) => {
           <Italic />
         </button>
         <button
-          className='hover:bg-gray-100 dark:hover:bg-blackSwan p-4 rounded transition-all'
-          onClick={() => {
-            handleFormatting('code');
-          }}
-        >
-          <Code />
-        </button>
-
-        <button
-          className='hover:bg-gray-100 dark:hover:bg-blackSwan p-4 rounded transition-all'
-          onClick={() => {
-            handleFormatting('quote');
-          }}
-        >
-          <Quote />
-        </button>
-        <button
-          className='hover:bg-gray-100 dark:hover:bg-blackSwan p-4 rounded transition-all'
+          className='hover:bg-gray-100 dark:hover:bg-blackSwan p-2 rounded transition-all'
           onClick={() => {
             handleFormatting('heading');
           }}
@@ -287,30 +301,74 @@ const Editor: React.FC<Props> = ({ content, handleContent, draftLength }) => {
           <Heading />
         </button>
         <button
-          className='hover:bg-gray-100 dark:hover:bg-blackSwan p-4 rounded transition-all'
+          className='hover:bg-gray-100 dark:hover:bg-blackSwan p-2 rounded transition-all'
           onClick={() => {
-            if (textAreaRef.current)
-              textAreaRef.current.value =
-                'Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum magnam maiores eos ex ratione optio aliquid necessitatibus molestiae eligendi, architecto neque inventore, ea fuga unde eius libero. Dolorum, autem dolore.';
-            textAreaRef.current?.focus();
+            handleFormatting('italic');
           }}
         >
-          lorem
+          <ListOrdered size={28} />
+        </button>
+        <button
+          className='hover:bg-gray-100 dark:hover:bg-blackSwan p-2 rounded transition-all'
+          onClick={() => {
+            handleFormatting('italic');
+          }}
+        >
+          <List size={28} />
+        </button>
+        <button
+          className='hover:bg-gray-100 dark:hover:bg-blackSwan p-2 rounded transition-all'
+          onClick={() => {
+            handleFormatting('code');
+          }}
+        >
+          <Code />
+        </button>
+        <button
+          className='hover:bg-gray-100 dark:hover:bg-blackSwan p-2 rounded transition-all'
+          onClick={() => {
+            handleFormatting('embed');
+          }}
+        >
+          <Zap />
+        </button>
+        <button
+          className='hover:bg-gray-100 dark:hover:bg-blackSwan p-2 rounded transition-all'
+          onClick={() => {
+            handleFormatting('code');
+          }}
+        >
+          <Link />
+        </button>
+
+        <button
+          className='hover:bg-gray-100 dark:hover:bg-blackSwan p-2 rounded transition-all'
+          onClick={() => {
+            handleFormatting('quote');
+          }}
+        >
+          <Quote />
+        </button>
+
+        <button className='hover:bg-gray-100 dark:hover:bg-blackSwan p-2 rounded transition-all'>
+          <ImagePlus />
         </button>
       </div>
-      <div ref={textAreaWrapperRef} className='textarea-wrapper'>
+      <div ref={textAreaWrapperRef} className='textarea-wrapper '>
         <TextareaAutosize
+          autoCorrect='false'
+          spellCheck='false'
           minRows={draftLength}
           onKeyDown={handleEnter}
           ref={textAreaRef}
-          className='w-full h-full   p-2  dark: bg-blackSwan'
+          className='w-full max-h-[65vh] min-h-[65vh] scroll-bar resize-none p-2 rounded-xl dark: bg-stone-100  dark:bg-blackSwan'
           placeholder='Type'
           onChange={handleChange}
         />
+        <div className=' '>{/* <div>{content}</div> */}</div>
+        <UnsavedChangesPrompt changesSaved={changesSaved} />
+        <Toaster position='top-center'></Toaster>
       </div>
-      <div className=' '>{/* <div>{content}</div> */}</div>
-      <UnsavedChangesPrompt changesSaved={changesSaved} />
-      <Toaster position='top-center'></Toaster>
     </div>
   );
 };

@@ -19,7 +19,7 @@ const PostSkeleton: React.FC<Props> = () => {
           </div>
         </div>
         <div className='px-4 py-2 relative'>
-          <div className='content break-words w-full text-[0.95rem]'>
+          <div className='content break-words w-full '>
             <div className='w-full h-3 dark:bg-black bg-gray-300 mb-2'></div>
             <div className='w-full h-3 dark:bg-black bg-gray-300 mb-2'></div>
             <div className='w-3/4 h-3 dark:bg-black bg-gray-300'></div>

@@ -5,7 +5,6 @@ import { cn } from '@/lib/utils';
 const inputVariants = cva(
   `className='border-[0.1px]
    transition-all
-   text-md
    dark:text-white
    text-black
    

@@ -76,7 +76,7 @@ export default function CommentForm({ post_id }: Props) {
   });
 
   return (
-    <div className='text-md '>
+    <div className='text-base '>
       <form
         className='flex h-full justify-center px-6 gap-3 dark:text-white   items-center'
         onSubmit={formik.handleSubmit}

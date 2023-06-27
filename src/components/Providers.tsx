@@ -91,7 +91,7 @@ const Providers: React.FC<Props> = ({ children }) => {
         <head>
           <link rel='icon' href='/favicon.ico' sizes='96x96' />
         </head>
-        <body className={' text-black dark:text-white '}>
+        <body className={' text-lg leading-8 text-black dark:text-white '}>
           <div
             className={
               'w-screen relative h-[100dvh] dark:bg-black overflow-hidden'

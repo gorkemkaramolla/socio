@@ -279,7 +279,7 @@ const ProfilePage = ({ username, requestedUser, posts }: Props) => {
                 </svg>
                 {requestedUser.location}
               </p>
-              <p className='text-md font-semibold p-1 break-all'>
+              <p className='text-base font-semibold p-1 break-all'>
                 {requestedUser?.bio || 'bio:-'}
               </p>
             </div>
