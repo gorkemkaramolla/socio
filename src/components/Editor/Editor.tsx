@@ -6,37 +6,38 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import {
-  Bold,
-  Italic,
-  Code,
-  Quote,
-  Heading,
-  List,
-  ListOrdered,
-  Zap,
-  Link,
-  ImagePlus,
-} from 'lucide-react';
+
 import TextareaAutosize from 'react-textarea-autosize';
 import { useRouter } from 'next/router';
+import { tools } from './toolList';
 import UnsavedChangesPrompt from './UnsavedChanges';
 import { Toaster, toast } from 'react-hot-toast';
 import DOMPurify from 'dompurify';
+import { GuidePost } from './GuidePostPage';
+import { title } from 'process';
+import { lastIndexOf } from 'lodash';
+import { Tooltip } from '@nextui-org/react';
 interface Props {
-  handleContent: (s: string) => void;
+  handleContent: (guidePost: GuidePost) => void;
   handleSave: (value: boolean) => void;
-  content: string;
+  guidePost: GuidePost;
   draftLength: number;
+  contentWithoutSanitize?: string;
+  titleWithoutSlug?: string;
 }
 
 const Editor: React.FC<Props> = ({
-  content,
   handleSave,
   handleContent,
   draftLength,
+  guidePost,
+  contentWithoutSanitize,
+  titleWithoutSlug,
 }) => {
   const [changesSaved, setChangesSaved] = useState<boolean>(false);
+  const [undoStack, setUndoStack] = useState<string[]>([]);
+  const [redoStack, setRedoStack] = useState<string[]>([]);
+
   function getTextOnCurrentLine(textarea: any) {
     const text = textarea.value;
     const caretPosition = textarea.selectionStart;
@@ -65,30 +66,90 @@ const Editor: React.FC<Props> = ({
   }
   function handleChange(event: ChangeEvent<HTMLTextAreaElement>): void {
     const { selectionStart, value } = event.target;
+    if (textAreaContentRef.current) {
+      setUndoStack([...undoStack, value]);
+    }
+    guidePost.content = value;
 
-    handleContent(value);
+    handleContent(guidePost);
+  }
+  useEffect(() => {
+    setRedoStack([...redoStack, guidePost.content]);
+  }, [guidePost.content]);
+  const handleUndo = () => {
+    if (textAreaContentRef.current && undoStack.length > 0) {
+      const previousContent = undoStack[undoStack.length - 1];
+
+      textAreaContentRef.current.value = previousContent;
+
+      handleContent({ title: title, content: previousContent });
+
+      const updatedUndoStack = undoStack.slice(0, undoStack.length - 1);
+      setUndoStack(updatedUndoStack);
+    }
+  };
+
+  const handleRedo = () => {
+    if (textAreaContentRef.current && redoStack.length > 0) {
+      const nextContent = redoStack[redoStack.length - 1];
+
+      textAreaContentRef.current.value = nextContent;
+      handleContent({ title: title, content: nextContent });
+
+      const updatedRedoStack = redoStack.slice(0, redoStack.length - 1);
+      setRedoStack(updatedRedoStack);
+    }
+  };
+
+  function handleTitleChange(event: ChangeEvent<HTMLTextAreaElement>) {
+    const { selectionStart, value } = event.target;
+    guidePost.title = value;
+    handleContent(guidePost);
   }
 
-  const textAreaRef = useRef<HTMLTextAreaElement>(null);
+  const textAreaContentRef = useRef<HTMLTextAreaElement>(null);
+
+  const textAreaTitleRef = useRef<HTMLTextAreaElement>(null);
   useEffect(() => {
-    if (textAreaRef.current) textAreaRef.current.value = content;
-  }, [textAreaRef.current, content]);
+    if (textAreaContentRef.current)
+      textAreaContentRef.current.value = guidePost.content;
+    if (textAreaTitleRef.current)
+      textAreaTitleRef.current.value = guidePost.title;
+  }, [textAreaContentRef.current, guidePost.content]);
   useEffect(() => {
     const draft = localStorage.getItem('draftText');
-    if (content) {
-      if (draft?.toString() !== content) {
+    if (guidePost.content) {
+      if (draft?.toString() !== guidePost.content) {
         setChangesSaved(true);
       }
     }
-  }, [content]);
-  useEffect(() => {}, [changesSaved]);
-
+  }, [guidePost.content]);
+  useEffect(() => {
+    if (
+      contentWithoutSanitize &&
+      titleWithoutSlug &&
+      textAreaContentRef.current &&
+      textAreaTitleRef.current
+    ) {
+      textAreaContentRef.current.value = contentWithoutSanitize;
+      textAreaTitleRef.current.value = titleWithoutSlug;
+      handleContent({
+        title: titleWithoutSlug,
+        content: contentWithoutSanitize,
+      });
+    }
+  }, [
+    contentWithoutSanitize,
+    titleWithoutSlug,
+    textAreaContentRef.current,
+    textAreaTitleRef.current,
+  ]);
   const textAreaWrapperRef = useRef<HTMLDivElement>(null);
 
   function handleEnter(event: KeyboardEvent): void {
-    if (event.key === 'Enter' && textAreaRef.current) {
+    if (event.key === 'Enter' && textAreaContentRef.current) {
       event.preventDefault();
-      const textarea = textAreaRef.current;
+      const textarea = textAreaContentRef.current;
 
       const { selectionStart, selectionEnd } = textarea;
       const value = textarea.value;
@@ -113,47 +174,96 @@ const Editor: React.FC<Props> = ({
       textarea.selectionStart = textarea.selectionEnd = selectionStart + 1;
 
       // Call your handleContent function with the updated content
-      handleContent(newContent);
+      handleContent({ title: guidePost.title, content: newContent });
     }
+    if (
+      (event.ctrlKey && event.key === 'z') ||
+      (event.metaKey && event.key === 'z')
+    ) {
+      event.preventDefault();
+      handleUndo();
+    } else if (
+      (event.ctrlKey && event.key === 'y') ||
+      (event.metaKey && event.key === 'y')
+    ) {
+      event.preventDefault();
+      handleRedo();
+    }
+    if (event.metaKey && event.key === 'b') {
+      event.preventDefault();
+      handleFormatting('bold');
+    } else if (event.metaKey && event.key === 'i') {
+      event.preventDefault();
+
+      handleFormatting('italic');
+    } else if (event.metaKey && event.key === 'h') {
+      event.preventDefault();
+
+      handleFormatting('heading');
+    } else if (event.metaKey && event.key === 'u') {
+      event.preventDefault();
+
+      handleFormatting('ul');
+    } else if (event.metaKey && event.key === 'o') {
+      event.preventDefault();
+
+      handleFormatting('ol');
+    } else if (event.metaKey && event.key === '<') {
+      event.preventDefault();
+      handleFormatting('ol');
+    }
+
     if (
       (event.ctrlKey && event.key === 'l') ||
       (event.metaKey && event.key === 'l')
     ) {
       event.preventDefault();
 
-      const { start, end } = getTextOnCurrentLine(textAreaRef.current);
-      textAreaRef.current?.setSelectionRange(start, end);
-    }
-    if (event.metaKey && event.key === 's') {
-      event.preventDefault();
-
-      localStorage.setItem('draftText', content);
-      setChangesSaved(false);
-      toast.success('Successfully Saved');
-      handleSave(true);
+      const { start, end } = getTextOnCurrentLine(textAreaContentRef.current);
+      textAreaContentRef.current?.setSelectionRange(start, end);
     }
   }
+  useEffect(() => {
+    const handleSaved = (event: any) => {
+      if (event.metaKey && event.key === 's') {
+        event.preventDefault();
+
+        const draftText = localStorage.setItem(
+          'draftText',
+          JSON.stringify({ guidePost })
+        );
+        setChangesSaved(false);
+        alert;
+        toast.success('Successfully Saved');
+        handleSave(true);
+      }
+    };
+    window.addEventListener('keydown', handleSaved);
+    return () => {
+      window.removeEventListener('keydown', handleSaved);
+    };
+  });
   const handleFormatting = (style: string) => {
-    if (textAreaRef.current && textAreaRef) {
-      var selectedText = textAreaRef.current.value.substring(
-        textAreaRef.current.selectionStart,
-        textAreaRef.current.selectionEnd
+    if (textAreaContentRef.current && textAreaContentRef) {
+      var selectedText = textAreaContentRef.current.value.substring(
+        textAreaContentRef.current.selectionStart,
+        textAreaContentRef.current.selectionEnd
       );
 
-      const bold = /^\*\*.*\*\*$/;
-      const italic = /^_.*_$/;
+      const bold = /^\*\*[\s\S]*\*\*$/;
+      const italic = /^_[\s\S]*_$/;
       const code = /^```[\s\S]*```$/;
       const embed = /^{*embed [\s\S]*}$/;
 
       const quote = /^>[\s\S]*$/;
       let newText = '';
-      let cursorPosition = 0; // Track cursor position after inserting newText
+      let cursorPosition = 0;
       if (style === 'bold') {
         if (selectedText)
           if (selectedText.match(bold)) {
-            newText = selectedText.replaceAll('**', '');
+            newText = selectedText.replaceAll('**', '').trim();
           } else {
-            newText = `**${selectedText}**`;
+            newText = `**${selectedText}**`.trim();
           }
         else {
           newText = '****';
@@ -161,9 +271,9 @@ const Editor: React.FC<Props> = ({
       } else if (style === 'italic') {
         if (selectedText)
           if (selectedText.match(italic)) {
-            newText = selectedText.replaceAll('_', '');
+            newText = selectedText.trim().replaceAll('_', '');
           } else {
-            newText = `_${selectedText}_`;
+            newText = `_${selectedText.trim()}_`;
           }
         else {
           newText = `__`;
@@ -178,7 +288,7 @@ const Editor: React.FC<Props> = ({
         else {
           newText = `\n\`\`\`\n\n\`\`\``;
         }
-        cursorPosition = textAreaRef.current.selectionEnd + 4; // Set cursor position after the inserted code
+        cursorPosition = textAreaContentRef.current.selectionEnd + 4; // Set cursor position after the inserted code
       } else if (style === 'heading') {
         if (selectedText) {
           const numberHeadings = countCharacterOccurrences(selectedText);
@@ -208,66 +318,111 @@ const Editor: React.FC<Props> = ({
         else {
           newText = `{embed ${selectedText}}`;
         }
+      } else if (style === 'Ordered List') {
+        newText = '\n1. element';
+      } else if (style === 'Unordered List') {
+        newText = '\n- element';
+      } else if (style === 'link') {
+        if (selectedText) {
+          newText = `[](${selectedText})`;
+        } else {
+          newText = '[]()';
+        }
       }
-      const selectionStart = textAreaRef.current.selectionStart;
-      const selectionEnd = textAreaRef.current.selectionEnd;
-      textAreaRef.current.setRangeText(
+      const selectionStart = textAreaContentRef.current.selectionStart;
+      const selectionEnd = textAreaContentRef.current.selectionEnd;
+      setUndoStack([...undoStack, textAreaContentRef.current.value]);
+
+      textAreaContentRef.current.setRangeText(
         newText,
         selectionStart,
         selectionEnd,
         'end'
       );
-      handleContent(
-        content.substring(0, selectionStart) +
+      handleContent({
+        title: guidePost.title,
+        content:
+          guidePost.content.substring(0, selectionStart) +
           newText +
-          content.substring(selectionEnd)
-      );
+          guidePost.content.substring(selectionEnd),
+      });
 
       // Set cursor position after inserted text
-      textAreaRef.current.setSelectionRange(cursorPosition, cursorPosition);
+      textAreaContentRef.current.setSelectionRange(
+        cursorPosition,
+        cursorPosition
+      );
 
       // Re-select the modified text
       if (selectedText) {
-        const modifiedSelectionStart = selectionStart;
-        const modifiedSelectionEnd = selectionStart + newText.length;
-        textAreaRef.current.focus();
-        textAreaRef.current.setSelectionRange(
-          modifiedSelectionStart,
-          modifiedSelectionEnd
-        );
-      } else {
-        if (style === 'bold') {
-          textAreaRef.current.setSelectionRange(
-            selectionStart + 2,
-            selectionStart + 2
-          );
-          textAreaRef.current.focus();
-        } else if (style === 'italic') {
-          textAreaRef.current.setSelectionRange(
-            selectionStart + 1,
-            selectionStart + 1
-          );
-          textAreaRef.current.focus();
-        } else if (style === 'code') {
-          textAreaRef.current.setSelectionRange(
-            selectionStart + 5,
-            selectionStart + 5
-          );
-          textAreaRef.current.focus();
-        } else if (style === 'quote') {
-          textAreaRef.current.setSelectionRange(
-            selectionStart + 1,
-            selectionStart + 1
-          );
-          textAreaRef.current.focus();
-        } else if (style === 'heading') {
+        if (style !== 'link') {
           const modifiedSelectionStart = selectionStart;
           const modifiedSelectionEnd = selectionStart + newText.length;
-          textAreaRef.current.focus();
-          textAreaRef.current.setSelectionRange(
+          textAreaContentRef.current.focus();
+          textAreaContentRef.current.setSelectionRange(
             modifiedSelectionStart,
             modifiedSelectionEnd
           );
+        } else {
+          textAreaContentRef.current.setSelectionRange(1, 1);
+          textAreaContentRef.current.focus();
+        }
+      } else {
+        if (style === 'bold') {
+          textAreaContentRef.current.setSelectionRange(
+            selectionStart + 2,
+            selectionStart + 2
+          );
+          textAreaContentRef.current.focus();
+        } else if (style === 'italic') {
+          textAreaContentRef.current.setSelectionRange(
+            selectionStart + 1,
+            selectionStart + 1
+          );
+          textAreaContentRef.current.focus();
+        } else if (style === 'code') {
+          textAreaContentRef.current.setSelectionRange(
+            selectionStart + 5,
+            selectionStart + 5
+          );
+          textAreaContentRef.current.focus();
+        } else if (style === 'quote') {
+          textAreaContentRef.current.setSelectionRange(
+            selectionStart + 1,
+            selectionStart + 1
+          );
+          textAreaContentRef.current.focus();
+        } else if (style === 'heading') {
+          const modifiedSelectionStart = selectionStart;
+          const modifiedSelectionEnd = selectionStart + newText.length;
+          textAreaContentRef.current.focus();
+          textAreaContentRef.current.setSelectionRange(
+            modifiedSelectionStart,
+            modifiedSelectionEnd
+          );
+        } else if (style === 'Unordered List') {
+          const modifiedSelectionEnd = selectionStart + newText.length;
+          textAreaContentRef.current.focus();
+          textAreaContentRef.current.setSelectionRange(
+            selectionStart + 3,
+            modifiedSelectionEnd
+          );
+        } else if (style === 'Ordered List') {
+          const modifiedSelectionEnd = selectionStart + newText.length;
+          textAreaContentRef.current.focus();
+          textAreaContentRef.current.setSelectionRange(
+            selectionStart + 4,
+            modifiedSelectionEnd
+          );
+        } else if (style === 'link') {
+          if (selectedText) {
+            alert('asdsa');
+            textAreaContentRef.current.setSelectionRange(1, 1);
+            textAreaContentRef.current.focus();
+          } else {
+            textAreaContentRef.current.focus();
+            textAreaContentRef.current.setSelectionRange(3, 3);
+          }
         }
       }
     }
@@ -276,83 +431,30 @@ const Editor: React.FC<Props> = ({
   return (
     <div className='  flex-col flex justify-center'>
       <div className='flex gap-1   justify-evenly '>
-        <button
-          className='hover:bg-gray-100 dark:hover:bg-[#4d5fb8aa] p-2 rounded transition-all'
-          onClick={() => {
-            handleFormatting('bold');
-          }}
-        >
-          <Bold />
-        </button>
-        <button
-          className='hover:bg-gray-100 dark:hover:bg-blackSwan p-2 rounded transition-all'
-          onClick={() => {
-            handleFormatting('italic');
-          }}
-        >
-          <Italic />
-        </button>
-        <button
-          className='hover:bg-gray-100 dark:hover:bg-blackSwan p-2 rounded transition-all'
-          onClick={() => {
-            handleFormatting('heading');
-          }}
-        >
-          <Heading />
-        </button>
-        <button
-          className='hover:bg-gray-100 dark:hover:bg-blackSwan p-2 rounded transition-all'
-          onClick={() => {
-            handleFormatting('italic');
-          }}
-        >
-          <ListOrdered size={28} />
-        </button>
-        <button
-          className='hover:bg-gray-100 dark:hover:bg-blackSwan p-2 rounded transition-all'
-          onClick={() => {
-            handleFormatting('italic');
-          }}
-        >
-          <List size={28} />
-        </button>
-        <button
-          className='hover:bg-gray-100 dark:hover:bg-blackSwan p-2 rounded transition-all'
-          onClick={() => {
-            handleFormatting('code');
-          }}
-        >
-          <Code />
-        </button>
-        <button
-          className='hover:bg-gray-100 dark:hover:bg-blackSwan p-2 rounded transition-all'
-          onClick={() => {
-            handleFormatting('embed');
-          }}
-        >
-          <Zap />
-        </button>
-        <button
-          className='hover:bg-gray-100 dark:hover:bg-blackSwan p-2 rounded transition-all'
-          onClick={() => {
-            handleFormatting('code');
-          }}
-        >
-          <Link />
-        </button>
-
-        <button
-          className='hover:bg-gray-100 dark:hover:bg-blackSwan p-2 rounded transition-all'
-          onClick={() => {
-            handleFormatting('quote');
-          }}
-        >
-          <Quote />
-        </button>
-
-        <button className='hover:bg-gray-100 dark:hover:bg-blackSwan p-2 rounded transition-all'>
-          <ImagePlus />
-        </button>
+        {tools.map((tool: any) => {
+          return (
+            <Tooltip content={tool.shortcut} rounded placement='bottom'>
+              <button
+                className='hover:bg-gray-100 dark:hover:bg-[#4d5fb8aa] p-2 rounded transition-all'
+                onClick={() => {
+                  handleFormatting(tool.name);
+                }}
+              >
+                <tool.iconName />
+              </button>
+            </Tooltip>
+          );
+        })}
+      </div>
+      <div>
+        <TextareaAutosize
+          className='w-full text-3xl scroll-bar resize-none p-2 rounded-xl dark: bg-stone-100  dark:bg-blackSwan'
+          autoCorrect='false'
+          placeholder='Title of your guide'
+          spellCheck='false'
+          onChange={handleTitleChange}
+          ref={textAreaTitleRef}
+        />
       </div>
       <div ref={textAreaWrapperRef} className='textarea-wrapper '>
         <TextareaAutosize
@@ -360,9 +462,9 @@ const Editor: React.FC<Props> = ({
           spellCheck='false'
           minRows={draftLength}
           onKeyDown={handleEnter}
-          ref={textAreaRef}
+          ref={textAreaContentRef}
           className='w-full max-h-[65vh] min-h-[65vh] scroll-bar resize-none p-2 rounded-xl dark: bg-stone-100  dark:bg-blackSwan'
-          placeholder='Type'
+          placeholder='Now you are useful'
           onChange={handleChange}
         />
         <div className=' '>{/* <div>{content}</div> */}</div>

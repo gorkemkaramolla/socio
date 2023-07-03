@@ -11,7 +11,7 @@ import {
   faPaperPlane,
   faPenToSquare,
 } from '@fortawesome/free-solid-svg-icons';
-import { PostWithUser } from '@/lib/types/types';
+import { Guide, PostWithUser } from '@/lib/types/types';
 import FormInput from '@/components/UI/Input';
 import { useFormik } from 'formik';
 import Error from '../Error/Error';
@@ -26,19 +26,25 @@ import { base64StringToBlob } from '@/util/base64StringtoBlob';
 import { setUser } from '@/lib/redux/userSlice';
 import { getImage } from '@/util/getImage';
 import TextareaAutosize from 'react-textarea-autosize';
+import { Guides } from '@prisma/client';
+import Link from 'next/link';
 
 interface Props {
   username: string;
   posts: PostWithUser[];
   requestedUser: User;
+  guides: Guide[];
 }
 
-const ProfilePage = ({ username, requestedUser, posts }: Props) => {
+const ProfilePage = ({ username, requestedUser, posts, guides }: Props) => {
   const dispatch = useDispatch();
 
   const [imageFile, setImageFile] = useState<Blob | undefined>(undefined);
   const [imageSrc, setImageSrc] = useState<string | null>(null);
-
+  const [active, setActive] = useState<string>('posts');
+  const handleActive = (activity: string) => {
+    setActive(activity);
+  };
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -194,7 +200,7 @@ const ProfilePage = ({ username, requestedUser, posts }: Props) => {
               />
             </div>
             {/* Profile Picture */}
-            <div className='w-[120px] h-[120px] rounded-full bg-white absolute -bottom-12 left-6 border-4 border-lavender'>
+            <div className='w-[100px] h-[100px] rounded-full bg-white absolute -bottom-9 left-8 border-[1px] border-lavender'>
               {/* Image Overlay */}
               {userPage && (
                 <div
@@ -287,19 +293,33 @@ const ProfilePage = ({ username, requestedUser, posts }: Props) => {
 
           {/* Statistics Section */}
           <div className='flex w-full justify-evenly -mb-5'>
-            <Heading
-              heading='h6'
-              size='xs'
-              className='m-4 bg-white dark:bg-blackSwan shadow-2xl rounded-full px-6 py-1'
+            <Button
+              className='mt-4 border-b-2 hover:border-b-indigo-500 transition-colors'
+              onClick={() => handleActive('posts')}
+              variant={'ghost'}
             >
-              Posts
-            </Heading>
-            <Heading heading='h6' size='xs' className='m-4 px-6 py-1'>
-              Replies
-            </Heading>
-            <Heading heading='h6' size='xs' className='m-4 px-6 py-1'>
-              Likes
-            </Heading>
+              <Heading heading='h6' size='xs' className='m-4  px-6 py-1'>
+                Posts
+              </Heading>
+            </Button>
+            <Button
+              className='mt-4 border-b-2 hover:border-b-indigo-500 transition-colors'
+              onClick={() => handleActive('guides')}
+              variant={'ghost'}
+            >
+              <Heading heading='h6' size='xs' className='m-4  px-6 py-1'>
+                Replies
+              </Heading>
+            </Button>
+            <Button
+              className='mt-4 border-b-2 hover:border-b-indigo-500 transition-colors'
+              onClick={() => handleActive('guides')}
+              variant={'ghost'}
+            >
+              <Heading heading='h6' size='xs' className='m-4  px-6 py-1'>
+                Guides
+              </Heading>
+            </Button>
           </div>
 
           {userPage && (
@@ -329,11 +349,31 @@ const ProfilePage = ({ username, requestedUser, posts }: Props) => {
           {formik.touched.post && formik.errors.post ? (
             <Error>{formik.errors.post}</Error>
           ) : null}
-          <div className='w-full md:p-3 p-6'>
-            {posts?.map((post, i) => (
-              <ContentContainer key={i} post={post!} user={requestedUser} />
-            ))}
-          </div>
+          {active === 'posts' && (
+            <div className='w-full md:p-3 p-6'>
+              {posts?.map((post, i) => (
+                <ContentContainer key={i} post={post!} user={requestedUser} />
+              ))}
+            </div>
+          )}
+          {active === 'guides' && (
+            <div className='w-full md:p-3 p-6'>
+              {guides.map((guide: Guide, i: number) => (
+                <Link href={`/${username}/guides/${guide.title}/`}>
+                  <div className='w-full ' key={i}>
+                    <div className='w-8 h-8 flex gap-2'>
+                      <ProfileImage
+                        imageSrc={requestedUser.image!}
+                        googleImage={requestedUser.imageUri}
+                      />
+                      <div>{requestedUser.username}</div>
+                    </div>
+                    <p>{guide.titleWithoutSlug}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
           {/* {postLoading && <Loader className='h-4 w-4 animate-spin' />} */}
         </div>
 
