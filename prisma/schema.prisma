@@ -114,11 +114,15 @@ model Comment {
 }
 
 model Guides {
-  id         Int      @id @default(autoincrement())
-  content    String   @db.VarChar(5000)
-  user_id    Int
-  user       User     @relation(fields: [user_id], references: [id])
-  created_at DateTime @default(now())
+  id                     Int      @id @default(autoincrement())
+  content                String   @db.LongText()
+  user_id                Int
+  user                   User     @relation(fields: [user_id], references: [id])
+  created_at             DateTime @default(now())
+  title                  String   @unique
+  titleWithoutSlug       String   @db.VarChar(300)
+  contentWithoutSanitize String   @db.LongText()
 
   @@index([user_id])
+  @@index([title])
 }

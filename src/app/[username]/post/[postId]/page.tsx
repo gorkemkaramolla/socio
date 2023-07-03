@@ -17,8 +17,9 @@ export async function generateMetadata(
   parent?: ResolvingMetadata
 ): Promise<Metadata> {
   const response = await axios.get('http://localhost:3000/post', {
-    params: { post_id: params.postId },
+    params: { post_id: params.postId, username: params.username },
   });
+  console.log(response.data);
   const post = response.data.post;
   if (post) {
     const userResponse = await axios.get('http://localhost:3000/user', {
@@ -38,43 +39,48 @@ export async function generateMetadata(
       //   images: [getImage(user.image)],
       // },
     };
-  }
-  return {
-    title: 'Post Not Found',
-    description: 'The requested post could not be found.',
-    keywords: [],
-  };
+  } else
+    return {
+      title: 'Post Not Found',
+      description: 'The requested post could not be found.',
+      keywords: [],
+    };
 }
 export default async function PostSlug({
   params: { postId, username },
 }: Props) {
-  const response = await axios.get('http://localhost:3000/post', {
-    params: {
-      post_id: postId,
-    },
-  });
-  const post = response.data.post;
-  if (post) {
-    post.user.image = getImage(post.user.image);
-    const comments = await axios
-      .get('http://localhost:3000/post/comment', {
-        params: { post_id: post.id },
-      })
-      .then((res) => res.data);
-    const commentsImaged: Comment[] = comments.map((comment: any) => {
-      const image = getImage(comment.user.image);
-      return {
-        ...comment,
-        user: {
-          ...comment.user,
-          image: image,
-        },
-      };
+  try {
+    const response = await axios.get('http://localhost:3000/post', {
+      params: {
+        post_id: postId,
+        username: username,
+      },
     });
-    // post.Comment = post.Comment.map((comment: any) => {
-    //   comment.user.image = getImage(comment.user.image);
-    //   return comment;
-    // });
-    return <PostPage post={post} comments={commentsImaged} />;
+    const post = response.data.post;
+    if (post) {
+      post.user.image = getImage(post.user.image);
+      const comments = await axios
+        .get('http://localhost:3000/post/comment', {
+          params: { post_id: post.id },
+        })
+        .then((res) => res.data);
+      const commentsImaged: Comment[] = comments.map((comment: any) => {
+        const image = getImage(comment.user.image);
+        return {
+          ...comment,
+          user: {
+            ...comment.user,
+            image: image,
+          },
+        };
+      });
+      // post.Comment = post.Comment.map((comment: any) => {
+      //   comment.user.image = getImage(comment.user.image);
+      //   return comment;
+      // });
+      return <PostPage post={post} comments={commentsImaged} />;
+    }
+  } catch (e) {
+    return <div>404</div>;
   }
 }

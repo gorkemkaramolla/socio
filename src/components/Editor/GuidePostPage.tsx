@@ -20,12 +20,28 @@ import { embedSite } from '@/util/embed';
 interface Props {
   guides: Guide[];
   user_id: number;
+  contentWithoutSanitize?: string;
+  titleWithoutSlug?: string;
+  title: string;
+}
+export interface GuidePost {
+  title: string;
+  content: string;
 }
 
-const GuidePostPage: React.FC<Props> = ({ guides, user_id }) => {
+const GuidePostPage: React.FC<Props> = ({
+  contentWithoutSanitize,
+  titleWithoutSlug,
+  guides,
+  title,
+  user_id,
+}) => {
   const router = useRouter();
   const [draftLength, setDraftLength] = useState<number>(0);
-  const [content, setContent] = useState<string>('');
+  const [guidePost, setGuidePost] = useState<GuidePost>({
+    content: '',
+    title: '',
+  });
   const [saved, setSaved] = useState<boolean>(false);
   const [sanitizedHTML, setSanitizedHTML] = useState('');
 
@@ -36,53 +52,77 @@ const GuidePostPage: React.FC<Props> = ({ guides, user_id }) => {
     setSaved(true);
     hljs.registerLanguage('javascript', javascript);
 
-    const draftText = localStorage.getItem('draftText');
-    const textNumRows = draftText?.split('\n').length!;
+    const draftObject = JSON.parse(localStorage.getItem('draftText')!);
+    const guidePost: GuidePost = draftObject.guidePost;
+    const textNumRows = guidePost.content?.split('\n').length!;
     setDraftLength(textNumRows);
-    if (draftText) {
-      highlightCode(draftText.toString());
-      setContent(draftText);
-    }
+    highlightCode({ title: guidePost.title, content: guidePost.content });
+    setGuidePost(guidePost);
   }, []);
 
   const handleSend = async () => {
-    try {
-      const response = await axios.post('/create_guide', {
-        user_id: user_id,
-        content: sanitizedHTML,
-      });
-      if (response) {
-        highlightCodeBLOCK();
-        router.refresh();
+    if (!guidePost.title || !guidePost.content) {
+      return;
+    }
+    if (!(contentWithoutSanitize && titleWithoutSlug)) {
+      try {
+        const response = await axios.post('/create_guide', {
+          title: guidePost?.title,
+          user_id: user_id,
+          content: sanitizedHTML,
+          contentWithoutSanitize: guidePost.content,
+        });
+        if (response) {
+          highlightCodeBLOCK();
+          router.refresh();
+        }
+        console.log(response);
+      } catch (e) {
+        console.log(e);
       }
-      console.log(response);
-    } catch (e) {
-      console.log(e);
+    } else {
+      try {
+        const response = await axios.put('/create_guide', {
+          title: title,
+          user_id: user_id,
+          content: sanitizedHTML,
+          contentWithoutSanitize: guidePost.content,
+        });
+        if (response) {
+          highlightCodeBLOCK();
+          router.refresh();
+        }
+        console.log(response);
+      } catch (e) {
+        console.log(e);
+      }
     }
   };
-
-  const handleContent = (s: string) => {
-    setSaved(false);
-    setContent(s);
-    highlightCode(s);
-  };
-
   useEffect(() => {
     const embedRegex = /{embed ([^}]+)}/g;
-    if (embedRegex && sanitizedHTML) {
-      const updatedHTML = sanitizedHTML.replace(
+    if (embedRegex && guidePost.content) {
+      const updatedHTML = guidePost.content.replace(
         embedRegex,
         (match, extractedContent) => {
           const embeddedContent = embedSite(extractedContent);
           return embeddedContent || ''; // Ensure a valid string is returned
         }
       );
-      highlightCode(updatedHTML);
+      highlightCode({ title: guidePost.title, content: updatedHTML });
     }
+    highlightCodeBLOCK();
   }, [saved]);
 
-  const highlightCode = (code: string) => {
-    const htmlContent = marked(code.replace(/\n/g, '\n'));
+  const handleContent = (guidePost: GuidePost) => {
+    setSaved(false);
+    setGuidePost(guidePost);
+
+    highlightCode({ title: guidePost.title, content: guidePost.content });
+    console.log(guidePost);
+  };
+
+  const highlightCode = (code: GuidePost) => {
+    const htmlContent = marked(code?.content?.replace(/\n/g, '\n'));
 
     const sanitizedContent = DOMPurify.sanitize(htmlContent, {
       ALLOWED_TAGS: [
@@ -102,8 +142,13 @@ const GuidePostPage: React.FC<Props> = ({ guides, user_id }) => {
         'h5',
         'h6',
         'br',
+        'ol',
+        'ul',
+        'blockquote',
+        'li',
+        'a',
       ],
-      ALLOWED_ATTR: ['class', 'src'],
+      ALLOWED_ATTR: ['class', 'src', 'href'],
       ADD_ATTR: ['class'],
       ALLOW_DATA_ATTR: false,
       ADD_TAGS: ['div'],
@@ -123,17 +168,19 @@ const GuidePostPage: React.FC<Props> = ({ guides, user_id }) => {
 
   useEffect(() => {
     highlightCodeBLOCK();
-  }, [sanitizedHTML, content, saved]);
+  }, [sanitizedHTML, guidePost?.content, saved]);
 
   useEffect(() => {
     highlightCodeBLOCK();
   }, []);
   return (
-    <div className='w-screen h-screen scroll flex md:flex-row mx-auto flex-col gap-2  overflow-y-scroll'>
+    <div className='w-screen h-screen scroll p-2 flex md:flex-row mx-auto flex-col gap-2  overflow-y-scroll'>
       <div className='w-full md:w-2/4'>
         <Editor
+          contentWithoutSanitize={contentWithoutSanitize}
+          titleWithoutSlug={titleWithoutSlug}
           handleSave={handleSave}
-          content={content}
+          guidePost={guidePost}
           handleContent={handleContent}
           draftLength={draftLength}
         />
@@ -147,11 +194,8 @@ const GuidePostPage: React.FC<Props> = ({ guides, user_id }) => {
           <Heading heading='h2'>Preview</Heading>
         </div>
 
-        <div className='px-3 bg-grey max-h-[60vh] min-h-[60vh] overflow-y-scroll overflow-x-scroll scroll-bar  dark:bg-blackSwan'>
+        <div className=' bg-grey max-h-[70vh]  px-4 output rounded-xl min-h-[70vh] overflow-y-scroll  scroll-bar  dark:bg-blackSwan'>
           {<div dangerouslySetInnerHTML={{ __html: sanitizedHTML }} />}
-          {/* {guides.map((guides) => (
-            <div dangerouslySetInnerHTML={{ __html: guides.content! }}></div>
-          ))} */}
         </div>
       </div>
     </div>
