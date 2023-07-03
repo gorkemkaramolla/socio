@@ -52,7 +52,7 @@ const ProfilePage = () => {
               />
             </div>
             {/* Profile Picture */}
-            <div className='w-[120px] h-[120px] rounded-full bg-gray-200 dark:bg-black absolute -bottom-12 left-6 border-4 border-lavender'>
+            <div className='w-[120px] h-[120px] rounded-full bg-gray-200 dark:bg-black absolute -bottom-12 left-6 border-[2px] border-lavender'>
               {/* Image Overlay */}
               <div
                 className='w-full h-full absolute opacity-0 hover:opacity-100 rounded-full'
