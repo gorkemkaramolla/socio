@@ -15,14 +15,18 @@ const SideMenuLayout = ({ children }: Props) => {
       className={'w-screen relative h-[100dvh] dark:bg-black overflow-hidden'}
     >
       <div className={'flex h-full'}>
-        <div className='flex justify-center w-0 md:min-w-[330px] h-full xl:w-3/12 '>
+        <div className='flex justify-center w-0 md:min-w-[330px] h-full xl:w-2/12 '>
           <SideNavbar />
         </div>
 
-        <div className={'flex justify-center xl:w-6/12 w-full'}>{children}</div>
+        <div
+          className={'flex justify-center overflow-y-scroll xl:w-8/12 w-full  '}
+        >
+          {children}
+        </div>
 
-        <div className='flex flex-col  justify-center w-0 xl:w-3/12 min-w-3/12  xl:min-w-[430px]'>
-          <div>occupied</div>
+        <div className='flex flex-col  justify-center w-0 xl:w-3/12 min-w-3/12  xl:min-w-[200px]'>
+          <div className=' w-full h-full'></div>
         </div>
       </div>
     </div>

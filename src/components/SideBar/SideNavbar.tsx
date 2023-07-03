@@ -49,7 +49,7 @@ const SideNavbar: FC<Props> = () => {
               />
               <div
                 className={
-                  'w-[60px] h-[60px] absolute top-[60px]   border-lavender border-2 rounded-full bg-white'
+                  'w-[60px] h-[60px] absolute top-[60px]   border-lavender  rounded-full bg-white'
                 }
               >
                 <ProfileImage
