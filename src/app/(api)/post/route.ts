@@ -9,6 +9,7 @@ export async function GET(req: Request) {
   const post_id = Number(searchParams.get('post_id'));
 
   const user_id = Number(searchParams.get('user_id'));
+  const username = searchParams.get('username');
   const skip = Number(searchParams.get('user_id')) || 0;
   if (user_id) {
     try {
@@ -63,46 +64,60 @@ export async function GET(req: Request) {
         }
       );
     }
-  } else if (post_id) {
-    const post = await prisma.post.findFirst({
+  } else if (post_id && username) {
+    const user = await prisma.user.findFirst({
       where: {
-        id: post_id,
-      },
-      select: {
-        id: true,
-        created_at: true,
-        title: true,
-        content: true,
-        user: {
-          select: {
-            name: true,
-            image: true,
-            username: true,
-            imageUri: true,
-            location: true,
-          },
-        },
-        PostLike: {
-          select: {
-            id: true,
-            user_id: true,
-            post_id: true,
-            liked: true,
-          },
-        },
+        username: username,
       },
     });
-    if (post) {
-      // const resizedImageBuffer = await sharp(post.user.image)
-      //   .resize(48)
-      //   .toBuffer();
-      // post.user.image = resizedImageBuffer;
-    }
+    if (user) {
+      const post = await prisma.post.findFirst({
+        where: {
+          AND: { id: post_id, user_id: user?.id },
+        },
+        select: {
+          id: true,
+          created_at: true,
+          title: true,
+          content: true,
+          user: {
+            select: {
+              name: true,
+              image: true,
+              username: true,
+              imageUri: true,
+              location: true,
+            },
+          },
+          PostLike: {
+            select: {
+              id: true,
+              user_id: true,
+              post_id: true,
+              liked: true,
+            },
+          },
+        },
+      });
+      if (username === post?.user.username) {
+        if (post) {
+          // const resizedImageBuffer = await sharp(post.user.image)
+          //   .resize(48)
+          //   .toBuffer();
+          // post.user.image = resizedImageBuffer;
+        }
 
-    return new NextResponse(JSON.stringify({ post }), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' },
-    });
+        return new NextResponse(JSON.stringify({ post }), {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' },
+        });
+      } else {
+        return new NextResponse('Not found', {
+          status: 404,
+          headers: { 'Content-Type': 'application/json' },
+        });
+      }
+    }
   } else {
     const posts = await prisma.post.findMany({
       skip: skip,
