@@ -42,7 +42,7 @@ const RegisterPage: React.FC<Props> = () => {
     try {
       await signIn('google', {
         redirect: true,
-        callbackUrl: `/profile`,
+        callbackUrl: `/home`,
       });
 
       // Dispatch the setUser action with the extracted user data

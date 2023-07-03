@@ -20,8 +20,12 @@ const getGoogleCredentials = () => {
   return { clientId, clientSecret };
 };
 export const authOptions: NextAuthOptions = {
-  session: { strategy: 'jwt' },
+  session: { strategy: 'jwt', maxAge: 40000 },
+  jwt: {
+    maxAge: 40000,
+  },
   pages: { signIn: '/login' },
+
   providers: [
     GoogleProvider({
       clientId: getGoogleCredentials().clientId,
@@ -59,6 +63,7 @@ export const authOptions: NextAuthOptions = {
       credentials: { email: { type: 'text' }, password: { type: 'text' } },
     }),
   ],
+
   callbacks: {
     async jwt({ token, user }) {
       prisma.$connect();
@@ -80,6 +85,7 @@ export const authOptions: NextAuthOptions = {
         name: newUser.name,
         email: newUser.email,
         picture: newUser.imageUri,
+        exp: Math.floor(Date.now() / 1000) + 40000, // Set expiration time to 10 seconds
       } as JWT;
     },
     async session({ session, token }) {
@@ -89,6 +95,7 @@ export const authOptions: NextAuthOptions = {
         session.user.email = token.email!;
         session.user.image = token.picture!;
       }
+      session.expires = String(token?.exp || 0); // Convert to string
       return session;
     },
     async redirect({ url, baseUrl }: { url: any; baseUrl: any }) {

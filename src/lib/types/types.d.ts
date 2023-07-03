@@ -57,6 +57,9 @@ interface Message {
 }
 interface Guide {
   id: number;
+  titleWithoutSlug: string;
+  contentWithoutSanitize: string;
+  title: string;
   content: string | null;
   created_at: Date;
   user_id: number;

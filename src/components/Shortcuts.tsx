@@ -11,8 +11,10 @@ import {
   faGear,
   faSearch,
   faShekelSign,
+  faEdit,
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
+import { Edit } from 'lucide-react';
 import SideNavbarIcons from './SideBar/SideNavbarIcons';
 
 interface SideNavbarIcon {
@@ -33,9 +35,9 @@ const Shortcuts: FC<Props> = ({}) => {
       title: 'Newsfeed',
     },
     {
-      href: '/todos',
-      icon: faCheck,
-      title: 'ToDos',
+      href: '/new',
+      icon: faEdit,
+      title: 'Create Post',
     },
     {
       href: `/${username}`,
