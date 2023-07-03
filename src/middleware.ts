@@ -9,6 +9,7 @@ export default withAuth(
     // Manage route protection
     const isAuth = await getToken({ req });
     const isLoginPage = pathname.startsWith('/login');
+    const isRegisterPage = pathname.startsWith('/register');
 
     const sensitiveRoutes = ['/settings', '/chat'];
     const isAccessingSensitiveRoute = sensitiveRoutes.some((route) =>
@@ -18,13 +19,19 @@ export default withAuth(
     if (isLoginPage) {
       if (isAuth) {
         return NextResponse.redirect(new URL('/home', req.url));
+      } else {
+        return NextResponse.redirect(new URL('/', req.url));
       }
-
-      return NextResponse.next();
+    } else if (isRegisterPage) {
+      if (isAuth) {
+        return NextResponse.redirect(new URL('/home', req.url));
+      } else {
+        return NextResponse.redirect(new URL('/', req.url));
+      }
     }
 
     if (!isAuth && isAccessingSensitiveRoute) {
-      return NextResponse.redirect(new URL('/login', req.url));
+      return NextResponse.redirect(new URL('/home', req.url));
     }
 
     if (pathname === '/' && isAuth) {
