@@ -63,4 +63,18 @@ interface Guide {
   content: string | null;
   created_at: Date;
   user_id: number;
+  user: {
+    imageUri: string;
+    image: string;
+    username: string;
+    name: string;
+  };
+}
+interface BlogPost {
+  children: Block[];
+}
+interface Block {
+  type: string;
+  text: string;
+  marks: string[];
 }

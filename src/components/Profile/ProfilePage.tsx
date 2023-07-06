@@ -148,9 +148,8 @@ const ProfilePage = ({ username, requestedUser, posts, guides }: Props) => {
 
   if (requestedUser)
     return (
-      <div className='flex flex-col overflow-x-hidden overflow-y-scroll items-center px-3.5'>
-        {/* Header */}
-        <div className='sticky top-0 w-full h-fit flex md:justify-center justify-between items-center bg-white/75 drop-shadow-xl dark:bg-black/75 backdrop-blur-sm z-20'>
+      <div className='flex flex-col overflow-x-hidden  items-center px-3.5 overflow-y-scroll'>
+        <div className='sticky top-0 w-full h-fit  flex md:justify-center justify-between items-center bg-white/75 drop-shadow-xl dark:bg-black/75 backdrop-blur-sm z-20'>
           <Heading heading='h6' size='sm' className='m-4'>
             {username}
           </Heading>
@@ -173,7 +172,7 @@ const ProfilePage = ({ username, requestedUser, posts, guides }: Props) => {
           </div>
         </div>
 
-        <div className='h-fit w-full flex flex-col items-center'>
+        <div className='h-fit w-full  flex flex-col items-center'>
           <div className='w-full h-[150px] bg-fuchsia-600 rounded-2xl my-3 relative'>
             <div className=' overflow-hidden w-full h-[150px] rounded-2xl'>
               {userPage && (
@@ -294,7 +293,10 @@ const ProfilePage = ({ username, requestedUser, posts, guides }: Props) => {
           {/* Statistics Section */}
           <div className='flex w-full justify-evenly -mb-5'>
             <Button
-              className='mt-4 border-b-2 hover:border-b-indigo-500 transition-colors'
+              className={`mt-4 transition-colors ${
+                active === 'posts' &&
+                'border-2 border-gray-50 dark:bg-blackSwan bg-grey '
+              }`}
               onClick={() => handleActive('posts')}
               variant={'ghost'}
             >
@@ -303,8 +305,11 @@ const ProfilePage = ({ username, requestedUser, posts, guides }: Props) => {
               </Heading>
             </Button>
             <Button
-              className='mt-4 border-b-2 hover:border-b-indigo-500 transition-colors'
-              onClick={() => handleActive('guides')}
+              className={`mt-4 transition-colors ${
+                active === 'replies' &&
+                'border-2 border-gray-50 dark:bg-blackSwan bg-grey '
+              }`}
+              onClick={() => handleActive('replies')}
               variant={'ghost'}
             >
               <Heading heading='h6' size='xs' className='m-4  px-6 py-1'>
@@ -312,7 +317,10 @@ const ProfilePage = ({ username, requestedUser, posts, guides }: Props) => {
               </Heading>
             </Button>
             <Button
-              className='mt-4 border-b-2 hover:border-b-indigo-500 transition-colors'
+              className={`mt-4 transition-colors ${
+                active === 'guides' &&
+                'border-2 border-gray-50 dark:bg-blackSwan bg-grey '
+              }`}
               onClick={() => handleActive('guides')}
               variant={'ghost'}
             >
@@ -377,15 +385,6 @@ const ProfilePage = ({ username, requestedUser, posts, guides }: Props) => {
           {/* {postLoading && <Loader className='h-4 w-4 animate-spin' />} */}
         </div>
 
-        <div className='w-full flex justify-center items-center'>
-          <Button
-            className='px-20 py-2 mt-2 font-medium bg-gray-200 dark:bg-blackSwan/50 rounded-full focus:outline-none'
-            variant='google'
-            size='sm'
-          >
-            Load More
-          </Button>
-        </div>
         <Toaster position='bottom-left' />
       </div>
     );

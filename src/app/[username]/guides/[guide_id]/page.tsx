@@ -12,6 +12,7 @@ import React from 'react';
 import { Suspense } from 'react';
 import BasicLoader from '@/components/Loader/BasicLoader';
 import GuideComponent from '@/components/Guide/Guide';
+import { getImage } from '@/util/getImage';
 
 interface Props {
   params: {
@@ -23,7 +24,7 @@ interface Props {
 const todos = async ({ params: { guide_id, username } }: Props) => {
   const session = await getServerSession(authOptions);
   try {
-    const editorPost: Guide = await axios
+    const editorPostnonImage = await axios
       .get('http://localhost:3000/create_guide', {
         params: {
           title: guide_id,
@@ -31,10 +32,11 @@ const todos = async ({ params: { guide_id, username } }: Props) => {
         },
       })
       .then((res) => res.data.guide);
-    console.log(editorPost);
+    editorPostnonImage.user.image = getImage(editorPostnonImage.user.image);
+    const editorPost: Guide = editorPostnonImage;
     return (
       <div className=' flex-col w-screen  flex '>
-        <div className='w-full p-3 mt-16'>
+        <div className='w-full p-3 '>
           <Heading size={'md'} heading='h1'>
             {editorPost.titleWithoutSlug}
           </Heading>

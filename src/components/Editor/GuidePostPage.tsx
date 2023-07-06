@@ -16,6 +16,7 @@ import 'highlight.js/styles/github-dark.css';
 import axios from 'axios';
 import { marked } from 'marked';
 import { embedSite } from '@/util/embed';
+import { toast } from 'react-hot-toast';
 
 interface Props {
   guides: Guide[];
@@ -37,7 +38,10 @@ const GuidePostPage: React.FC<Props> = ({
   user_id,
 }) => {
   const router = useRouter();
+
   const [draftLength, setDraftLength] = useState<number>(0);
+  const [loading, setLoading] = useState(false);
+  const [output, setOutput] = useState('editor');
   const [guidePost, setGuidePost] = useState<GuidePost>({
     content: '',
     title: '',
@@ -61,9 +65,13 @@ const GuidePostPage: React.FC<Props> = ({
   }, []);
 
   const handleSend = async () => {
-    if (!guidePost.title || !guidePost.content) {
+    if (!guidePost.content || !guidePost.title) {
+      toast.error(
+        !guidePost.content ? "Content can't be empty" : "Title can't be empty"
+      );
       return;
     }
+
     if (!(contentWithoutSanitize && titleWithoutSlug)) {
       try {
         const response = await axios.post('/create_guide', {
@@ -75,10 +83,11 @@ const GuidePostPage: React.FC<Props> = ({
         if (response) {
           highlightCodeBLOCK();
           router.refresh();
+          toast.success('Successfully created');
         }
         console.log(response);
-      } catch (e) {
-        console.log(e);
+      } catch (e: any) {
+        toast.error(e.response.data.error);
       }
     } else {
       try {
@@ -91,10 +100,11 @@ const GuidePostPage: React.FC<Props> = ({
         if (response) {
           highlightCodeBLOCK();
           router.refresh();
+          toast.success('Successfully created');
         }
         console.log(response);
-      } catch (e) {
-        console.log(e);
+      } catch (e: any) {
+        toast.error(e.response.data.error);
       }
     }
   };
@@ -111,7 +121,7 @@ const GuidePostPage: React.FC<Props> = ({
       highlightCode({ title: guidePost.title, content: updatedHTML });
     }
     highlightCodeBLOCK();
-  }, [saved]);
+  }, [output]);
 
   const handleContent = (guidePost: GuidePost) => {
     setSaved(false);
@@ -147,9 +157,10 @@ const GuidePostPage: React.FC<Props> = ({
         'blockquote',
         'li',
         'a',
+        'img',
       ],
-      ALLOWED_ATTR: ['class', 'src', 'href'],
-      ADD_ATTR: ['class'],
+      ALLOWED_ATTR: ['class', 'src', 'href', 'alt'],
+      ADD_ATTR: ['class', 'loading'],
       ALLOW_DATA_ATTR: false,
       ADD_TAGS: ['div'],
       ALLOWED_URI_REGEXP: /^(https?:\/\/|\/[^/])/,
@@ -174,30 +185,60 @@ const GuidePostPage: React.FC<Props> = ({
     highlightCodeBLOCK();
   }, []);
   return (
-    <div className='w-screen h-screen scroll p-2 flex md:flex-row mx-auto flex-col gap-2  overflow-y-scroll'>
-      <div className='w-full md:w-2/4'>
-        <Editor
-          contentWithoutSanitize={contentWithoutSanitize}
-          titleWithoutSlug={titleWithoutSlug}
-          handleSave={handleSave}
-          guidePost={guidePost}
-          handleContent={handleContent}
-          draftLength={draftLength}
-        />
-        <Button onClick={handleSend}>Submit</Button>
-      </div>
-      <div
-        style={{ whiteSpace: 'pre-wrap' }}
-        className='w-full md:w-2/4 break-words'
-      >
-        <div className='h-16 mt-1 flex items-center justify-center'>
-          <Heading heading='h2'>Preview</Heading>
+    <div className='w-screen h-screen items-center justify-center scroll p-2 flex md:flex-row mx-auto flex-col gap-2  overflow-y-scroll'>
+      {output === 'editor' && (
+        <div className='w-full flex md:w-8/12 items-center justify-center'>
+          <div className='w-full'>
+            <Button
+              variant={'ghost'}
+              onClick={() => {
+                setOutput('output');
+              }}
+            >
+              <Heading heading='h2'>Preview</Heading>
+            </Button>
+            <Editor
+              contentWithoutSanitize={contentWithoutSanitize}
+              titleWithoutSlug={titleWithoutSlug}
+              handleSave={handleSave}
+              guidePost={guidePost}
+              handleContent={handleContent}
+              draftLength={draftLength}
+            />
+            <Button disabled={loading} onClick={handleSend}>
+              Submit
+            </Button>
+          </div>
         </div>
+      )}
 
-        <div className=' bg-grey max-h-[70vh]  px-4 output rounded-xl min-h-[70vh] overflow-y-scroll  scroll-bar  dark:bg-blackSwan'>
-          {<div dangerouslySetInnerHTML={{ __html: sanitizedHTML }} />}
+      {output === 'output' && (
+        <div
+          style={{ whiteSpace: 'pre-wrap' }}
+          className=' md:w-8/12 break-words'
+        >
+          <div className='dark:bg-blackSwan h-[90vh]  py-1  px-4 output rounded-xl  overflow-y-scroll  scroll-bar  '>
+            <Button
+              variant={'ghost'}
+              onClick={() => {
+                setOutput('editor');
+              }}
+            >
+              <Heading heading='h2'>Editor</Heading>
+            </Button>
+            <div className=' '>
+              <Heading
+                className='text-black font-extrabold mb-8'
+                size={'xxl'}
+                heading='h2'
+              >
+                {titleWithoutSlug || guidePost.title}
+              </Heading>
+            </div>
+            {<div dangerouslySetInnerHTML={{ __html: sanitizedHTML }} />}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

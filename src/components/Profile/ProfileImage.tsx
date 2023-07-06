@@ -6,6 +6,7 @@ interface Props {
   googleImage: string;
   postsImage?: string;
   alt?: string;
+  rounded?: boolean;
 }
 
 const ProfileImage: React.FC<Props> = ({
@@ -13,10 +14,14 @@ const ProfileImage: React.FC<Props> = ({
   imageSrc,
   alt,
   postsImage,
+  rounded = true,
 }) => {
   return (
     <Image
-      className=' w-full h-full  dark:bg-white object-cover rounded-full border-2 border-lavender '
+      className={
+        `${rounded ? 'rounded-full' : ''}` +
+        ' w-full h-full  dark:bg-white object-cover border-2 border-lavender '
+      }
       src={imageSrc || googleImage || postsImage || '/userdefault.png'}
       alt={'Socio user : ' + alt + ' profile picture' || '/userdefault.png'}
       width={64}

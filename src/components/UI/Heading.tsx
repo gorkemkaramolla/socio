@@ -21,6 +21,7 @@ const headingVariants = cva(
         md: 'text-2xl',
         lg: 'text-3xl ',
         xl: 'text-5xl',
+        xxl: 'text-6xl',
       },
       align: {
         default: 'text-center',

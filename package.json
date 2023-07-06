@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@cloudinary/react": "^1.11.2",
+    "@cloudinary/url-gen": "^1.10.1",
     "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.11.0",
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
@@ -38,6 +40,7 @@
     "blob-util": "^2.0.2",
     "buffer": "^6.0.3",
     "class-variance-authority": "^0.6.0",
+    "cloudinary": "^1.37.3",
     "clsx": "^1.2.1",
     "dompurify": "^3.0.3",
     "dotenv": "^16.0.3",
@@ -82,6 +85,7 @@
     "@types/marked": "^5.0.0",
     "@types/react-syntax-highlighter": "^15.5.7",
     "@types/sanitize-html": "^2.9.0",
+    "@types/uuid": "^9.0.2",
     "prisma": "^4.14.1"
   }
 }

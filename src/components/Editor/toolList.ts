@@ -63,11 +63,6 @@ function getTools() {
       shortcut: isMacOS ? 'cmd + b' : 'ctrl + b',
       iconName: Quote,
     },
-    {
-      name: 'image',
-      shortcut: isMacOS ? 'cmd + b' : 'ctrl + b',
-      iconName: ImagePlus,
-    },
   ];
 
   return tools;

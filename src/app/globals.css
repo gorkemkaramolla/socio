@@ -253,8 +253,13 @@ textarea {
   width: 100%;
 }
 pre {
-  font-family: 'Roboto', sans-serif;
+  font-family: source-serif-pro, Georgia, Cambria, 'Times New Roman', Times,
+    serif;
   white-space: pre-wrap;
+
+  font-style: normal;
+  font-weight: 400;
+  color: rgba(41, 41, 41, 1);
 }
 p {
   width: 100%;
@@ -275,10 +280,23 @@ button {
   cursor: pointer;
 }
 code {
+  overflow: auto;
   font-size: 14px !important;
-  height: 400px;
-
+  max-height: 400px;
   overflow-y: auto; /* Add scrollbars if necessary */
+}
+code::-webkit-scrollbar {
+  width: 0.5em;
+  display: block;
+  cursor: pointer;
+}
+code::-webkit-scrollbar-track {
+  background-color: rgb(71, 66, 66);
+}
+code::-webkit-scrollbar-thumb {
+  background-color: gray;
+
+  border-radius: 4px;
 }
 pre {
   /* position: relative; */
@@ -288,5 +306,8 @@ pre {
   top: 0; */
 }
 .expanded {
-  height: 100%;
+  max-height: none;
+}
+iframe {
+  will-change: height;
 }

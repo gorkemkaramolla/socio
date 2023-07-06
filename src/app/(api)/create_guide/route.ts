@@ -3,47 +3,38 @@ import { prisma } from '@/lib/prisma';
 import slugifyText from '@/util/slugifyTitle';
 import { getServerSession } from 'next-auth';
 import { NextResponse } from 'next/server';
-import { use } from 'react';
 export async function POST(req: Request) {
-  try {
-    const { content, user_id, title, contentWithoutSanitize } =
-      await req.json();
-    if (content === '') {
-      return new NextResponse('content cannot be empty', {
+  const { content, user_id, title, contentWithoutSanitize } = await req.json();
+  console.log(content === '');
+  if (content === '') {
+    return new NextResponse(
+      JSON.stringify({ error: 'Content cannot be empty' }),
+      {
         status: 403,
         headers: { 'Content-Type': 'application/json' },
-      });
-    }
-    console.log('content' + content);
-    const titleSlugified = slugifyText(title);
-    const createdComment = await prisma.guides.create({
-      data: {
-        titleWithoutSlug: title,
-        user_id: user_id,
-        content: content,
-        title: titleSlugified,
-        contentWithoutSanitize: contentWithoutSanitize,
-      },
-    });
+      }
+    );
+  }
+  console.log('content' + content);
+  const titleSlugified = slugifyText(title);
+  const createdComment = await prisma.guides.create({
+    data: {
+      titleWithoutSlug: title,
+      user_id: user_id,
+      content: content,
+      title: titleSlugified,
+      contentWithoutSanitize: contentWithoutSanitize,
+    },
+  });
 
-    if (createdComment) {
-      return new NextResponse(JSON.stringify(createdComment), {
-        status: 201,
-        headers: { 'Content-Type': 'application/json' },
-      });
-    } else {
-      return new NextResponse(
-        JSON.stringify({ error: 'Failed to create post' }),
-        {
-          status: 500,
-          headers: { 'Content-Type': 'application/json' },
-        }
-      );
-    }
-  } catch (error) {
-    console.error('Error creating post:', error);
+  if (createdComment) {
+    return new NextResponse(JSON.stringify(createdComment), {
+      status: 201,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  } else {
     return new NextResponse(
-      JSON.stringify({ error: 'An unexpected error occurred' }),
+      JSON.stringify({ error: 'Failed to create post' }),
       {
         status: 500,
         headers: { 'Content-Type': 'application/json' },
@@ -51,6 +42,7 @@ export async function POST(req: Request) {
     );
   }
 }
+
 export async function PUT(req: Request) {
   const session = await getServerSession(authOptions);
   const { title, user_id, content, contentWithoutSanitize } = await req.json();
@@ -104,6 +96,16 @@ export async function GET(req: Request) {
           AND: {
             user_id: user.id,
             title: title,
+          },
+        },
+        include: {
+          user: {
+            select: {
+              image: true,
+              imageUri: true,
+              username: true,
+              name: true,
+            },
           },
         },
       });

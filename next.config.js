@@ -5,6 +5,7 @@ const nextConfig = {
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     GOOGLE_SECRET_ID: process.env.GOOGLE_SECRET_ID,
     DATABASE_URL: process.env.DATABASE_URL,
+    CLODINARY_URL: process.env.CLODINARY_URL,
   },
   images: {
     domains: ['lh3.googleusercontent.com'],

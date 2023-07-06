@@ -9,7 +9,7 @@ import { setTheme } from '@/lib/redux/darkMode';
 import { SessionProvider, getSession, useSession } from 'next-auth/react';
 import { setUser } from '@/lib/redux/userSlice';
 import { Poppins } from '@next/font/google';
-
+import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import Head from 'next/head';
 import Search from './Search/Search';
@@ -30,6 +30,7 @@ interface Props {
 
 const Providers: React.FC<Props> = ({ children }) => {
   const [loading, setLoading] = useState<boolean>(true);
+  const router = useRouter();
   const getUser = async () => {
     try {
       setLoading(true);
@@ -94,7 +95,7 @@ const Providers: React.FC<Props> = ({ children }) => {
         <body className={' text-lg leading-8 text-black dark:text-white '}>
           <div
             className={
-              'w-screen relative h-[100dvh] dark:bg-black overflow-hidden'
+              'w-screen  relative h-[100dvh] dark:bg-black overflow-hidden'
             }
           >
             <div className={'flex h-full'}>{children}</div>

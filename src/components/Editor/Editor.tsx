@@ -17,6 +17,11 @@ import { GuidePost } from './GuidePostPage';
 import { title } from 'process';
 import { lastIndexOf } from 'lodash';
 import { Tooltip } from '@nextui-org/react';
+import { Image } from 'lucide-react';
+import axios from 'axios';
+import { Cloudinary } from '@cloudinary/url-gen';
+import style from 'react-syntax-highlighter/dist/esm/styles/hljs/a11y-dark';
+
 interface Props {
   handleContent: (guidePost: GuidePost) => void;
   handleSave: (value: boolean) => void;
@@ -37,6 +42,8 @@ const Editor: React.FC<Props> = ({
   const [changesSaved, setChangesSaved] = useState<boolean>(false);
   const [undoStack, setUndoStack] = useState<string[]>([]);
   const [redoStack, setRedoStack] = useState<string[]>([]);
+  const [imgLoading, setImgLoading] = useState<boolean>(false);
+  const cld = new Cloudinary({ cloud: { cloudName: 'dq1n9iiup' } });
 
   function getTextOnCurrentLine(textarea: any) {
     const text = textarea.value;
@@ -103,8 +110,8 @@ const Editor: React.FC<Props> = ({
 
   function handleTitleChange(event: ChangeEvent<HTMLTextAreaElement>) {
     const { selectionStart, value } = event.target;
-    guidePost.title = value;
-    handleContent(guidePost);
+    // guidePost.title = value;
+    handleContent({ ...guidePost, title: value });
   }
 
   const textAreaContentRef = useRef<HTMLTextAreaElement>(null);
@@ -223,27 +230,27 @@ const Editor: React.FC<Props> = ({
       textAreaContentRef.current?.setSelectionRange(start, end);
     }
   }
+  const saveFunction = () => {
+    localStorage.setItem('draftText', JSON.stringify({ guidePost }));
+    setChangesSaved(false);
+    toast.success('Successfully Saved');
+    handleSave(true);
+  };
   useEffect(() => {
-    const handleSaved = (event: any) => {
+    const handleSaved = (event: any): void => {
       if (event.metaKey && event.key === 's') {
         event.preventDefault();
-
-        const draftText = localStorage.setItem(
-          'draftText',
-          JSON.stringify({ guidePost })
-        );
-        setChangesSaved(false);
-        alert;
-        toast.success('Successfully Saved');
-        handleSave(true);
+        saveFunction();
       }
     };
+
     window.addEventListener('keydown', handleSaved);
+
     return () => {
       window.removeEventListener('keydown', handleSaved);
     };
   });
-  const handleFormatting = (style: string) => {
+  const handleFormatting = (style: string, url?: string) => {
     if (textAreaContentRef.current && textAreaContentRef) {
       var selectedText = textAreaContentRef.current.value.substring(
         textAreaContentRef.current.selectionStart,
@@ -328,6 +335,8 @@ const Editor: React.FC<Props> = ({
         } else {
           newText = '[]()';
         }
+      } else if (style === 'image') {
+        newText = `\n![Image description](${url?.trim()})`;
       }
       const selectionStart = textAreaContentRef.current.selectionStart;
       const selectionEnd = textAreaContentRef.current.selectionEnd;
@@ -416,7 +425,6 @@ const Editor: React.FC<Props> = ({
           );
         } else if (style === 'link') {
           if (selectedText) {
-            alert('asdsa');
             textAreaContentRef.current.setSelectionRange(1, 1);
             textAreaContentRef.current.focus();
           } else {
@@ -428,14 +436,50 @@ const Editor: React.FC<Props> = ({
     }
   };
 
+  const uploadImageToCloudinary = async (file: File) => {
+    try {
+      setImgLoading(true);
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', 'ujjmucji');
+      formData.append('cloud_name', 'dq1n9iiup');
+      const response = await axios.post(
+        'https://api.cloudinary.com/v1_1/dq1n9iiup/image/upload',
+        formData
+      );
+      if (response) {
+        setImgLoading(false);
+      }
+      handleFormatting('image', response.data.url);
+
+      // Handle the successful upload here
+    } catch (error) {
+      console.error('Image upload failed:', error);
+      setImgLoading(false);
+    }
+  };
+
+  function handleImage(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    if (file) {
+      try {
+        console.log(file);
+        uploadImageToCloudinary(file);
+      } catch (error) {
+        console.error('Image upload failed:', error);
+        // Handle the upload error here
+      }
+    }
+  }
+
   return (
     <div className='  flex-col flex justify-center'>
-      <div className='flex gap-1   justify-evenly '>
+      <div className='flex gap-1 my-4 justify-between '>
         {tools.map((tool: any) => {
           return (
             <Tooltip content={tool.shortcut} rounded placement='bottom'>
               <button
-                className='hover:bg-gray-100 dark:hover:bg-[#4d5fb8aa] p-2 rounded transition-all'
+                className='hover:bg-gray-100  dark:hover:bg-[#4d5fb8aa] p-4 rounded transition-all'
                 onClick={() => {
                   handleFormatting(tool.name);
                 }}
@@ -445,10 +489,25 @@ const Editor: React.FC<Props> = ({
             </Tooltip>
           );
         })}
+        <button className='hover:bg-gray-100 dark:hover:bg-[#4d5fb8aa] p-4 rounded transition-all'>
+          <input
+            type='file'
+            id='image-upload'
+            className='hidden p-0 m-0 '
+            accept='image/jpeg, image/png'
+            onChange={handleImage}
+          />
+          <label
+            htmlFor='image-upload'
+            className='w-full rounded-md cursor-pointer items-center flex justify-center '
+          >
+            <Image></Image>
+          </label>
+        </button>
       </div>
       <div>
         <TextareaAutosize
-          className='w-full text-3xl scroll-bar resize-none p-2 rounded-xl dark: bg-stone-100  dark:bg-blackSwan'
+          className='w-full text-4xl  font-extrabold text-black dark:text-white scroll-bar resize-none p-2 rounded-xl dark: bg-stone-100  dark:bg-blackSwan'
           autoCorrect='false'
           placeholder='Title of your guide'
           spellCheck='false'
@@ -458,12 +517,13 @@ const Editor: React.FC<Props> = ({
       </div>
       <div ref={textAreaWrapperRef} className='textarea-wrapper '>
         <TextareaAutosize
+          value={guidePost.content}
           autoCorrect='false'
           spellCheck='false'
           minRows={draftLength}
           onKeyDown={handleEnter}
           ref={textAreaContentRef}
-          className='w-full max-h-[65vh] min-h-[65vh] scroll-bar resize-none p-2 rounded-xl dark: bg-stone-100  dark:bg-blackSwan'
+          className='w-full max-h-[65vh] min-h-[65vh] scroll-bar text-xl  resize-none p-2 rounded-xl dark: bg-stone-100  dark:bg-blackSwan'
           placeholder='Now you are useful'
           onChange={handleChange}
         />
