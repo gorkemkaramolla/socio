@@ -63,7 +63,7 @@ interface Guide {
   content: string | null;
   created_at: Date;
   user_id: number;
-  user: {
+  user?: {
     imageUri: string;
     image: string;
     username: string;

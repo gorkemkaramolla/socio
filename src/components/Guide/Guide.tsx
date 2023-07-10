@@ -5,6 +5,7 @@ import { Guide } from '@/lib/types/types';
 import ReactDOMServer from 'react-dom/server';
 import 'highlight.js/styles/github-dark.css';
 import javascript from 'highlight.js/lib/languages/javascript';
+import Balancer from 'react-wrap-balancer';
 
 import { Maximize, Copy, Minimize } from 'lucide-react';
 import ProfileImage from '../Profile/ProfileImage';
@@ -110,27 +111,31 @@ const GuideComponent: React.FC<Props> = ({ editorPost }) => {
           <div className='flex items-center gap-2'>
             <div className=' flex w-12 h-12  mb-2'>
               <ProfileImage
-                imageSrc={editorPost.user.image}
-                googleImage={editorPost.user.imageUri}
+                imageSrc={editorPost?.user?.image!}
+                googleImage={editorPost?.user?.imageUri!}
                 rounded={false}
               />
             </div>
-            <Link href={'/' + editorPost.user.username}>
-              <span className='w-full'>{editorPost.user.name} - </span>
-              <span className='w-full'>user: {editorPost.user.username}</span>
+            <Link href={'/' + editorPost?.user?.username}>
+              <span className='w-full'>{editorPost?.user?.name} - </span>
+              <span className='w-full'>user: {editorPost?.user?.username}</span>
             </Link>
           </div>
-          <div>{formatDate(editorPost.created_at?.toString())}</div>
+          <div className='self-center'>
+            {formatDate(editorPost.created_at?.toString())}
+          </div>
         </div>
         <hr className='border-[1px] mt-2 w-full' />
       </div>
 
       <div>
-        <pre
-          style={{ whiteSpace: 'pre-wrap', overflowWrap: 'break-word' }}
-          className='w-full parent-element'
-          dangerouslySetInnerHTML={{ __html: updatedContent! }}
-        ></pre>
+        <Balancer className='block w-full'>
+          <pre
+            style={{ whiteSpace: 'pre-wrap', overflowWrap: 'break-word' }}
+            className='w-full parent-element'
+            dangerouslySetInnerHTML={{ __html: updatedContent! }}
+          ></pre>
+        </Balancer>
       </div>
     </div>
   );

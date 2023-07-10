@@ -85,7 +85,6 @@ const GuidePostPage: React.FC<Props> = ({
           router.refresh();
           toast.success('Successfully created');
         }
-        console.log(response);
       } catch (e: any) {
         toast.error(e.response.data.error);
       }
@@ -102,7 +101,6 @@ const GuidePostPage: React.FC<Props> = ({
           router.refresh();
           toast.success('Successfully created');
         }
-        console.log(response);
       } catch (e: any) {
         toast.error(e.response.data.error);
       }
@@ -128,7 +126,6 @@ const GuidePostPage: React.FC<Props> = ({
     setGuidePost(guidePost);
 
     highlightCode({ title: guidePost.title, content: guidePost.content });
-    console.log(guidePost);
   };
 
   const highlightCode = (code: GuidePost) => {
@@ -185,9 +182,9 @@ const GuidePostPage: React.FC<Props> = ({
     highlightCodeBLOCK();
   }, []);
   return (
-    <div className='w-screen h-screen items-center justify-center scroll p-2 flex md:flex-row mx-auto flex-col gap-2  overflow-y-scroll'>
+    <div className='mt-8 w-screen h-[95dvh]  justify-center  p-2 flex flex-row mx-auto  gap-2  overflow-y-scroll'>
       {output === 'editor' && (
-        <div className='w-full flex md:w-8/12 items-center justify-center'>
+        <div className='w-full flex md:w-8/12  justify-center'>
           <div className='w-full'>
             <Button
               variant={'ghost'}
@@ -217,7 +214,7 @@ const GuidePostPage: React.FC<Props> = ({
           style={{ whiteSpace: 'pre-wrap' }}
           className=' md:w-8/12 break-words'
         >
-          <div className='dark:bg-blackSwan h-[90vh]  py-1  px-4 output rounded-xl  overflow-y-scroll  scroll-bar  '>
+          <div className='dark:bg-blackSwan h-[90vh]  py-1  px-4 output rounded-xl  overflow-y-scroll '>
             <Button
               variant={'ghost'}
               onClick={() => {

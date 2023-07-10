@@ -1,11 +1,10 @@
-export const revalidate = 5;
-export const dynamic = 'force-dynamic';
 import ProfilePage from '@/components/Profile/ProfilePage';
 import { prisma } from '@/lib/prisma';
 import { getImage } from '@/util/getImage';
 import axios from 'axios';
 import { Metadata, ResolvingMetadata } from 'next';
 import guides from './guides/page';
+import { Suspense } from 'react';
 interface Props {
   params: {
     username: string;
@@ -67,17 +66,22 @@ export default async function Profile({ params }: Props) {
           params: { username: params.username },
         })
         .then((res) => res.data);
-      console.log(usersGuides);
       return (
-        <ProfilePage
-          guides={usersGuides}
-          requestedUser={{
-            ...user.data.user,
-            image: getImage(user.data.user.image),
-          }}
-          posts={posts.data}
-          username={params.username}
-        />
+        <div>
+          <Suspense
+            fallback={<div className='h-screen w-screen bg-white'></div>}
+          >
+            <ProfilePage
+              guides={usersGuides}
+              requestedUser={{
+                ...user.data.user,
+                image: getImage(user.data.user.image),
+              }}
+              posts={posts.data}
+              username={params.username}
+            />
+          </Suspense>
+        </div>
       );
     }
   } catch (e) {

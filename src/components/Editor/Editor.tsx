@@ -21,6 +21,7 @@ import { Image } from 'lucide-react';
 import axios from 'axios';
 import { Cloudinary } from '@cloudinary/url-gen';
 import style from 'react-syntax-highlighter/dist/esm/styles/hljs/a11y-dark';
+import { useSession } from 'next-auth/react';
 
 interface Props {
   handleContent: (guidePost: GuidePost) => void;
@@ -42,16 +43,15 @@ const Editor: React.FC<Props> = ({
   const [changesSaved, setChangesSaved] = useState<boolean>(false);
   const [undoStack, setUndoStack] = useState<string[]>([]);
   const [redoStack, setRedoStack] = useState<string[]>([]);
-  const [imgLoading, setImgLoading] = useState<boolean>(false);
+  const [temporaryImageId, setTemporaryImageId] = useState();
   const cld = new Cloudinary({ cloud: { cloudName: 'dq1n9iiup' } });
-
+  const session = useSession();
   function getTextOnCurrentLine(textarea: any) {
     const text = textarea.value;
     const caretPosition = textarea.selectionStart;
     let start = caretPosition;
     let end = caretPosition;
     while (start > 0 && text[start - 1] !== '\n') {
-      console.log(start);
       start--;
     }
 
@@ -438,24 +438,33 @@ const Editor: React.FC<Props> = ({
 
   const uploadImageToCloudinary = async (file: File) => {
     try {
-      setImgLoading(true);
       const formData = new FormData();
       formData.append('file', file);
       formData.append('upload_preset', 'ujjmucji');
       formData.append('cloud_name', 'dq1n9iiup');
+      formData.append('folder', `temporary/${session.data?.user.id}`);
       const response = await axios.post(
         'https://api.cloudinary.com/v1_1/dq1n9iiup/image/upload',
         formData
       );
       if (response) {
-        setImgLoading(false);
+        setTemporaryImageId(response.data.public_id);
       }
       handleFormatting('image', response.data.url);
 
       // Handle the successful upload here
     } catch (error) {
       console.error('Image upload failed:', error);
-      setImgLoading(false);
+    }
+  };
+  const deleteImageFromCloudinary = async (publicId: string) => {
+    try {
+      await axios.delete(
+        `https://api.cloudinary.com/v1_1/dq1n9iiup/image/destroy/${publicId}`
+      );
+    } catch (error) {
+      console.error('Image deletion failed:', error);
+      throw error;
     }
   };
 
@@ -463,7 +472,6 @@ const Editor: React.FC<Props> = ({
     const file = event.target.files?.[0];
     if (file) {
       try {
-        console.log(file);
         uploadImageToCloudinary(file);
       } catch (error) {
         console.error('Image upload failed:', error);
@@ -473,7 +481,7 @@ const Editor: React.FC<Props> = ({
   }
 
   return (
-    <div className='  flex-col flex justify-center'>
+    <div className=' flex-col flex'>
       <div className='flex gap-1 my-4 justify-between '>
         {tools.map((tool: any) => {
           return (
@@ -520,10 +528,10 @@ const Editor: React.FC<Props> = ({
           value={guidePost.content}
           autoCorrect='false'
           spellCheck='false'
-          minRows={draftLength}
+          minRows={draftLength > 8 ? draftLength : 8}
           onKeyDown={handleEnter}
           ref={textAreaContentRef}
-          className='w-full max-h-[65vh] min-h-[65vh] scroll-bar text-xl  resize-none p-2 rounded-xl dark: bg-stone-100  dark:bg-blackSwan'
+          className='w-full max-h-[65vh]  text-xl  resize-none p-2 rounded-xl dark: bg-stone-100  dark:bg-blackSwan'
           placeholder='Now you are useful'
           onChange={handleChange}
         />

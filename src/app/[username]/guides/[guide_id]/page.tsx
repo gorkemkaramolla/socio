@@ -37,7 +37,11 @@ const todos = async ({ params: { guide_id, username } }: Props) => {
     return (
       <div className=' flex-col w-screen  flex '>
         <div className='w-full p-3 '>
-          <Heading size={'md'} heading='h1'>
+          <Heading
+            className='text-black font-extrabold mt-8 p-2 mb-8'
+            size={'xl'}
+            heading='h2'
+          >
             {editorPost.titleWithoutSlug}
           </Heading>
           <Suspense fallback={<BasicLoader />}>

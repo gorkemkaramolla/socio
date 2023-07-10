@@ -35,7 +35,6 @@ const Search: React.FC<Props> = () => {
 
     eventSource.onmessage = (event: MessageEvent) => {
       const data = JSON.parse(event.data);
-      console.log(data);
 
       data.forEach((user: any) => {
         user.image = getImage(user.image!);

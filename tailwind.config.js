@@ -60,6 +60,7 @@ module.exports = {
         lavender: '#6a4ebb',
         lilac: '#eae1ff',
         brown: '#242526',
+        teal: '#47b39d',
       },
     },
   },

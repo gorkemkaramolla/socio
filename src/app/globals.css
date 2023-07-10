@@ -246,7 +246,7 @@ textarea {
   background-color: #555;
 }
 .youtube {
-  width: 100%;
+  width: 100% !important;
   height: 400px;
 }
 .soundcloud {
@@ -260,6 +260,9 @@ pre {
   font-style: normal;
   font-weight: 400;
   color: rgba(41, 41, 41, 1);
+}
+.dark pre {
+  color: white;
 }
 p {
   width: 100%;
@@ -309,5 +312,16 @@ pre {
   max-height: none;
 }
 iframe {
-  will-change: height;
+}
+iframe::before {
+  width: 100% !important;
+  display: block !important;
+}
+iframe::after {
+  width: 100% !important;
+  display: block !important;
+}
+.parent-element iframe {
+  width: 100% !important;
+  display: block !important;
 }

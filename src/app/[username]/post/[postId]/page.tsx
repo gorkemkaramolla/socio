@@ -19,7 +19,6 @@ export async function generateMetadata(
   const response = await axios.get('http://localhost:3000/post', {
     params: { post_id: params.postId, username: params.username },
   });
-  console.log(response.data);
   const post = response.data.post;
   if (post) {
     const userResponse = await axios.get('http://localhost:3000/user', {

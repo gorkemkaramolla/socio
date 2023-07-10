@@ -7,21 +7,19 @@ import { cn } from '@/lib/utils';
 //BUTTON VARIANTS STYLE
 const buttonVariants = cva(
   `px-3 py-2 focus:ring-offset-0  disabled:opacity-50
-   rounded-sm text-sm font-medium 
-   hover:cursor-pointer
-   cursor-pointer
+   rounded-sm font-medium 
     `,
   {
     variants: {
       variant: {
         default:
-          'w-fit flex items-center rounded bg-brown text-white hover:bg-slate-800',
-        dropdown: 'w-fit flex items-center bg-transparent ',
+          ' flex items-center rounded bg-brown text-white hover:bg-slate-800',
+        dropdown: ' flex items-center bg-transparent ',
 
-        ghost: 'w-fit flex items-center bg-transparent ',
+        ghost: ' flex items-center bg-transparent ',
         white:
-          'w-fit flex items-center rounded bg-slate-50 text-slate-900 hover:bg-slate-200',
-        rose: 'w-fit flex items-center rounded bg-rose-500 text-violet-50',
+          ' flex items-center rounded bg-slate-50 text-slate-900 hover:bg-slate-200',
+        rose: ' flex items-center rounded bg-rose-500 text-violet-50',
         nav: 'flex items-center justify-center rounded',
         google:
           'w-full cursor-pointer flex justify-center rounded-md border-[1px]  border-black dark:border-white active:animate-pulse active:text-white active:bg-blackSwan items-center gap-2 ',

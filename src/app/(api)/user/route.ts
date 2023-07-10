@@ -67,7 +67,6 @@ export async function PUT(req: Request) {
   prisma.$connect();
   const session = await getServerSession(authOptions);
   if (Number(id) !== session?.user.id) {
-    console.log('wrong');
     return new NextResponse('Unauthorized to do this action', {
       status: 401,
       headers: { 'Content-Type': 'application/json' },

@@ -4,23 +4,24 @@ import { cn } from '@/lib/utils';
 
 const textAreaVariants = cva(
   `className='
+
    block
-        px-3 
-        w-full 
-        rounded-2xl 
-      
-        outline-none 
-        focus:outline-none
-        
-        py-2
-        transition-all
-        bg-white
-        dark:bg-black
+   ring-1
+   outline-none 
+   focus:outline-none
+   focus:ring-2
+   ring-teal
+   dark:bg-black
+   px-2 py-2
+   w-[100%]
+   rounded-md 
+   transition-all
+
    `,
   {
     variants: {
       variant: {
-        default: ' border-2',
+        default: '',
       },
       inputSize: {
         default: '',

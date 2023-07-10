@@ -1,5 +1,5 @@
 'use client';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { Suspense, useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import Heading from '@/components/UI/Heading';
@@ -28,6 +28,7 @@ import { getImage } from '@/util/getImage';
 import TextareaAutosize from 'react-textarea-autosize';
 import { Guides } from '@prisma/client';
 import Link from 'next/link';
+import PostSkeleton from '../Post/Skeleton/PostSkeleton';
 
 interface Props {
   username: string;
@@ -41,13 +42,21 @@ const ProfilePage = ({ username, requestedUser, posts, guides }: Props) => {
 
   const [imageFile, setImageFile] = useState<Blob | undefined>(undefined);
   const [imageSrc, setImageSrc] = useState<string | null>(null);
-  const [active, setActive] = useState<string>('posts');
+  const [active, setActive] = useState<string>('');
+  useEffect(() => {
+    const profileActive = localStorage.getItem('profileActive');
+    setActive(profileActive!);
+  }, []);
   const handleActive = (activity: string) => {
+    localStorage.setItem('profileActive', activity);
     setActive(activity);
   };
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
-
+  useEffect(() => {
+    const profileActive = localStorage.getItem('profileActive');
+    if (profileActive) setActive(profileActive);
+  }, [active]);
   const handlePostSent = async (
     user_id: number,
     content: string,
@@ -105,7 +114,6 @@ const ProfilePage = ({ username, requestedUser, posts, guides }: Props) => {
     const formData = new FormData();
     formData.append('image', file);
     formData.append('id', requestedUser.id);
-    console.log('worked');
 
     try {
       const updatedUser = await axios.put('/user', formData, {
@@ -113,7 +121,6 @@ const ProfilePage = ({ username, requestedUser, posts, guides }: Props) => {
           'Content-Type': 'multipart/form-data', // Add this header
         },
       });
-      console.log(updatedUser);
 
       if (updatedUser) {
         dispatch(setUser(updatedUser.data.user));
@@ -241,8 +248,12 @@ const ProfilePage = ({ username, requestedUser, posts, guides }: Props) => {
 
           {/* Bio Section */}
           <div className='w-full h-[140px] mt-6 flex gap-3  justify-end'>
-            <div className='w-3/12 flex flex-col justify-end items-center gap-2'>
-              {userPage && (
+            <div
+              className={`${
+                userPage ? 'w-3/12' : 'w-0'
+              } flex flex-col justify-end items-center gap-2`}
+            >
+              {userPage ? (
                 <div
                   className='
                 bg-lavender
@@ -255,8 +266,8 @@ const ProfilePage = ({ username, requestedUser, posts, guides }: Props) => {
                   <span className='md:block xs:hidden'>Edit Profile</span>
                   <span className='md:hidden'>Edit</span>
                 </div>
-              )}
-              {userPage && (
+              ) : null}
+              {userPage ? (
                 <div
                   className='
                  bg-lavender
@@ -268,9 +279,13 @@ const ProfilePage = ({ username, requestedUser, posts, guides }: Props) => {
                 >
                   Settings
                 </div>
-              )}
+              ) : null}
             </div>
-            <div className='w-9/12 bg-white dark:bg-blackSwan shadow-md rounded-2xl p-5 flex flex-col justify-center'>
+            <div
+              className={`${
+                userPage ? 'w-9/12' : 'w-full'
+              } bg-white dark:bg-blackSwan shadow-md rounded-2xl p-5 flex flex-col justify-center`}
+            >
               <p className='flex gap-3'>
                 <svg
                   className='mr-2'
@@ -291,7 +306,7 @@ const ProfilePage = ({ username, requestedUser, posts, guides }: Props) => {
           </div>
 
           {/* Statistics Section */}
-          <div className='flex w-full justify-evenly -mb-5'>
+          <div className='flex w-full justify-evenly mb-5'>
             <Button
               className={`mt-4 transition-colors ${
                 active === 'posts' &&
@@ -300,7 +315,7 @@ const ProfilePage = ({ username, requestedUser, posts, guides }: Props) => {
               onClick={() => handleActive('posts')}
               variant={'ghost'}
             >
-              <Heading heading='h6' size='xs' className='m-4  px-6 py-1'>
+              <Heading heading='h6' size='xs'>
                 Posts
               </Heading>
             </Button>
@@ -312,7 +327,7 @@ const ProfilePage = ({ username, requestedUser, posts, guides }: Props) => {
               onClick={() => handleActive('replies')}
               variant={'ghost'}
             >
-              <Heading heading='h6' size='xs' className='m-4  px-6 py-1'>
+              <Heading heading='h6' size='xs'>
                 Replies
               </Heading>
             </Button>
@@ -324,13 +339,13 @@ const ProfilePage = ({ username, requestedUser, posts, guides }: Props) => {
               onClick={() => handleActive('guides')}
               variant={'ghost'}
             >
-              <Heading heading='h6' size='xs' className='m-4  px-6 py-1'>
+              {' '}
+              <Heading heading='h6' size='xs'>
                 Guides
               </Heading>
             </Button>
           </div>
-
-          {userPage && (
+          {userPage && active === 'posts' ? (
             <form
               className='flex w-full h-full justify-center px-6 gap-3 dark:text-white   items-center'
               onSubmit={formik.handleSubmit}
@@ -353,7 +368,7 @@ const ProfilePage = ({ username, requestedUser, posts, guides }: Props) => {
                 <FontAwesomeIcon icon={faPaperPlane}></FontAwesomeIcon>
               </Button>
             </form>
-          )}
+          ) : null}
           {formik.touched.post && formik.errors.post ? (
             <Error>{formik.errors.post}</Error>
           ) : null}
@@ -364,20 +379,26 @@ const ProfilePage = ({ username, requestedUser, posts, guides }: Props) => {
               ))}
             </div>
           )}
+
           {active === 'guides' && (
-            <div className='w-full md:p-3 p-6'>
+            <div className='w-full  md:p-3 p-6'>
               {guides.map((guide: Guide, i: number) => (
-                <Link href={`/${username}/guides/${guide.title}/`}>
-                  <div className='w-full ' key={i}>
-                    <div className='w-8 h-8 flex gap-2'>
+                <Link
+                  key={i}
+                  className='hover:bg-gray-200 w-full transition-colors cursor-pointer flex flex-col gap-1'
+                  href={`/${username}/guides/${guide.title}/`}
+                >
+                  <div className=' flex gap-2'>
+                    <div className='w-8 h-8 '>
                       <ProfileImage
                         imageSrc={requestedUser.image!}
                         googleImage={requestedUser.imageUri}
                       />
-                      <div>{requestedUser.username}</div>
                     </div>
-                    <p>{guide.titleWithoutSlug}</p>
+                    <div>{requestedUser.username}</div>
                   </div>
+
+                  <p>{guide.titleWithoutSlug}</p>
                 </Link>
               ))}
             </div>

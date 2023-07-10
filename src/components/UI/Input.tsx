@@ -11,16 +11,17 @@ const inputVariants = cva(
       variant: {
         default: `
           block
-        focus:ring-2
+        ring-1
         outline-none 
         focus:outline-none
-        ring-slate-900 
+        focus:ring-2
+        ring-teal
+      dark:bg-black
        
-        px-3 py-2
+        px-2 py-1
         w-[100%]
         rounded-md 
         transition-all
-        dark:bg-black
         `,
 
         xxx: `

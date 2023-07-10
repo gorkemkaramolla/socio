@@ -21,6 +21,7 @@ import ProfileImage from '../Profile/ProfileImage';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import Shortcuts from '../Shortcuts';
+import { Edit, LocateIcon } from 'lucide-react';
 import { base64StringToBlob } from '@/util/base64StringtoBlob';
 interface Props {}
 
@@ -180,85 +181,78 @@ const SettingsPage: React.FC<Props> = () => {
 
   return (
     <div className='w-full overflow-x-hidden flex flex-col items-center h-[100dvh] overflow-auto '>
-      <div className={'w-full px-4 flex flex-col items-center  m-auto'}>
-        <div className='sticky top-0 w-full h-fit flex md:justify-center justify-between items-center bg-white/75 drop-shadow-xl dark:bg-black/75 backdrop-blur-sm z-40'>
-          <Heading heading='h6' size='sm' className='m-4'>
-            Settings
-          </Heading>
-          <Button
-            className={
-              'sidebarIconButtons ease-out duration-200 text-xl text-black dark:text-white px-10 md:hidden'
-            }
-            variant={'ghost'}
-            size={'smSquare'}
-            onClick={() => setShow(!show)}
-          >
-            <FontAwesomeIcon icon={faBars} />
-          </Button>
-        </div>
-        <div className=' w-full flex flex-col justify-center mt-3 items-center'>
-          <div className='flex gap-8 flex-col '>
-            <Button
-              className='active:text-blue-900 text-center  p-0'
-              onClick={handler}
-              variant={'ghost'}
-            >
-              <Heading
-                className='transition-colors  hover:text-blue-500   '
-                weight={'default'}
-                heading='h5'
-                size={'default'}
-              >
-                Change your profile picture
-              </Heading>
-            </Button>
-            <div className='w-[120px] h-[120px] self-center border-lavender border-2 rounded-full bg-white'>
+      <div className='sticky top-0 w-full h-fit flex md:justify-center justify-between items-center bg-white/75 drop-shadow-xl dark:bg-black/75 backdrop-blur-sm z-40'>
+        <Heading heading='h6' size='sm' className='m-4'>
+          Settings
+        </Heading>
+        <Button
+          className={
+            'sidebarIconButtons ease-out duration-200 text-xl text-black dark:text-white px-10 md:hidden'
+          }
+          variant={'ghost'}
+          size={'smSquare'}
+          onClick={() => setShow(!show)}
+        >
+          <FontAwesomeIcon icon={faBars} />
+        </Button>
+      </div>
+      <div className='w-full p-4 '>
+        <div className='grid  items-center  grid-cols-12'>
+          <div className='col-span-12 justify-center md:justify-start md:col-span-4 gap-3 w-full'>
+            <div className=' w-36 h-36 lg:w-48 lg:h-48  group relative   border-2 rounded-full'>
               <ProfileImage
                 googleImage={selector.imageUri}
                 imageSrc={imageSrc!}
               />
+              <button
+                onClick={handler}
+                className='p-0 m-0 group-hover:block absolute hidden -translate-y-1/2 -translate-x-1/2 top-1/2 left-1/2'
+              >
+                <Edit className='text-white w-12 h-12' />
+              </button>
             </div>
           </div>
-          <div className='LOCATION self-start'>
-            {/*<Label isFocus>Location</Label>*/}
-            <Heading
-              className='transition-colors text-left  hover:text-blue-500   '
-              weight={'default'}
-              align={'left'}
-              heading='h5'
-              size={'default'}
-            >
-              Location
-            </Heading>
 
-            <div className='flex  items-center  gap-3'>
-              <Button
-                className='p-0'
-                variant={'ghost'}
-                onClick={handleLocation}
-              >
-                <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  height='24'
-                  viewBox='0 -960 960 960'
-                  width='24'
-                  fill={mode.mode === '' ? `black` : 'white'}
-                >
-                  <path d='M480.089-490Q509-490 529.5-510.589q20.5-20.588 20.5-49.5Q550-589 529.411-609.5q-20.588-20.5-49.5-20.5Q451-630 430.5-609.411q-20.5 20.588-20.5 49.5Q410-531 430.589-510.5q20.588 20.5 49.5 20.5ZM480-159q133-121 196.5-219.5T740-552q0-117.79-75.292-192.895Q589.417-820 480-820t-184.708 75.105Q220-669.79 220-552q0 75 65 173.5T480-159Zm0 79Q319-217 239.5-334.5T160-552q0-150 96.5-239T480-880q127 0 223.5 89T800-552q0 100-79.5 217.5T480-80Zm0-472Z' />
-                </svg>
-              </Button>
-              <Paragraph>{selector.location || location}</Paragraph>
+          <div className='col-span-12 md:col-span-8 w-full  gap-3'>
+            <div className=''>
+              <label htmlFor=''>Username</label>
+              <div className=' rounded-full'>
+                <FormInput
+                  name='username'
+                  id='username'
+                  placeholder='your username'
+                  type='text'
+                  onChange={formik.handleChange}
+                  value={formik.values.username}
+                ></FormInput>
+              </div>
+              {formik.touched.username && formik.errors.username ? (
+                <Error>{formik.errors.username}</Error>
+              ) : null}
+            </div>
+            <div className='col-span-6'>
+              <label htmlFor=''>Name</label>
+              <div className='p-0.5 rounded-full'>
+                <FormInput
+                  name='name'
+                  id='name'
+                  placeholder='Whats your name'
+                  type='text'
+                  onChange={formik.handleChange}
+                  value={formik.values.name}
+                ></FormInput>
+              </div>
+
+              {formik.touched.name && formik.errors.name ? (
+                <Error>{formik.errors.name.toString()}</Error>
+              ) : null}
             </div>
           </div>
         </div>
 
         <form onSubmit={formik.handleSubmit} className=' w-full flex flex-col '>
           <div className={'w-full flex md:flex-row flex-col '}>
-            <div
-              className={
-                'flex flex-col w-full  h-full justify-end pr-0 md:pr-5 gap-3'
-              }
-            >
+            <div className='flex flex-col w-full  h-full justify-end pr-0 md:pr-5 gap-3'>
               <div>
                 <ModalUi
                   userHasPic={!selector.image}
@@ -269,83 +263,45 @@ const SettingsPage: React.FC<Props> = () => {
                 />
               </div>
 
-              <div className=''>
-                <label htmlFor=''>Username</label>
-                <div
-                  className={
-                    ' p-0.5 rounded-full  bg-gradient-to-r from-aqua via-aurora to-lavender'
-                  }
-                >
-                  <FormInput
-                    variant={'formInput'}
-                    name='username'
-                    id='username'
-                    placeholder='your username'
-                    type='text'
-                    onChange={formik.handleChange}
-                    value={formik.values.username}
-                  ></FormInput>
+              <div className='grid grid-cols-12 gap-3 items-center'>
+                <div className='flex self-end  flex-col   col-span-6 gap-2'>
+                  <label htmlFor='justify-self-start'>Location </label>
+                  <div className='flex w-full items-center gap-2'>
+                    <Button
+                      onClick={handleLocation}
+                      variant={'ghost'}
+                      className='p-0 m-0'
+                    >
+                      <LocateIcon className='w-8 h-8'></LocateIcon>
+                    </Button>
+                    {selector.location || location}
+                  </div>
                 </div>
-                {formik.touched.username && formik.errors.username ? (
-                  <Error>{formik.errors.username}</Error>
-                ) : null}
-              </div>
-              <div className=''>
-                <label htmlFor=''>Name</label>
-                <div
-                  className={
-                    ' p-0.5 rounded-full  bg-gradient-to-r from-aqua via-aurora to-lavender'
-                  }
-                >
-                  <FormInput
-                    variant={'formInput'}
-                    name='name'
-                    id='name'
-                    placeholder='Whats your name'
-                    type='text'
-                    onChange={formik.handleChange}
-                    value={formik.values.name}
-                  ></FormInput>
+                <div className='col-span-6'>
+                  <label htmlFor=''>Email</label>
+                  <div className=' p-0.5 rounded-full '>
+                    <FormInput
+                      name='name'
+                      id='email'
+                      type='text'
+                      onChange={formik.handleChange}
+                      value={formik.values.email}
+                    ></FormInput>
+                  </div>
+
+                  {formik.touched.email && formik.errors.email ? (
+                    <Error>{formik.errors.email.toString()}</Error>
+                  ) : null}
                 </div>
-
-                {formik.touched.name && formik.errors.name ? (
-                  <Error>{formik.errors.name.toString()}</Error>
-                ) : null}
               </div>
-              <div className=']'>
-                <label htmlFor=''>Email</label>
-                <div
-                  className={
-                    ' p-0.5 rounded-full  bg-gradient-to-r from-aqua via-aurora to-lavender'
-                  }
-                >
-                  <FormInput
-                    variant={'formInput'}
-                    name='name'
-                    id='email'
-                    type='text'
-                    onChange={formik.handleChange}
-                    value={formik.values.email}
-                  ></FormInput>
-                </div>
-
-                {formik.touched.email && formik.errors.email ? (
-                  <Error>{formik.errors.email.toString()}</Error>
-                ) : null}
-              </div>
-
               <div className='BIO'>
                 <label htmlFor=''>Bio</label>
-                <div
-                  className={
-                    ' p-0.5 rounded-2xl  bg-gradient-to-r from-aqua via-aurora to-lavender'
-                  }
-                >
+                <div className=' p-0.5 rounded-2xl'>
                   <Textarea
                     style={{
                       resize: 'none',
                     }}
-                    rows={4}
+                    rows={2}
                     placeholder='Tell me about yourself'
                     name='bio'
                     id='bio'
@@ -356,27 +312,17 @@ const SettingsPage: React.FC<Props> = () => {
               </div>
             </div>
           </div>
-          <div
-            className={
-              ' flex  w-full justify-center items-center flex-col items-end my-5 gap-3'
-            }
-          >
+          <div className=' flex  w-full justify-center items-center flex-col  my-5 gap-3'>
             <Button
               isLoading={loading}
               type='submit'
               disabled={loading}
               variant={'ghost'}
-              className={
-                'bg-lavender text-white  w-3/4  flex justify-center rounded-full'
-              }
+              className='bg-blackSwan text-white  w-3/4  flex justify-center rounded-full'
             >
               Save changes
             </Button>
-            <div
-              className={
-                ' w-3/4   bg-blackSwan text-white flex items-center rounded-full'
-              }
-            >
+            <div className=' w-3/4   bg-blackSwan text-white flex items-center rounded-full'>
               <LogoutButton></LogoutButton>
             </div>
           </div>

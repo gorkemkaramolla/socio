@@ -5,7 +5,6 @@ import { getServerSession } from 'next-auth';
 import { NextResponse } from 'next/server';
 export async function POST(req: Request) {
   const { content, user_id, title, contentWithoutSanitize } = await req.json();
-  console.log(content === '');
   if (content === '') {
     return new NextResponse(
       JSON.stringify({ error: 'Content cannot be empty' }),
@@ -15,7 +14,6 @@ export async function POST(req: Request) {
       }
     );
   }
-  console.log('content' + content);
   const titleSlugified = slugifyText(title);
   const createdComment = await prisma.guides.create({
     data: {
@@ -134,6 +132,8 @@ export async function GET(req: Request) {
     });
     if (user) {
       const guides = await prisma.guides.findMany({
+        take: 5,
+        orderBy: { created_at: 'desc' },
         where: {
           user_id: user.id,
         },

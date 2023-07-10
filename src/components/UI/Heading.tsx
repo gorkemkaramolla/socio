@@ -3,11 +3,11 @@ import React, { FC, HTMLAttributes } from 'react';
 import { cn } from '@/lib/utils';
 
 const headingVariants = cva(
-  `text-4xl font-extrabold  leading-none tracking-wide`,
+  `text-4xl dark:text-white  font-extrabold w-full  leading-none tracking-wide`,
   {
     variants: {
       variant: {
-        default: 'dark:text-gray-100 text-gray-700 leading-2',
+        default: 'leading-2',
         red: 'text-red-700',
         blue: 'text-blue-700',
         indigo: 'text-indigo-600',
@@ -19,7 +19,7 @@ const headingVariants = cva(
         xs: 'text-base',
         sm: 'text-xl',
         md: 'text-2xl',
-        lg: 'text-3xl ',
+        lg: 'text-4xl ',
         xl: 'text-5xl',
         xxl: 'text-6xl',
       },

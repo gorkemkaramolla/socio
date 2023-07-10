@@ -7,7 +7,7 @@ import FormInput from '@/components/UI/Input';
 import PostSkeleton from '@/components/Post/Skeleton/PostSkeleton';
 import TextareaAutosize from 'react-textarea-autosize';
 
-const ProfilePage = () => {
+const loading = () => {
   return (
     <div>
       <div className='flex flex-col overflow-y-scroll items-center px-3.5'>
@@ -171,4 +171,4 @@ const ProfilePage = () => {
   );
 };
 
-export default ProfilePage;
+export default loading;

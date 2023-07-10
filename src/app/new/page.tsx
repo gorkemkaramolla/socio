@@ -17,7 +17,6 @@ const todos = async ({
   searchParams: { contentWithoutSanitize, titleWithoutSlug, title },
 }: Props) => {
   const session = await getServerSession(authOptions);
-  console.log(title);
   const editorPosts: Guide[] = await prisma.guides.findMany({});
   if (session?.user.id)
     return (

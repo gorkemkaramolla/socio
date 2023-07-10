@@ -24,12 +24,11 @@ const ModalUi: React.FC<Props> = ({
       closeButton
       aria-labelledby='modal-title'
       open={visible}
-      className='cursor-auto'
+      className='cursor-auto dark:bg-zinc-900 dark:text-white'
       onClose={closeHandler}
     >
       <Modal.Header>
         <Heading heading='h1' size={'default'}>
-          {' '}
           Change your profile picture
         </Heading>
       </Modal.Header>
