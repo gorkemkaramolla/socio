@@ -6,10 +6,11 @@ import { faBars, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import FormInput from '@/components/UI/Input';
 import PostSkeleton from '@/components/Post/Skeleton/PostSkeleton';
 import TextareaAutosize from 'react-textarea-autosize';
+import Image from 'next/image';
 
 const loading = () => {
   return (
-    <div>
+    <div className='w-full '>
       <div className='flex flex-col overflow-y-scroll items-center px-3.5'>
         <div className='sticky top-0 w-full h-fit flex md:justify-center justify-between items-center bg-white/75 drop-shadow-xl dark:bg-black/75 backdrop-blur-sm z-40'>
           <Heading heading='h6' size='sm' className='m-4'>
@@ -45,11 +46,21 @@ const loading = () => {
                   <FontAwesomeIcon icon={faPenToSquare} />
                 </Button>
               </div>
-              <img
-                className=''
-                src='https://i.ibb.co/Ct8y2gk/wallpaper.jpg'
-                alt=''
-              />
+              <div style={{ width: '100%', position: 'unset' }}>
+                <Image
+                  style={{
+                    width: '100%',
+                    height: '100%',
+
+                    objectFit: 'cover',
+                  }}
+                  className='w-full h-full'
+                  src='https://i.ibb.co/Ct8y2gk/wallpaper.jpg'
+                  alt=''
+                  loading='lazy'
+                  fill
+                />
+              </div>
             </div>
             {/* Profile Picture */}
             <div className='w-[120px] h-[120px] rounded-full bg-gray-200 dark:bg-black absolute -bottom-12 left-6 border-[2px] border-lavender'>
@@ -152,7 +163,7 @@ const loading = () => {
             </Button>
           </form>
           {[1, 2, 3, 4, 5].map((post) => (
-            <div className='w-full'>
+            <div key={post} className='w-full'>
               <PostSkeleton />
             </div>
           ))}

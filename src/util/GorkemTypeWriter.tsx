@@ -55,7 +55,7 @@ const GorkemTypeWriter: FC<Props<HTMLElement>> = ({
         setTimeout(() => write(0), durationTime);
       });
     }
-  }, []);
+  }, [afterDelete, afterDeleteDuration, durationTime, infinite]);
 
   return (
     <div ref={containerRef}>

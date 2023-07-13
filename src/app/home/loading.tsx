@@ -12,7 +12,7 @@ const ContentContainerSkeleton = () => {
       </div>
 
       {[1, 2, 3, 4, 5].map((post) => (
-        <PostSkeleton />
+        <PostSkeleton key={post} />
       ))}
     </div>
   );

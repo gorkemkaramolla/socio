@@ -12,6 +12,7 @@ import ProfileImage from '../Profile/ProfileImage';
 import { useRouter } from 'next/navigation';
 import Search from '../Search/Search';
 import Button from '../UI/Button';
+import Image from 'next/image';
 
 interface Props {}
 
@@ -36,20 +37,26 @@ const SideNavbar: FC<Props> = () => {
             'bg-white shadow-2xl dark:bg-blackSwan rounded-2xl p-3 h-fit'
           }
         >
-          <div className={'w-full h-[120px] relative'}>
+          <div className={''}>
             <div
-              className={
-                'w-full h-2/3 bg-fuchsia-800 rounded-2xl flex justify-center'
-              }
+              className={'w-full relative h-[90px]  flex justify-center'}
+              style={{ width: '100%' }}
             >
-              <img
-                className={'w-full rounded-2xl'}
-                src='https://i.ibb.co/xsLbHWp/wallpaper.jpg'
+              <Image
+                className='rounded-2xl'
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                }}
+                src='https://i.ibb.co/Ct8y2gk/wallpaper.jpg'
                 alt=''
+                loading='lazy'
+                fill
               />
               <div
                 className={
-                  'w-[60px] h-[60px] absolute top-[60px]   border-lavender  rounded-full bg-white'
+                  'w-[60px] h-[60px] absolute top-[60px]  border-lavender  rounded-full bg-white'
                 }
               >
                 <ProfileImage
@@ -59,7 +66,7 @@ const SideNavbar: FC<Props> = () => {
               </div>
             </div>
           </div>
-          <div className={'flex flex-col gap-2 break-all text-center'}>
+          <div className={'flex mt-8 flex-col gap-2 break-all text-center'}>
             <Heading heading='h6' size={'sm'} className={'m-1 text-center'}>
               {currentUser?.name}
             </Heading>

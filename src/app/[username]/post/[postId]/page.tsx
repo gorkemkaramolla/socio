@@ -12,39 +12,39 @@ interface Props {
   };
   searchParams: { [key: string]: string | string[] | undefined };
 }
-export async function generateMetadata(
-  { params, searchParams }: Props,
-  parent?: ResolvingMetadata
-): Promise<Metadata> {
-  const response = await axios.get('http://localhost:3000/post', {
-    params: { post_id: params.postId, username: params.username },
-  });
-  const post = response.data.post;
-  if (post) {
-    const userResponse = await axios.get('http://localhost:3000/user', {
-      params: { username: params.username },
-    });
-    const user = userResponse.data.user;
+// export async function generateMetadata(
+//   { params, searchParams }: Props,
+//   parent?: ResolvingMetadata
+// ): Promise<Metadata> {
+//   const response = await axios.get('http://localhost:3000/post', {
+//     params: { post_id: params.postId, username: params.username },
+//   });
+//   const post = response.data.post;
+//   if (post) {
+//     const userResponse = await axios.get('http://localhost:3000/user', {
+//       params: { username: params.username },
+//     });
+//     const user = userResponse.data.user;
 
-    const keywords = ['post', 'user', 'username', user.username, post.title];
+//     const keywords = ['post', 'user', 'username', user.username, post.title];
 
-    const description = `Post by ${user.username}: ${post.content}`;
+//     const description = `Post by ${user.username}: ${post.content}`;
 
-    return {
-      title: post.content.slice(0, 20) + ' | ' + user.name,
-      description: description,
-      keywords: keywords,
-      // openGraph: {
-      //   images: [getImage(user.image)],
-      // },
-    };
-  } else
-    return {
-      title: 'Post Not Found',
-      description: 'The requested post could not be found.',
-      keywords: [],
-    };
-}
+//     return {
+//       title: post.content.slice(0, 20) + ' | ' + user.name,
+//       description: description,
+//       keywords: keywords,
+//       // openGraph: {
+//       //   images: [getImage(user.image)],
+//       // },
+//     };
+//   } else
+//     return {
+//       title: 'Post Not Found',
+//       description: 'The requested post could not be found.',
+//       keywords: [],
+//     };
+// }
 export default async function PostSlug({
   params: { postId, username },
 }: Props) {

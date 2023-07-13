@@ -23,7 +23,7 @@ const GuideComponent: React.FC<Props> = ({ editorPost }) => {
   useEffect(() => {
     hljs.registerLanguage('javascript', javascript);
     hljs.highlightAll();
-  }, [updatedContent, editorPost.content, javascript]);
+  }, [updatedContent, editorPost.content]);
 
   useEffect(() => {
     const handleExpand = () => {

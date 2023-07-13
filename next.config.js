@@ -8,7 +8,7 @@ const nextConfig = {
     CLODINARY_URL: process.env.CLODINARY_URL,
   },
   images: {
-    domains: ['lh3.googleusercontent.com'],
+    domains: ['lh3.googleusercontent.com', 'i.ibb.co'],
   },
 };
 

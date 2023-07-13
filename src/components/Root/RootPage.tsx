@@ -104,7 +104,7 @@ export default function RootPage() {
             <div>
               <LoginPage />
               <p>
-                You don't have an account?
+                You dont have an account?
                 <span
                   className='cursor-pointer'
                   onClick={() => setLogin(false)}
@@ -117,7 +117,7 @@ export default function RootPage() {
             <div>
               <RegisterPage />
               <p>
-                Already have an account?{' '}
+                Already have an account?
                 <span className='cursor-pointer' onClick={() => setLogin(true)}>
                   Sign in
                 </span>

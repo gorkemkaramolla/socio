@@ -483,9 +483,9 @@ const Editor: React.FC<Props> = ({
   return (
     <div className=' flex-col flex'>
       <div className='flex gap-1 my-4 justify-between '>
-        {tools.map((tool: any) => {
+        {tools.map((tool: any, i: number) => {
           return (
-            <Tooltip content={tool.shortcut} rounded placement='bottom'>
+            <Tooltip key={i} content={tool.shortcut} rounded placement='bottom'>
               <button
                 className='hover:bg-gray-100  dark:hover:bg-[#4d5fb8aa] p-4 rounded transition-all'
                 onClick={() => {

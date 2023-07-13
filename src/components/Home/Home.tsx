@@ -27,7 +27,7 @@ const HomePage: FC<Props> = ({ posts }) => {
   const dispatch = useDispatch();
   useEffect(() => {
     router.refresh();
-  }, []);
+  }, [router]);
 
   {
     return (

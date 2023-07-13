@@ -29,6 +29,7 @@ import TextareaAutosize from 'react-textarea-autosize';
 import { Guides } from '@prisma/client';
 import Link from 'next/link';
 import PostSkeleton from '../Post/Skeleton/PostSkeleton';
+import Image from 'next/image';
 
 interface Props {
   username: string;
@@ -155,7 +156,7 @@ const ProfilePage = ({ username, requestedUser, posts, guides }: Props) => {
 
   if (requestedUser)
     return (
-      <div className='flex flex-col overflow-x-hidden  items-center px-3.5 overflow-y-scroll'>
+      <div className='flex w-[100%] h-full flex-col overflow-x-hidden  items-center px-3.5 overflow-y-scroll'>
         <div className='sticky top-0 w-full h-fit  flex md:justify-center justify-between items-center bg-white/75 drop-shadow-xl dark:bg-black/75 backdrop-blur-sm z-20'>
           <Heading heading='h6' size='sm' className='m-4'>
             {username}
@@ -180,7 +181,7 @@ const ProfilePage = ({ username, requestedUser, posts, guides }: Props) => {
         </div>
 
         <div className='h-fit w-full  flex flex-col items-center'>
-          <div className='w-full h-[150px] bg-fuchsia-600 rounded-2xl my-3 relative'>
+          <div className='w-full rounded-2xl my-3 relative'>
             <div className=' overflow-hidden w-full h-[150px] rounded-2xl'>
               {userPage && (
                 <div
@@ -199,11 +200,21 @@ const ProfilePage = ({ username, requestedUser, posts, guides }: Props) => {
                   </Button>
                 </div>
               )}
-              <img
-                className=''
-                src='https://i.ibb.co/Ct8y2gk/wallpaper.jpg'
-                alt=''
-              />
+              <div style={{ width: '100%', position: 'unset' }}>
+                <Image
+                  style={{
+                    width: '100%',
+                    height: '100%',
+
+                    objectFit: 'cover',
+                  }}
+                  className='w-full h-full'
+                  src='https://i.ibb.co/Ct8y2gk/wallpaper.jpg'
+                  alt=''
+                  loading='lazy'
+                  fill
+                />
+              </div>
             </div>
             {/* Profile Picture */}
             <div className='w-[100px] h-[100px] rounded-full bg-white absolute -bottom-9 left-8 border-[1px] border-lavender'>

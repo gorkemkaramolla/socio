@@ -5,7 +5,7 @@ interface Props {
   children: ReactNode;
 }
 const ChatLayout: React.FC<Props> = ({ children }) => {
-  return <SideMenuLayout children={children} />;
+  return <SideMenuLayout>{children}</SideMenuLayout>;
 };
 
 export default ChatLayout;

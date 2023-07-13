@@ -16,6 +16,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
+import Image from 'next/image';
 
 const CommentContainer: FC<Props> = ({ comment }) => {
   const router = useRouter();
@@ -38,7 +39,9 @@ const CommentContainer: FC<Props> = ({ comment }) => {
       <div className='p-4  dark:bg-brown  bg-gray-50  rounded-lg'>
         <div className='flex relative  gap-3'>
           <Link href={`/${comment.user.username}`} className='flex gap-3'>
-            <img
+            <Image
+              width={24}
+              height={24}
               className='w-6 h-6 rounded-full   '
               src={comment.user.image || comment.user.imageUri}
               alt=''

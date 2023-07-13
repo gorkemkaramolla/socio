@@ -1,6 +1,7 @@
 'use client';
 import React, { FC } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 interface Props {}
 
 const Navbar: FC<Props> = () => {
@@ -12,7 +13,9 @@ const Navbar: FC<Props> = () => {
         }
       >
         <div className={'w-fit h-fit'}>
-          <img
+          <Image
+            width={160}
+            height={160}
             className={'w-[160px]'}
             src='https://i.ibb.co/JBJQZHb/websocial.png'
             alt=''

@@ -2,6 +2,7 @@ import { User } from '@/lib/types/types';
 import { getImage } from '@/util/getImage';
 import Link from 'next/link';
 import React from 'react';
+import ProfileImage from '../Profile/ProfileImage';
 
 interface Props {
   messages: any;
@@ -22,13 +23,10 @@ const MessageBoxPage: React.FC<Props> = ({ messages, currentUserId }) => {
             }`}
             className='flex items-center gap-2'
           >
-            <img
-              className='w-12 h-full rounded-full bg-white '
-              src={
-                getImage(message.receiver.image)! ||
-                message.receiver.imageUri ||
-                '/userdefault.png'
-              }
+            <ProfileImage
+              // className='w-12 h-full rounded-full bg-white '
+              imageSrc={getImage(message.receiver.image)!}
+              googleImage={message.reciever.imageUri}
             />
             <div className=''>
               <p>{message.receiver.username}</p>

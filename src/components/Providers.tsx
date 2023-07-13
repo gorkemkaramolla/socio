@@ -63,11 +63,6 @@ const Providers: React.FC<Props> = ({ children }) => {
     }
   };
 
-  useEffect(() => {
-    const storage = localStorage.getItem('mode');
-    dispatch(setTheme(storage!));
-  }, []);
-
   const currentUser = useSelector((state: RootState) => state.user);
   useEffect(() => {
     getUser();
@@ -77,6 +72,11 @@ const Providers: React.FC<Props> = ({ children }) => {
   useEffect(() => {}, [mode.mode]);
 
   const dispatch = useDispatch();
+  useEffect(() => {
+    const storage = localStorage.getItem('mode');
+    dispatch(setTheme(storage!));
+  }, []);
+
   const handleModeChange = (theme: string) => {
     dispatch(setTheme(theme));
   };
@@ -89,9 +89,9 @@ const Providers: React.FC<Props> = ({ children }) => {
   return (
     <SessionProvider>
       <html lang='en' className={`${mode.mode} ${poppins.className}`}>
-        <head>
+        <Head>
           <link rel='icon' href='/favicon.ico' sizes='96x96' />
-        </head>
+        </Head>
         <body className=' text-lg leading-8 text-black dark:text-white '>
           <div className='w-screen  relative h-[100dvh] dark:bg-black overflow-x-hidden'>
             <div className='flex h-full'>{children}</div>
